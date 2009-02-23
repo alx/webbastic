@@ -1,0 +1,25 @@
+	<ul>
+		<li>Site Name: <%= @site.name %></li>
+		<li><a href="<%= url(:generate_site, @site.id) %>">Generate</a></li>
+		<li><a href="<%= url(:generated_site, @site.id) %>">Content</a></li>
+	</ul>
+
+<h2>Pages</h2>
+
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr><th>Name</th><th></th><th></th></tr>
+	
+	<% @site.pages.each do |page| %>
+	<tr>
+		<td><%= page.name %></td>
+		<td><a href="<%= url(:webbastic_page, page.id) %>">View</a></td>
+		<td><a href="<%= url(:delete_webbastic_page, page.id) %>">Delete</a></td>
+	</tr>
+	<% end %>
+</table>
+
+<%= form :action => url(:webbastic_pages) do %>
+	<input class="text" type="text" name="page[name]" value=""/>
+	<input type="hidden" name="page[site_id]" value="<%= @site.id %>"/>
+	<%= submit "Create Page" %>
+<% end =%>

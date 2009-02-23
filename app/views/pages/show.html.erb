@@ -1,0 +1,22 @@
+<p>Site Name: <%= @page.site.name %> (<a href="<%= url(:webbastic_site, @page.site.id) %>">view</a>)</p>
+<p>Page Name: <%= @page.name %></p>
+
+<h2>Widgets</h2>
+
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr><th>Name</th><th></th><th></th></tr>
+	
+	<% @page.widgets.each do |widget| %>
+	<tr>
+		<td><%= widget.name %></td>
+		<td><a href="<%= url(:webbastic_widget, widget.id) %>">View</a></td>
+		<td><a href="<%= url(:delete_webbastic_widget, widget.id) %>">Delete</a></td>
+	</tr>
+	<% end %>
+</table>
+
+<%= form :action => url(:webbastic_widgets) do %>
+	<input class="text" type="text" name="widget[name]" value=""/>
+	<input type="hidden" name="widget[page_id]" value="<%= @page.id %>"/>
+	<%= submit "Create Widget" %>
+<% end =%>

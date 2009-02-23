@@ -1,0 +1,18 @@
+<h1>Welcome to Webbastic</h1>
+
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr><th>Name</th><th></th><th></th></tr>
+	
+	<% @sites.each do |site| %>
+	<tr>
+		<td><%= site.name %></td>
+		<td><a href="<%= url(:webbastic_site, site.id) %>">View</a></td>
+		<td><a href="<%= url(:delete_webbastic_site, site.id) %>">Delete</a></td>
+	</tr>
+	<% end %>
+</table>
+
+<%= form :action => url(:webbastic_sites) do %>
+	<input class="text" type="text" name="site[name]" value=""/>
+	<%= submit "Create" %>
+<% end =%>
