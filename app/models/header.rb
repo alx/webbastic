@@ -4,12 +4,9 @@ class Webbastic::Header
   property :id, Serial
   property :name, String
   property :value, Text
+  property :created_at, DateTime
   
   is :tree, :order => name
   
   belongs_to :page, :class_name => "Webbastic::Page"
-  
-  # Generate current header and ts children and return result in YAML
-  def generate_yaml
-  end
 end

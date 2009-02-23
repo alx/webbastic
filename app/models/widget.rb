@@ -4,6 +4,7 @@ class Webbastic::Widget
   property :id, Serial
   property :name, String
   property :content, Text
+  property :created_at, DateTime
   
   belongs_to :page, :class_name => "Webbastic::Page"
   

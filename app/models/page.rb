@@ -3,6 +3,7 @@ class Webbastic::Page
 
   property :id, Serial
   property :name, String
+  property :created_at, DateTime
   
   # Generated values are a stored text generated from 
   # the relationship with children objects
@@ -11,7 +12,7 @@ class Webbastic::Page
   
   belongs_to :site, :class_name => Webbastic::Site
   
-  has 1, :header, :class_name => Webbastic::Header
+  has n, :headers, :class_name => Webbastic::Header
   has n, :widgets, :class_name => Webbastic::Widget
   
   def generate
@@ -33,14 +34,21 @@ class Webbastic::Page
   
   # Generate YAML header from current page eader and its children
   def generate_header
-    update_attributes(:generated_header => self.header.generate_yaml) if self.header
+    # Default header values
+    generated_header = {'title' => self.name, 
+                        'created_at' => Time.now}
+                        # 'destination' => self.site.destination || File.join(Merb.root, 'public', self.site.name)}
+    # Child header values
+    # generated_header
+    update_attributes(:generated_header => YAML::dump(generated_header) + "---\n")
   end
   
   def generate_content
     generated_content = ""
     self.widgets.each do |widget|
-      generated_content << (widget.content || "")
+      generated_content += (widget.content || "")
     end
-    update_attributes :generated_content => generated_content
+    update_attributes(:generated_content => generated_content)
   end
+  
 end

@@ -21,7 +21,14 @@ describe Webbastic::Page do
     File.exists?(path).should == true
   end
   
-  it "should have a header"
+  it "should have a header by default" do
+    @page = Webbastic::Page.new :name => "home"
+    @page.generate_header
+    
+    header = YAML.load(@page.generated_header)
+    header.size.should == 3
+    header[:title].should == "home"
+  end
   
   it "should have widgets"
 

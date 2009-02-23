@@ -5,6 +5,8 @@ class Webbastic::Site
   property :name, String
   property :template, String
   property :path, String
+  property :destination, String
+  property :created_at, DateTime
   
   has n, :pages, :class_name => Webbastic::Page
   
@@ -26,13 +28,23 @@ class Webbastic::Site
   # Generate site content base on its structure
   #
   def generate
+    
+    generate_pages
+    
+    Webby.site.content_dir    = File.join("webby", self.name, "content")
+    Webby.site.layout_dir     = File.join("webby", self.name, "layouts")
+    Webby.site.template_dir   = File.join("webby", self.name, "templates")
+    Webby.site.output_dir     = self.destination || File.join(Merb.root, 'public', self.name)
+    Webby.site.page_defaults  = {'layout'     => File.join("webby", self.name, "layouts", "default")}
+
+    Webby::Builder.run
+  end
+  
+  def generate_pages
     self.pages.each do |page|
       page.generate
       page.write_file
-      Webby::Builder.create(page.name, :from => page.path)
     end
-    Webby.site.base = self.name
-    Webby::Builder.run
   end
   
   #

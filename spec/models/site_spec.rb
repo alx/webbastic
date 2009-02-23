@@ -54,11 +54,9 @@ describe Webbastic::Site do
   end
   
   it "should generate website" do
-    @site = Webbastic::Site.new :name => "test"
-    @site.save
-    
-    @page = Webbastic::Page.new :name => "home", :site_id => @site.id
-    @page.save
+    @site = Webbastic::Site.create :name => "test"
+    @page = Webbastic::Page.create :name => "home", :site_id => @site.id
+    @widget = Webbastic::Widget.create :name => "home", :content => Time.now, :page_id => @page.id
     
     @site.generate
     
