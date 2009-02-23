@@ -35,7 +35,8 @@ class Webbastic::Site
     Webby.site.layout_dir     = File.join("webby", self.name, "layouts")
     Webby.site.template_dir   = File.join("webby", self.name, "templates")
     Webby.site.output_dir     = self.destination || File.join(Merb.root, 'public', self.name)
-    Webby.site.page_defaults  = {'layout'     => File.join("webby", self.name, "layouts", "default")}
+    Webby.site.page_defaults  = {'layout' => File.join("webby", self.name, "layouts", "default"),
+                                 'directory' => "."}
 
     Webby::Builder.run
   end
