@@ -6,7 +6,7 @@ class Webbastic::Layout
   property :content, Text
   property :created_at, DateTime
   
-  belongs_to :page, :class_name => Webbastic::Page
+  belongs_to :site, :class_name => Webbastic::Site
   
   # Write generated page to static file
   def write_layout_file(path)

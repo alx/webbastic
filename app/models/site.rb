@@ -8,7 +8,8 @@ class Webbastic::Site
   property :destination, String
   property :created_at, DateTime
   
-  has n, :pages, :class_name => Webbastic::Page
+  has n, :pages,    :class_name => Webbastic::Page
+  has n, :layouts,  :class_name => Webbastic::Layout
   
   before :destroy, :unlink_site
   

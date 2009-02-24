@@ -61,13 +61,21 @@ module Merb
       
       # Construct admin menu to be placed on top of edited site
       def admin_menu
+        site_id = 1
         tag :div, :id => "admin_menu" do
           tag :div, :id => "admin_menu_buttons" do
-            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", :class => "button") <<
-            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/photos.png")) + "layouts", :class => "button") <<
-            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/page.png")) + "pages", :class => "button") <<
-            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library", :class => "button") <<
-            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/wrench_orange.png")) + "configuration", :class => "button")
+            tag(:a, 
+                self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", 
+                {:href => slice_url(:generated_site, site_id),:class => "button"}) <<
+            tag(:a, 
+                self_closing_tag(:img, :src => webbastic_image_path("/icons/photos.png")) + "layouts",
+                {:href => slice_url(:site_layouts, site_id),:class => "button"}) <<
+            tag(:a, 
+                self_closing_tag(:img, :src => webbastic_image_path("/icons/page.png")) + "pages",
+                {:href => slice_url(:site_pages, site_id),:class => "button"}) <<
+            tag(:a, 
+                self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library",
+                {:href => slice_url(:library, site_id),:class => "button"})
           end
         end
       end

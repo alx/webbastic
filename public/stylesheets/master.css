@@ -41,6 +41,7 @@
 }
 
 #admin_menu img {
+	border: 0px;
 	padding: 0 5px;
 	vertical-align: middle;
 }
