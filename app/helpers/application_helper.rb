@@ -59,6 +59,19 @@ module Merb
         ::Webbastic.slice_path_for(type, *segments)
       end
       
+      # Construct admin menu to be placed on top of edited site
+      def admin_menu
+        tag :div, :id => "admin_menu" do
+          tag :div, :id => "admin_menu_buttons" do
+            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", :class => "button") <<
+            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/photos.png")) + "layouts", :class => "button") <<
+            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/page.png")) + "pages", :class => "button") <<
+            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library", :class => "button") <<
+            tag(:a, self_closing_tag(:img, :src => webbastic_image_path("/icons/wrench_orange.png")) + "configuration", :class => "button")
+          end
+        end
+      end
+      
     end
   end
 end

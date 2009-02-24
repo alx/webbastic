@@ -1,5 +1,5 @@
 class Webbastic::Widgets < Webbastic::Application
-  
+
   # GET /widgets
   def index
     @widgets = Webbastic::Widget.all

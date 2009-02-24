@@ -16,16 +16,8 @@
   <!-- you can override this layout at slices/webbastic/app/views/layout/webbastic.html.erb -->
   <body class="webbastic-slice">
   <div id="container">
-	  <h1>Webbastic Slice</h1>
+	<%= admin_menu %>
     <div id="main"><%= catch_content :for_layout %></div>
   </div>
   </body>
-
-
-
-<form method="post" action="somepage">
-	<textarea name="content" style="width:100%">
-	</textarea>
-</form>
-
 </html>

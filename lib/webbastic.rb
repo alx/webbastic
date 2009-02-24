@@ -27,6 +27,12 @@ if defined?(Merb::Plugins)
     def self.init
     end
     
+    # Stub classes loaded hook - runs before LoadClasses BootLoader
+    # right after a slice's classes have been loaded internally.
+    def self.loaded
+      Helpers.setup
+    end
+    
     def self.setup_router(scope)
       ::Webbastic::Router.setup(scope)
     end
@@ -57,7 +63,7 @@ if defined?(Merb::Plugins)
   
   # Slice dependencies
   require "webbastic/router"
-  require "webbastic/widgets"
+  require "webbastic/helpers"
   
   # stdlib dependencies
   require "tempfile"

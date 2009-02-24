@@ -15,7 +15,7 @@ describe Webbastic::Page do
     @page = Webbastic::Page.new :name => "home", :site_id => @site.id
     @page.save
     
-    @page.write_file
+    @page.write_page_file
     
     path = File.join( File.dirname(__FILE__), '..', '..', 'webby', 'test', 'content', 'home' )
     File.exists?(path).should == true

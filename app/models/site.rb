@@ -44,7 +44,7 @@ class Webbastic::Site
   def generate_pages
     self.pages.each do |page|
       page.generate
-      page.write_file
+      page.write_page_file
     end
   end
   

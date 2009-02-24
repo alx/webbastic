@@ -12,15 +12,16 @@ class Webbastic::Page
   
   belongs_to :site, :class_name => Webbastic::Site
   
-  has n, :headers, :class_name => Webbastic::Header
-  has n, :widgets, :class_name => Webbastic::Widget
+  has n, :headers,  :class_name => Webbastic::Header
+  has n, :widgets,  :class_name => Webbastic::Widget
+  has 1, :layout,   :class_name => Webbastic::Layout
   
   def generate
     generate_header
     generate_content
   end
   
-  def write_file
+  def write_page_file
     # Write generated page to static file
     File.open self.path, "w+" do |f|
       f.write(generated_header)
