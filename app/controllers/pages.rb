@@ -32,7 +32,7 @@ class Webbastic::Pages < Webbastic::Application
   def create
     @page = Webbastic::Page.new(params[:page])
     if @page.save
-      redirect url(:webbastic_site, @page.site)
+      redirect url(:webbastic_site, @page.site.id)
     else
       message[:error] = "Page failed to be created"
       render :new

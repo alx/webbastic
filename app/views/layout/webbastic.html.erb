@@ -5,6 +5,13 @@
     <title>Fresh Webbastic Slice</title>
     <link href="<%= public_path_for :stylesheet, 'master.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
     <script src="<%= public_path_for :javascript, 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= public_path_for :javascript, 'tiny_mce/tiny_mce.js' %>" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	tinyMCE.init({
+		mode : "textareas",
+		theme : "simple"
+	});
+	</script>
   </head>
   <!-- you can override this layout at slices/webbastic/app/views/layout/webbastic.html.erb -->
   <body class="webbastic-slice">
@@ -13,4 +20,12 @@
     <div id="main"><%= catch_content :for_layout %></div>
   </div>
   </body>
+
+
+
+<form method="post" action="somepage">
+	<textarea name="content" style="width:100%">
+	</textarea>
+</form>
+
 </html>
