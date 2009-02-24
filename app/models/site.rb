@@ -49,6 +49,10 @@ class Webbastic::Site
     end
   end
   
+  def status
+    "generated"
+  end
+  
   #
   # When destroying a site,
   # be sure to delete the webby folder that's been created on initialization

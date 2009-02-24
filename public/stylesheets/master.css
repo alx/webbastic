@@ -1,3 +1,7 @@
+body{
+	font-family: "Lucida Grande",Tahoma,Arial,Verdana,sans-serif;
+}
+
 /*****************************************************************************/
 /*
 /* Container
@@ -31,7 +35,6 @@
 	cursor:pointer;
 	display:block;
 	float:left;
-	font-family:"Lucida Grande",Tahoma,Arial,Verdana,sans-serif;
 	font-size:100%;
 	font-weight:bold;
 	line-height:130%;
@@ -46,9 +49,22 @@
 	vertical-align: middle;
 }
 
+#admin_menu_status {
+	float: right;
+	font-size: 80%;
+	text-align: right;
+}
+
+.generated {
+	color: green;
+}
+
 /*****************************************************************************/
 /*
 /* Main
 /*
 /*****************************************************************************/
 
+#main {
+	padding: 20px;
+}
