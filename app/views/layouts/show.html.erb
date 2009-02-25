@@ -1,0 +1,21 @@
+<h2>Headers</h2>
+
+<table id="header-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% @layout.headers.each do |header| -%>
+		<%= partial 'shared/header', :header => header, :type => :layout, :row_class => cycle("alternate", "") %>
+		<%- end %>
+	</tbody>
+</table>
+
+<h2>Content</h2>
+
+<textarea rows="8" cols="40"><%= @layout.content %></textarea>
+
+<p>[<a href="<%= url(:edit_webbastic_site_layout, @layout.site, @layout) %>">edit</a>]</p>

@@ -60,8 +60,8 @@ module Merb
       end
       
       # Construct admin menu to be placed on top of edited site
-      def admin_menu
-        site = ::Webbastic::Site.first
+      def admin_menu(site_id)
+        site = ::Webbastic::Site.first :id => site_id
         tag :div, :id => "admin_menu" do
           tag :div, :id => "admin_menu_buttons" do
             tag(:div, 

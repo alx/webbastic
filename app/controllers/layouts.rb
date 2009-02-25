@@ -1,9 +1,8 @@
 class Webbastic::Layouts < Webbastic::Application
-  layout :site
   
   # GET /layouts
   def index
-    @layouts = Webbastic::Layout.all
+    @layouts = Webbastic::Layout.all :site_id => params[:site_id]
     display @layouts
   end
 
@@ -31,9 +30,9 @@ class Webbastic::Layouts < Webbastic::Application
 
   # POST /layouts
   def create
-    @layout = Webbastic::Layout.new(params[:widget])
+    @layout = Webbastic::Layout.new(params[:layout])
     if @layout.save
-      redirect url(:webbastic_layout, @layout.id)
+      display @layout, :edit
     else
       message[:error] = "Layout failed to be created"
       render :new
@@ -41,14 +40,14 @@ class Webbastic::Layouts < Webbastic::Application
   end
 
   # PUT /layouts/:id
-  def update(id, page)
-    @layout = Webbastic::Layout.get(id)
+  def update
+    @layout = Webbastic::Layout.get(params[:id])
     raise NotFound unless @layout
-    if @layout.update_attributes(page)
-       redirect resource(@layout)
-    else
-      display @layout, :edit
-    end
+    
+    Webbastic::Header.create(params[:header]) if params[:header]
+    @layout.update_attributes(params[:layout]) if params[:layout]
+    
+    display @layout, :edit
   end
 
   # DELETE /layouts/:id

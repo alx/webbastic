@@ -1,4 +1,28 @@
-<h1>Pages controller, edit action</h1>
+<h2>Headers</h2>
 
-<p>Edit this file in <tt>app/views/pages/edit.html.erb</tt></p>
-<p>For more information and examples of CRUD views read <a href="http://wiki.merbivore.com/howto/crud_view_example_with_merb_using_erb"> this wiki page</a></p>
+<table id="header-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% @page.headers.each do |header| -%>
+		<%= partial 'shared/header', :header => header, :type => :page, :row_class => cycle("alternate", "") %>
+		<%- end %>
+	</tbody>
+</table>
+
+<%= partial 'shared/header_form', 
+			:action => url(:webbastic_site_page, @page.site, @page),
+			:type => :page,
+			:obj_id => @page.id %>
+
+<h2>Content</h2>
+
+<form action="<%= url(:webbastic_site_page, @page.site, @page) %>" method="post" accept-charset="utf-8">
+	<textarea name="page[content]" rows="8" cols="40" class="mceEditor"><%= @page.content %></textarea>
+	<input type="hidden" name="_method" value="put"/>
+	<p><input type="submit" value="Save &rarr;"></p>
+</form>

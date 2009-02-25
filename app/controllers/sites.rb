@@ -10,7 +10,7 @@ class Webbastic::Sites < Webbastic::Application
   def show
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
-    display @site
+    redirect slice_url(:site_pages, @site.id)
   end
 
   # GET /sites/new

@@ -3,10 +3,13 @@ module Webbastic
     
     def self.setup(scope)
       scope.identify DataMapper::Resource => :id do |s|
-        scope.resources :sites,   "Webbastic::Sites"
-        scope.resources :pages,   "Webbastic::Pages"
-        scope.resources :widgets, "Webbastic::Widgets"
-        scope.resources :layouts, "Webbastic::Layouts"
+        s.resources :sites,   "Webbastic::Sites" do |r|
+          r.resources :layouts, "Webbastic::Layouts"
+          r.resources :pages,   "Webbastic::Pages" do |p|
+            p.resources :widgets, "Webbastic::Widgets"
+            p.resources :layouts, "Webbastic::Layouts"
+          end
+        end
       end
 
       # Url to generate a site and view content of generated site

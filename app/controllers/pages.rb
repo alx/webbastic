@@ -2,7 +2,7 @@ class Webbastic::Pages < Webbastic::Application
   
   # GET /pages
   def index
-    @pages = Webbastic::Page.all
+    @pages = Webbastic::Page.all :site_id => params[:site_id]
     display @pages
   end
 
@@ -32,7 +32,7 @@ class Webbastic::Pages < Webbastic::Application
   def create
     @page = Webbastic::Page.new(params[:page])
     if @page.save
-      redirect url(:webbastic_site, @page.site.id)
+      display @page, :edit
     else
       message[:error] = "Page failed to be created"
       render :new
@@ -40,14 +40,14 @@ class Webbastic::Pages < Webbastic::Application
   end
 
   # PUT /pages/:id
-  def update(id, page)
-    @page = Webbastic::Page.get(id)
+  def update
+    @layout = Webbastic::Page.get(params[:id])
     raise NotFound unless @page
-    if @page.update_attributes(page)
-       redirect resource(@page)
-    else
-      display @page, :edit
-    end
+    
+    Webbastic::Header.create(params[:header]) if params[:header]
+    @page.update_attributes(params[:page]) if params[:page]
+    
+    display @layout, :edit
   end
 
   # DELETE /pages/:id

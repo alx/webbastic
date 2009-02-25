@@ -1,0 +1,23 @@
+<h2>Layouts</h2>
+
+<% unless @layouts.empty? -%>
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr><th>Name</th><th>Actions</th></tr>
+	
+	<% @layouts.each do |layout| %>
+	<tr>
+		<td><%= layout.name %></td>
+		<td>
+			<a href="<%= url(:edit_webbastic_site_layout, layout.site.id, layout.id) %>">Edit</a> - 
+			<a href="<%= url(:delete_webbastic_site_layout, layout.site.id, layout.id) %>">Delete</a>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<%- end %>
+
+<%= form :action => url(:webbastic_site_layouts) do %>
+	<input class="clear" type="text" name="layout[name]" value="Layout Name"/>
+	<input type="hidden" name="layout[site_id]" value="<%= params[:site_id] %>"/>
+	<%= submit "Create New Layout" %>
+<% end =%>

@@ -3,20 +3,27 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Fresh Webbastic Slice</title>
-    <link href="<%= public_path_for :stylesheet, 'master.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
-    <script src="<%= public_path_for :javascript, 'master.js' %>" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= public_path_for :javascript, 'tiny_mce/tiny_mce.js' %>" type="text/javascript" charset="utf-8"></script>
+    <link href="<%= webbastic_stylesheet_path 'master.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
+
+	<script src="<%= webbastic_javascript_path 'jquery/jquery.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= webbastic_javascript_path 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= webbastic_javascript_path 'tiny_mce/tiny_mce.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= webbastic_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+
 	<script type="text/javascript">
 	tinyMCE.init({
 		mode : "textareas",
-		theme : "simple"
+		theme : "simple",
+		editor_selector : "mceEditor"
 	});
 	</script>
   </head>
   <!-- you can override this layout at slices/webbastic/app/views/layout/webbastic.html.erb -->
   <body class="webbastic-slice">
   <div id="container">
-	<%= admin_menu %>
+	
+	<%= admin_menu(params[:site_id]) if params[:site_id] %>
+	
     <div id="main"><%= catch_content :for_layout %></div>
   </div>
   </body>

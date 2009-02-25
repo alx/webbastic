@@ -1,22 +1,21 @@
-<p>Site Name: <%= @page.site.name %> (<a href="<%= url(:webbastic_site, @page.site.id) %>">view</a>)</p>
-<p>Page Name: <%= @page.name %></p>
+<h2>Headers</h2>
 
-<h2>Widgets</h2>
-
-<table border="0" cellspacing="5" cellpadding="5">
-	<tr><th>Name</th><th></th><th></th></tr>
-	
-	<% @page.widgets.each do |widget| %>
-	<tr>
-		<td><%= widget.name %></td>
-		<td><a href="<%= url(:webbastic_widget, widget.id) %>">View</a></td>
-		<td><a href="<%= url(:delete_webbastic_widget, widget.id) %>">Delete</a></td>
-	</tr>
-	<% end %>
+<table id="header-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% @page.headers.each do |header| -%>
+		<%= partial 'shared/header', :header => header, :type => :page, :row_class => cycle("alternate", "") %>
+		<%- end %>
+	</tbody>
 </table>
 
-<%= form :action => url(:webbastic_widgets) do %>
-	<input class="text" type="text" name="widget[name]" value=""/>
-	<input type="hidden" name="widget[page_id]" value="<%= @page.id %>"/>
-	<%= submit "Create Widget" %>
-<% end =%>
+<h2>Content</h2>
+
+<textarea rows="8" cols="40"><%= @page.content %></textarea>
+
+<p>[<a href="<%= url(:edit_webbastic_site_page, @page.site, @page) %>">edit</a>]</p>

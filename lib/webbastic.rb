@@ -30,7 +30,7 @@ if defined?(Merb::Plugins)
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
     def self.loaded
-      Helpers.setup
+      ::Webbastic::Helpers.setup
     end
     
     def self.setup_router(scope)
