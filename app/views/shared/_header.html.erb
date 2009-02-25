@@ -1,0 +1,20 @@
+<tr id="header-<%= header.id %>" class="<%= row_class %>">
+	<td class="left">
+		<label for="header[<%= header.id %>][key]" class="hidden">Key</label>
+		<input type="text" value="<%= header.key %>" size="20" tabindex="6" id="header[<%= header.id %>][key]" name="meta[3][key]"/>
+		<div class="submit">
+			<input type="submit" value="Delete" tabindex="6" class="deleteheader" name="deleteheader[<%= header.id %>]"/>
+		</div>
+		<% case type
+			when :layout %>
+			<input type="hidden" value="<%= header.layout.id %>" name="header[layout_id]" id="header[<%= header.layout.id %>]"/>
+		<%	when :page %>
+			<input type="hidden" value="<%= header.page.id %>" name="header[page_id]" id="header[<%= header.page.id %>]"/>
+		<% end %>
+	</td>
+	
+	<td>
+		<label for="header[<%= header.id %>][value]" class="hidden">Value</label>
+		<textarea cols="30" rows="2" tabindex="6" id="header[<%= header.id %>][value]" name="header[<%= header.id %>][value]"><%= header.value %></textarea>
+	</td>
+</tr>
