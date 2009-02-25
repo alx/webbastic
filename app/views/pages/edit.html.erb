@@ -23,7 +23,7 @@
 
 <form action="<%= url(:webbastic_site_page, @page.site, @page) %>" method="post" accept-charset="utf-8">
 	
-	<label for="layout">Layout:</label>
+	<label for="layout">Layout:</label><br/>
 	<select name="page[layout_id]" id="layout" size="1">
 		<% @page.site.layouts.each do |layout| %>
 		<option value="<%= layout.id %>"><%= layout.name %></option>
