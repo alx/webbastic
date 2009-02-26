@@ -1,4 +1,5 @@
 *.db
 log/
+public/uploads/*
 pkg/
-webby/
+webby/*

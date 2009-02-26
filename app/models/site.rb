@@ -9,7 +9,7 @@ class Webbastic::Site
   property :created_at, DateTime
   
   has n, :pages,    :class_name => Webbastic::Page
-  has n, :layouts,  :class_name => Webbastic::Layout, :through => :pages
+  has n, :layouts,  :class_name => Webbastic::Layout
   
   before :destroy, :unlink_site
   

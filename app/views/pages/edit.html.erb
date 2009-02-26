@@ -19,10 +19,8 @@
 			:type => :page,
 			:obj_id => @page.id %>
 
-<h2>Content</h2>
-
 <form action="<%= url(:webbastic_site_page, @page.site, @page) %>" method="post" accept-charset="utf-8">
-	
+
 	<label for="layout">Layout:</label><br/>
 	<select name="page[layout_id]" id="layout" size="1">
 		<% @page.site.layouts.each do |layout| %>
@@ -30,7 +28,8 @@
 		<% end %>
 	</select>
 	
-	<textarea name="page[content]" rows="8" cols="40" class="mceEditor"><%= @page.content %></textarea>
 	<input type="hidden" name="_method" value="put"/>
-	<p><input type="submit" value="Save &rarr;"></p>
+	<p><input type="submit" value="Set Layout"></p>
 </form>
+
+<h2>Widgets</h2>
