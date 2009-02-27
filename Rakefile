@@ -5,11 +5,11 @@ require 'merb-core'
 require 'merb-core/tasks/merb'
 
 GEM_NAME = "webbastic"
-AUTHOR = "Your Name"
-EMAIL = "Your Email"
-HOMEPAGE = "http://merbivore.com/"
-SUMMARY = "Merb Slice that provides ..."
-GEM_VERSION = "1.0.8.1"
+AUTHOR = "Alexandre Girard"
+EMAIL = "alx.girard@gmail.com"
+HOMEPAGE = "http://alexgirard.com/"
+SUMMARY = "Merb Slice that provides a simple cms"
+GEM_VERSION = "1.0.0"
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = 'merb'
