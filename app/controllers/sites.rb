@@ -40,10 +40,10 @@ class Webbastic::Sites < Webbastic::Application
   end
 
   # PUT /sites/:id
-  def update(id, site)
-    @site = Webbastic::Site.get(id)
+  def update
+    @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
-    if @site.update_attributes(site)
+    if @site.update_attributes(params[:site])
        redirect resource(@site)
     else
       display @site, :edit
