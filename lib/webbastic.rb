@@ -3,7 +3,7 @@ if defined?(Merb::Plugins)
   $:.unshift File.dirname(__FILE__)
 
   dependency 'merb-slices', :immediate => true
-  Merb::Plugins.add_rakefiles "webbastic/merbtasks", "webbastic/slicetasks", "webbastic/spectasks"
+  Merb::Plugins.add_rakefiles "webbastic/merbtasks", "webbastic/slicetasks"
 
   # Register the Slice for the current host application
   Merb::Slices::register(__FILE__)
