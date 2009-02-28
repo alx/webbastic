@@ -81,7 +81,7 @@ module Merb
                 {:href => slice_url(:library, site.id),:class => "button"}) <<
             tag(:a, 
                 self_closing_tag(:img, :src => webbastic_image_path("/icons/wrench_orange.png")) + "configuration",
-                {:href => slice_url(:edit_webbastic_site, site.id),:class => "button"})
+                {:href => url(:edit_webbastic_site, site.id),:class => "button"})
           end
         end
       end
