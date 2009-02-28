@@ -5,7 +5,6 @@ class Webbastic::Site
   property :name, String
   property :template, String
   property :path, String
-  property :destination, String
   property :created_at, DateTime
   
   property :content_dir, String

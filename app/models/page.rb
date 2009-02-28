@@ -38,7 +38,7 @@ class Webbastic::Page
     # Default header values
     generated_header = {'title' => self.name, 
                         'created_at' => Time.now}
-                        # 'destination' => self.site.destination || File.join(Merb.root, 'public', self.site.name)}
+                        
     # Child header values
     # generated_header
     update_attributes(:generated_header => YAML::dump(generated_header) + "---\n")
