@@ -2,16 +2,16 @@ class Webbastic::Site
   include DataMapper::Resource
 
   property :id, Serial
-  property :name, String
-  property :template, String
-  property :path, String
+  property :name, Text
+  property :template, Text
+  property :path, Text
   property :created_at, DateTime
   
-  property :content_dir, String
-  property :layout_dir, String
-  property :template_dir, String
-  property :output_dir, String
-  property :default_layout, String
+  property :content_dir, Text
+  property :layout_dir, Text
+  property :template_dir, Text
+  property :output_dir, Text
+  property :default_layout, Text
   
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
