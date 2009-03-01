@@ -28,7 +28,7 @@ class Webbastic::Site
       self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
       self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
       self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
-      self.default_layout = options[:default_layout]  || File.join(self.path, "layouts", "default")
+      self.default_layout = options[:default_layout]  || "default.txt"
       self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
       
       Webby::Apps::Generator.new.run [self.template, self.path]
@@ -43,11 +43,11 @@ class Webbastic::Site
     
     generate_pages
     
-    Webby.site.content_dir    = self.content_dir
-    Webby.site.layout_dir     = self.layout_dir
-    Webby.site.template_dir   = self.template_dir
-    Webby.site.output_dir     = self.output_dir
-    Webby.site.page_defaults  = {'layout' => self.default_layout,
+    Webby.site.content_dir    = Pathname.new(self.content_dir).relative_path_from(Pathname.new(Merb.root))
+    Webby.site.layout_dir     = Pathname.new(self.layout_dir).relative_path_from(Pathname.new(Merb.root))
+    Webby.site.template_dir   = Pathname.new(self.template_dir).relative_path_from(Pathname.new(Merb.root))
+    Webby.site.output_dir     = Pathname.new(self.output_dir).relative_path_from(Pathname.new(Merb.root))
+    Webby.site.page_defaults  = {'layout' => File.join(Webby.site.layout_dir, self.default_layout),
                                  'directory' => "."}
 
     Webby::Builder.run

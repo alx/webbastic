@@ -30,7 +30,7 @@ class Webbastic::Page
   end
   
   def path
-    File.join(self.site.path, "content", self.name << ".txt")
+    File.join(self.site.path, "content", self.name)
   end
   
   # Generate YAML header from current page eader and its children

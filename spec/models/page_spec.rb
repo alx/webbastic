@@ -17,7 +17,8 @@ describe Webbastic::Page do
     
     @page.write_page_file
     
-    path = File.join( File.dirname(__FILE__), '..', '..', 'webby', 'test', 'content', 'home' )
+    path = File.join( Merb.root, 'webby', 'test', 'content', 'home' )
+    @page.path.should == path
     File.exists?(path).should == true
   end
   
@@ -26,8 +27,10 @@ describe Webbastic::Page do
     @page.generate_header
     
     header = YAML.load(@page.generated_header)
-    header.size.should == 3
-    header[:title].should == "home"
+    
+    # default header: {'title' => self.name, 'created_at' => Time.now}
+    header.size.should == 2
+    header['title'].should == "home"
   end
   
   it "should have widgets"
