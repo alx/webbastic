@@ -22,14 +22,14 @@ class Webbastic::Site
     # Create webby layout for this site
     if options[:name]
       self.name = options[:name]
-      self.template = options[:template] || "website"
-      self.path = File.join(Merb.root, "webby", options[:name])
       
-      self.content_dir    = options[:content_dir]     || File.join("webby", self.name, "content")
-      self.layout_dir     = options[:layout_dir]      || File.join("webby", self.name, "layouts")
-      self.template_dir   = options[:template_dir]    || File.join("webby", self.name, "templates")
-      self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', self.name)
-      self.default_layout = options[:default_layout]  || File.join("webby", self.name, "layouts", "default")
+      self.template       = options[:template]        || "website"
+      self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
+      self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
+      self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
+      self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
+      self.default_layout = options[:default_layout]  || File.join(self.path, "layouts", "default")
+      self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
       
       Webby::Apps::Generator.new.run [self.template, self.path]
     end
@@ -73,5 +73,19 @@ class Webbastic::Site
       FileUtils.rm_rf self.path
     end
   end
+  
+  protected
+  
+    def sanitize_filename(filename)
+      returning filename.strip do |name|
+        # NOTE: File.basename doesn't work right with Windows paths on Unix
+        # get only the filename, not the whole path
+        name.gsub! /^.*(\\|\/)/, ''
+
+        # Finally, replace all non alphanumeric, underscore or periods with underscore
+        name.gsub! /[^\w\.\-]/, '_'
+      end
+    end
+  
   
 end
