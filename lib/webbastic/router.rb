@@ -13,11 +13,8 @@ module Webbastic
       end
 
       # Url to generate a site and view content of generated site
-      scope.match('/sites/:id/generate').to(:controller => 'sites', :action => 'generate').name(:generate_site)
-      scope.match('/sites/:id/generated').to(:controller => 'sites', :action => 'generated').name(:generated_site)
-      
-      scope.match('/sites/:site_id/layouts').to(:controller => 'layouts', :action => 'index').name(:site_layouts)
-      scope.match('/sites/:site_id/pages').to(:controller => 'pages', :action => 'index').name(:site_pages)
+      scope.match('/sites/:id/generate').to(:controller => 'sites', :action => 'generate').name(:site_generate)
+      scope.match('/sites/:id/generated').to(:controller => 'sites', :action => 'generated').name(:site_generated)
       
       scope.match('/sites/:id/medias').to(:controller => 'sites', :action => 'medias').name(:library)
       

@@ -12,16 +12,16 @@ module Webbastic
                   :id => "admin_menu_status") <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", 
-                  {:href => slice_url(:generated_site, site.id),:class => "button"}) <<
+                  {:href => url(:webbastic_site_generated, site.id),:class => "button"}) <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/photos.png")) + "layouts",
-                  {:href => slice_url(:site_layouts, site.id),:class => "button"}) <<
+                  {:href => url(:webbastic_site_layouts, site.id),:class => "button"}) <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/page.png")) + "pages",
-                  {:href => slice_url(:site_pages, site.id),:class => "button"}) <<
-              tag(:a, 
-                  self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library",
-                  {:href => slice_url(:library, site.id),:class => "button"}) <<
+                  {:href => url(:webbastic_site_pages, site.id),:class => "button"}) <<
+              # tag(:a, 
+              #     self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library",
+              #     {:href => url(:library, site.id),:class => "button"}) <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/wrench_orange.png")) + "configuration",
                   {:href => url(:edit_webbastic_site, site.id),:class => "button"})

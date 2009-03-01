@@ -10,8 +10,8 @@ Merb::Router.prepare do |scope|
   end
 
   # Url to generate a site and view content of generated site
-  scope.match('/sites/:id/generate').to(:controller => 'sites', :action => 'generate').name(:generate_site)
-  scope.match('/sites/:id/generated').to(:controller => 'sites', :action => 'generated').name(:generated_site)
+  scope.match('/sites/:id/generate').to(:controller => 'sites', :action => 'generate').name(:webbastic_generate_site)
+  scope.match('/sites/:id/generated').to(:controller => 'sites', :action => 'generated').name(:webbastic_generated_site)
   
   scope.match('/sites/:id/medias').to(:controller => 'sites', :action => 'medias').name(:library)
   
