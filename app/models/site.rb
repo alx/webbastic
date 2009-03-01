@@ -43,10 +43,10 @@ class Webbastic::Site
     
     generate_pages
     
-    Webby.site.content_dir    = Pathname.new(self.content_dir).relative_path_from(Pathname.new(Merb.root))
-    Webby.site.layout_dir     = Pathname.new(self.layout_dir).relative_path_from(Pathname.new(Merb.root))
-    Webby.site.template_dir   = Pathname.new(self.template_dir).relative_path_from(Pathname.new(Merb.root))
-    Webby.site.output_dir     = Pathname.new(self.output_dir).relative_path_from(Pathname.new(Merb.root))
+    Webby.site.content_dir    = relative_path(self.content_dir)
+    Webby.site.layout_dir     = relative_path(self.layout_dir)
+    Webby.site.template_dir   = relative_path(self.template_dir)
+    Webby.site.output_dir     = relative_path(self.output_dir)
     Webby.site.page_defaults  = {'layout' => File.join(Webby.site.layout_dir, self.default_layout),
                                  'directory' => "."}
 
@@ -85,6 +85,10 @@ class Webbastic::Site
         # Finally, replace all non alphanumeric, underscore or periods with underscore
         name.gsub! /[^\w\.\-]/, '_'
       end
+    end
+    
+    def relative_path(dir)
+      Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
     end
   
   
