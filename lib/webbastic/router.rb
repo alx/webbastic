@@ -3,11 +3,11 @@ module Webbastic
     
     def self.setup(scope)
       scope.identify DataMapper::Resource => :id do |s|
-        s.resources :sites,   "Webbastic::Sites" do |r|
-          r.resources :layouts, "Webbastic::Layouts"
-          r.resources :pages,   "Webbastic::Pages" do |p|
-            p.resources :widgets, "Webbastic::Widgets"
-            p.resources :layouts, "Webbastic::Layouts"
+        s.resources :sites, ::Webbastic::Sites do |r|
+          r.resources :layouts, ::Webbastic::Layouts
+          r.resources :pages,   ::Webbastic::Pages do |p|
+            p.resources :widgets, ::Webbastic::Widgets
+            p.resources :layouts, ::Webbastic::Layouts
           end
         end
       end

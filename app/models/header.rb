@@ -10,4 +10,5 @@ class Webbastic::Header
   
   belongs_to :page,   :class_name => Webbastic::Page
   belongs_to :layout, :class_name => Webbastic::Layout
+  belongs_to :widget, :class_name => Webbastic::Widget
 end

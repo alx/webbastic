@@ -24,6 +24,7 @@ class Webbastic::Pages < Webbastic::Application
   def edit
     only_provides :html
     @page = Webbastic::Page.get(params[:id])
+    @widgets = Webbastic::Helpers::Widgets.constants
     raise NotFound unless @page
     display @page
   end

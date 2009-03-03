@@ -1,0 +1,28 @@
+<h2>Headers</h2>
+
+<table id="header-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% @widget.headers.each do |header| -%>
+		<%= partial 'shared/header', :header => header, :type => :layout, :row_class => cycle("alternate", "") %>
+		<%- end %>
+	</tbody>
+</table>
+
+<%= partial 'shared/header_form', 
+			:action => url(:webbastic_page_widget, @widget.page.id, @widget.id),
+			:type => :widget,
+			:obj_id => @widget.id %>
+
+<h2>Content</h2>
+
+<form action="<%= url(:webbastic_page_widget, @widget.page.id, @widget.id) %>" method="post" accept-charset="utf-8">
+	<textarea name="widget[content]" rows="8" cols="40" class="mceEditor"><%= @widget.content %></textarea>
+	<input type="hidden" name="_method" value="put"/>
+	<p><input type="submit" value="Save &rarr;"></p>
+</form>

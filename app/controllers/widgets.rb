@@ -30,9 +30,9 @@ class Webbastic::Widgets < Webbastic::Application
 
   # POST /widgets
   def create
-    @widget = Webbastic::Widget.new(params[:widget])
+    @widget = Kernel.qualified_const_get(params[:widget_name]).new(:page_id => params[:page_id])
     if @widget.save
-      redirect url(:webbastic_page, @widget.page.id)
+      redirect url(:webbastic_site_page, params[:site_id], params[:page_id])
     else
       message[:error] = "Widget failed to be created"
       render :new
