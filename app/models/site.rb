@@ -51,6 +51,8 @@ class Webbastic::Site
                                  'directory' => "."}
 
     Webby::Builder.run
+    
+    return true
   end
   
   def generate_pages

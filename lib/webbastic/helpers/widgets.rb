@@ -36,7 +36,7 @@ module Webbastic
         end
 
         def widget_content
-          gallery_id = self.headers.first(:key => 'gallery_id').value
+          gallery_id = self.headers.first(:name => 'gallery_id').content
           gallery = ::MediaRocket::Gallery.first(:id => gallery_id)
           medias = gallery.medias.select{|media| media.original?}
 

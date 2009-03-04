@@ -44,7 +44,7 @@ class Webbastic::Sites < Webbastic::Application
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
     if @site.update_attributes(params[:site])
-       redirect resource(@site)
+       redirect url(:webbastic_site, @site)
     else
       display @site, :edit
     end

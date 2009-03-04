@@ -30,7 +30,7 @@ class Webbastic::Page
   end
   
   def path
-    File.join(self.site.path, "content", self.name)
+    File.join(self.site.content_dir, self.name)
   end
   
   # Generate YAML header from current page eader and its children
@@ -39,16 +39,20 @@ class Webbastic::Page
     generated_header = {'title' => self.name, 
                         'created_at' => Time.now}
                         
-    # Child header values
-    # generated_header
+    self.headers.each do |header|
+      generated_header[header.name] = header.content
+    end
+    
     update_attributes(:generated_header => YAML::dump(generated_header) + "---\n")
   end
   
   def generate_content
     generated_content = ""
+    
     self.widgets.each do |widget|
       generated_content += (widget.content || "")
     end
+    
     update_attributes(:generated_content => generated_content)
   end
   

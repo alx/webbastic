@@ -17,7 +17,8 @@ module Webbastic
           tag :div, :id => "admin_menu" do
             tag :div, :id => "admin_menu_buttons" do
               tag(:div, 
-                  "Current site: <b>#{site.name}</b><br><span class='#{site.status}'>#{site.status}</span>", 
+                  "Current site: <b>#{site.name}</b><br>
+                  <span class='#{site.status}'><a href='#{url(:webbastic_site_generate, site.id)}'>generate</a></span>", 
                   :id => "admin_menu_status") <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", 
