@@ -20,9 +20,9 @@ class Webbastic::Widget
   end
   
   def default_headers
-    self.widget_headers.each do |key, value|
-      ::Webbastic::Header.create :key => key,
-                                 :value => value,
+    self.widget_headers.each do |name, content|
+      ::Webbastic::Header.create :name => name,
+                                 :content => content,
                                  :widget_id => self.id
     end
   end

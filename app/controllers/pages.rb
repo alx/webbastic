@@ -10,7 +10,7 @@ class Webbastic::Pages < Webbastic::Application
   def show
     @page = Webbastic::Page.get(params[:id])
     raise NotFound unless @page
-    display @page
+    display @page, :edit
   end
 
   # GET /pages/new

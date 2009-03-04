@@ -2,8 +2,8 @@ class Webbastic::Header
   include DataMapper::Resource
 
   property :id, Serial
-  property :key, String
-  property :value, Text
+  property :name, String
+  property :content, Text
   property :created_at, DateTime
   
   is :tree, :order => name

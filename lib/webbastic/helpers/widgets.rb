@@ -5,9 +5,9 @@ module Webbastic
       class HeaderWidget < Webbastic::Widget
         
         def initialize(options)
-          super
           self.name = "Header Widget"
           self.page_id = options[:page_id]
+          super
         end
         
         def widget_headers

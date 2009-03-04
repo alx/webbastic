@@ -40,10 +40,10 @@ class Webbastic::Widgets < Webbastic::Application
   end
 
   # PUT /widgets/:id
-  def update(id, page)
-    @widget = Webbastic::Widget.get(id)
+  def update
+    @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
-    if @widget.update_attributes(page)
+    if @widget.update_attributes(params[:widget])
        redirect resource(@widget)
     else
       display @widget, :edit
