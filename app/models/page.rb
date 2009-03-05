@@ -16,44 +16,130 @@ class Webbastic::Page
   has n, :widgets,  :class_name => Webbastic::Widget
   has 1, :layout,   :class_name => Webbastic::Layout
   
+  # =====
+  #
+  # Page generation
+  #
+  # =====
+  
+  def write_page_file
+    self.generate
+    # Write generated page to static file
+    File.open self.path, "w+" do |f|
+      f.write(self.generated_header)
+      f.write(self.generated_content)
+    end # File.open
+  end
+  
   def generate
     generate_header
     generate_content
   end
   
-  def write_page_file
-    # Write generated page to static file
-    File.open self.path, "w+" do |f|
-      f.write(generated_header)
-      f.write(generated_content)
-    end # File.open
+  # Generate YAML header from current page eader and its children
+  def generate_header
+    
+    
+    self.reload
+    self.headers.reload
+    
+    # Default header values
+    yaml_headers = {'title' => self.name, 
+                    'created_at' => Time.now,
+                    'extension' => 'html',
+                    'filter' => 'erb',
+                    'layout' => self.layout_path}
+                        
+    self.headers.each do |header|
+      yaml_headers[header.name] = header.content
+    end
+    
+    update_attributes(:generated_header => YAML::dump(yaml_headers) + "---\n")
+    Merb.logger.info "generated_header: #{self.generated_header}"
   end
+  
+  def generate_content
+    
+    self.reload
+    self.widgets.reload
+    
+    content = ""
+    
+    Merb.logger.info "widgets: #{self.widgets.size} - #{self.widgets.class}"
+    self.widgets.each do |widget|
+      Merb.logger.info "generate_content with widget: #{widget.name} - #{widget.class} - #{widget.created_at}"
+      content += (widget.content || "")
+    end
+    
+    update_attributes(:generated_content => content)
+    Merb.logger.info "generate_content: #{self.generated_content}"
+  end
+  
+  # =====
+  #
+  # Headers
+  #
+  # =====
+  
+  def add_header(name, content)
+    if header = self.headers.first(:name => name)
+      header.update_attributes(:content => content)
+    else
+      Webbastic::Header.create :name => name,
+                               :content => content,
+                               :page_id => self.id
+    end
+  end
+  
+  def header_content(header_name)
+    if header = self.headers.first(:name => header_name)
+      return header.content
+    end
+  end
+  
+  # =====
+  #
+  # Widgets
+  #
+  # =====
+  
+  def add_static_content(content)
+    self.static_widget.update_attributes :content => content
+  end
+  
+  # return a static widget linked to this page
+  def static_widget
+    
+    # look for existing static widget
+    self.widgets.each do |widget| 
+      return widget if widget.name == "Static Widget"
+    end
+    
+    # create widget if non-existent
+    self.add_widget Webbastic::Helpers::Widgets::StaticWidget.new(:page_id => self.id)
+  end
+  
+  def add_widget(widget)
+    widget.save
+    self.widgets << widget
+    widget
+  end
+  
+  # =====
+  #
+  # Misc
+  #
+  # =====
   
   def path
     File.join(self.site.content_dir, self.name)
   end
   
-  # Generate YAML header from current page eader and its children
-  def generate_header
-    # Default header values
-    generated_header = {'title' => self.name, 
-                        'created_at' => Time.now}
-                        
-    self.headers.each do |header|
-      generated_header[header.name] = header.content
-    end
-    
-    update_attributes(:generated_header => YAML::dump(generated_header) + "---\n")
+  def layout_path
+    File.join(relative_path(self.site.layout_dir), self.layout.name)
   end
   
-  def generate_content
-    generated_content = ""
-    
-    self.widgets.each do |widget|
-      generated_content += (widget.content || "")
-    end
-    
-    update_attributes(:generated_content => generated_content)
+  def relative_path(dir)
+    Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
   end
-  
 end

@@ -38,4 +38,10 @@ class Webbastic::Widget
   def widget_content
     ""
   end
+  
+  def header_content(header_name)
+    if header = self.headers.first(:name => header_name)
+      return header.content
+    end
+  end
 end

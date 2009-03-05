@@ -2,6 +2,17 @@ module Webbastic
   module Helpers
     module Widgets
       
+      # Store static content in this widget
+      class StaticWidget < Webbastic::Widget
+        
+        def initialize(options)
+          self.name = "Static Widget"
+          self.page_id = options[:page_id]
+          super
+        end
+        
+      end
+      
       class HeaderWidget < Webbastic::Widget
         
         def initialize(options)

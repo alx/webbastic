@@ -33,6 +33,13 @@ describe Webbastic::Page do
     header['title'].should == "home"
   end
   
-  it "should have widgets"
-
+  it "should have a static widget" do
+    @page = Webbastic::Page.new :name => "test"
+    @page.add_static_content "pop"
+    
+    @page.widgets.size.should == 1
+    @page.widgets.first.content.should == "pop"
+    
+    @page.static_widget.content.should == "pop"
+  end
 end

@@ -28,6 +28,15 @@ class Webbastic::Pages < Webbastic::Application
     raise NotFound unless @page
     display @page
   end
+  
+  # GET /static_pages/:id/edit
+  def static
+    only_provides :html
+    @page = Webbastic::Page.get(params[:id])
+    @widgets = Webbastic::Helpers::Widgets.constants
+    raise NotFound unless @page
+    display @page
+  end
 
   # POST /pages
   def create
@@ -42,13 +51,30 @@ class Webbastic::Pages < Webbastic::Application
 
   # PUT /pages/:id
   def update
-    @layout = Webbastic::Page.get(params[:id])
+    @page = Webbastic::Page.get(params[:id])
     raise NotFound unless @page
+
+    # Update layout
+    if params[:layout_id]
+      Webbastic::Layout.first(:id => params[:layout_id]).update_attributes(:page_id => @page.id)
+    end
     
-    Webbastic::Header.create(params[:header]) if params[:header]
-    @page.update_attributes(params[:page]) if params[:page]
+    # Update widgets
+    if params[:page_type] == "static"
+      @page.add_static_content params[:page][:content]
+      display @page, :static
+    else
+      @page.update_attributes(params[:page]) if params[:page]
+    end
     
-    display @layout, :edit
+    # Update headers
+    if params[:page] && params[:page][:headers]
+      params[:page][:headers].each do |name, content|
+        @page.add_header name, content
+      end
+    end
+    
+    display @page, :edit
   end
 
   # DELETE /pages/:id

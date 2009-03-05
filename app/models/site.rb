@@ -41,6 +41,7 @@ class Webbastic::Site
   #
   def generate
     
+    generate_layouts
     generate_pages
     
     Webby.site.content_dir    = relative_path(self.content_dir)
@@ -50,14 +51,26 @@ class Webbastic::Site
     Webby.site.page_defaults  = {'layout' => File.join(Webby.site.layout_dir, self.default_layout),
                                  'directory' => "."}
 
-    Webby::Builder.run
-    
+    # TDB: :rebuild => false
+    # A content file can mark itself as dirty by setting the +dirty+ flag to
+    # +true+ in the meta-data of the file. This will cause the contenet to
+    # always be compiled when the builder is run. Conversely, setting the
+    # dirty flag to +false+ will cause the content to never be compiled or
+    # copied to the output folder.
+    Webby::Builder.run :rebuild => true, :verbose => true
     return true
+  end
+
+  def generate_layouts
+    self.layouts.each do |layout|
+      Merb.logger.info "==== Write layout: #{layout.name}"
+      layout.write_file
+    end
   end
   
   def generate_pages
     self.pages.each do |page|
-      page.generate
+      Merb.logger.info "==== Write page: #{page.name}"
       page.write_page_file
     end
   end

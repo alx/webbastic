@@ -10,7 +10,7 @@ class Webbastic::Sites < Webbastic::Application
   def show
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
-    redirect slice_url(:site_pages, @site.id)
+    redirect slice_url(:site_pages, @site)
   end
 
   # GET /sites/new
@@ -76,7 +76,7 @@ class Webbastic::Sites < Webbastic::Application
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
     if @site.generate
-      redirect url(:generated_site, @site.id)
+      redirect url(:webbastic_site, @site)
     else
       raise InternalServerError
     end
