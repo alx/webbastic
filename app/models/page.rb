@@ -136,7 +136,8 @@ class Webbastic::Page
   end
   
   def layout_path
-    File.join(relative_path(self.site.layout_dir), self.layout.name)
+    layout = self.layout || self.site.default_layout
+    File.join(relative_path(self.site.layout_dir), layout)
   end
   
   def relative_path(dir)

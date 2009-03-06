@@ -11,7 +11,7 @@ class Webbastic::Site
   property :layout_dir,     Text, :default => ""
   property :template_dir,   Text, :default => ""
   property :output_dir,     Text, :default => ""
-  property :default_layout, Text, :default => "default"
+  property :default_layout, Text, :default => "default.txt"
   
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
