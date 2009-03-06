@@ -4,14 +4,14 @@ class Webbastic::Site
   property :id, Serial
   property :name, Text
   property :template, Text
-  property :path, Text
+  property :path, Text, :default => ""
   property :created_at, DateTime
   
-  property :content_dir, Text
-  property :layout_dir, Text
-  property :template_dir, Text
-  property :output_dir, Text
-  property :default_layout, Text
+  property :content_dir,    Text, :default => ""
+  property :layout_dir,     Text, :default => ""
+  property :template_dir,   Text, :default => ""
+  property :output_dir,     Text, :default => ""
+  property :default_layout, Text, :default => "default"
   
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
