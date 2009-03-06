@@ -11,7 +11,7 @@ module Webbastic
           if Merb.const_defined? :MediaRocket
             media_rocket = tag(:a, 
                                self_closing_tag(:img, :src => webbastic_image_path("/icons/package.png")) + "library",
-                               {:href => url(:media_rocket_index),:class => "button"})
+                               {:href => "/admin/medias",:class => "button"})
           end
           
           tag :div, :id => "admin_menu" do
