@@ -22,7 +22,7 @@ module Webbastic
                   :id => "admin_menu_status") <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/world.png")) + "site", 
-                  {:href => url(:webbastic_site_generated, site.id),:class => "button"}) <<
+                  {:href => "/",:class => "button"}) <<
               tag(:a, 
                   self_closing_tag(:img, :src => webbastic_image_path("/icons/photos.png")) + "layouts",
                   {:href => url(:webbastic_site_layouts, site.id),:class => "button"}) <<
