@@ -11,7 +11,7 @@ class Webbastic::Site
   property :layout_dir,     Text, :default => ""
   property :template_dir,   Text, :default => ""
   property :output_dir,     Text, :default => ""
-  property :default_layout, Text, :default => "default.txt"
+  property :default_layout, Text, :default => "default"
   
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
@@ -28,7 +28,7 @@ class Webbastic::Site
       self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
       self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
       self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
-      self.default_layout = options[:default_layout]  || "default.txt"
+      self.default_layout = options[:default_layout]  || self.default_layout + ".txt"
       self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
       
       Webby::Apps::Generator.new.run [self.template, self.path]
