@@ -77,8 +77,7 @@ class Webbastic::Pages < Webbastic::Application
     display @page, :edit
   end
 
-  # DELETE /pages/:id
-  def destroy
+  def delete
     @page = Webbastic::Page.get(params[:id])
     raise NotFound unless @page
     if @page.destroy
