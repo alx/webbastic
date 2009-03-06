@@ -81,7 +81,7 @@ class Webbastic::Pages < Webbastic::Application
     @page = Webbastic::Page.get(params[:id])
     raise NotFound unless @page
     if @page.destroy
-      redirect resource(:pages)
+      render :index
     else
       raise InternalServerError
     end
