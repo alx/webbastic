@@ -22,7 +22,7 @@
 <h2>Content</h2>
 
 <form action="<%= url(:webbastic_site_page_widget, @widget.page.site.id, @widget.page.id, @widget.id) %>" method="post" accept-charset="utf-8">
-	<textarea name="widget[content]" rows="8" cols="40" class="mceEditor"><%= @widget.content %></textarea>
+	<textarea name="widget[content]" rows="20" cols="100" class="mceEditor"><%= @widget.content %></textarea>
 	<input type="hidden" name="_method" value="put"/>
 	<p><input type="submit" value="Save &rarr;"></p>
 </form>

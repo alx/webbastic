@@ -22,7 +22,7 @@
 <h2>Content</h2>
 
 <form action="<%= url(:webbastic_site_layout, @layout.site.id, @layout.id) %>" method="post" accept-charset="utf-8">
-	<textarea name="layout[content]" rows="8" cols="40"><%= @layout.content %></textarea>
+	<textarea name="layout[content]" rows="20" cols="100"><%= @layout.content %></textarea>
 	<input type="hidden" name="_method" value="put"/>
 	<p><input type="submit" value="Save &rarr;"></p>
 </form>
