@@ -37,7 +37,7 @@ $(document).ready(function() {
 		$("#webbastic_list #thumbs a").remove();
 		
 		// Fetch new medias from media_rocket using JSON
-		url = "/medias/sites/1/galleries/" . gallery_id . "?format=json";
+		url = "/medias/sites/1/galleries/" + gallery_id + "?format=json";
 		console.log(url);
 		$.getJSON(url,
 			function(data){
@@ -60,7 +60,7 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$("#media_gallery_select").change(funtion() {
+	$("#media_gallery_select").change(function() {
 		// call method to load media_thumb_list
 		// with selected gallery
 		load_media_thumb_list($("#webbastic_list option:selected").val());
@@ -71,7 +71,7 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$(".media_gallery_select").onLoad(funtion() {
+	$(".media_gallery_select").onLoad(function() {
 		load_media_thumb_list(1);
 	});
 	
