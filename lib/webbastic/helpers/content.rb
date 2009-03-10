@@ -4,7 +4,8 @@ module Webbastic
       
       # Construct admin menu to be placed on top of edited site
       def admin_menu(site_id)
-        if site = ::Webbastic::Site.first(:id => site_id)
+        
+        if site = ::Webbastic::Site.first_or_create(:id => site_id)
           
           # add media_rocket tab if possible
           media_rocket = ""
