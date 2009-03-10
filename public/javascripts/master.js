@@ -37,7 +37,9 @@ $(document).ready(function() {
 		$("#webbastic_list #thumbs a").remove();
 		
 		// Fetch new medias from media_rocket using JSON
-		$.getJSON("/medias/sites/1/galleries/" . gallery_id . "?format=json",
+		url = "/medias/sites/1/galleries/" . gallery_id . "?format=json";
+		console.log(url);
+		$.getJSON(url,
 			function(data){
 				$.each(data.items, function(i,item){
 					$("<img/>").attr("src", item.media.thumbnail)
