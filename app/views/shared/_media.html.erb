@@ -1,3 +1,9 @@
-<% if Merb.const_defined? :MediaRocket -%>
-	<%= media_gallery_organize %>
+<% 
+# Watch the ajax method to load media_thumb_list in master.js
+if Merb.const_defined? :MediaRocket -%>
+
+	<%= media_gallery_select :media_gallery_select_id => "webbastic_list" %>
+	
+	<div id="media_thumb_list"></div>
+	
 <%- end %>
