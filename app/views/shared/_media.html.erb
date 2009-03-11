@@ -4,6 +4,9 @@ if Merb.const_defined? :MediaRocket -%>
 
 	<%= media_gallery_select :media_gallery_select_id => "webbastic_list" %>
 	
-	<div id="media_thumb_list"></div>
+	<div id="webbastic_list">
+		<div id="spinner"><img src="<%= webbastic_image_path 'icons/grey_spinner.gif' %>" width="32px" height="32px"/></div>
+		<div id="thumbs"></div>
+	</div>
 	
 <%- end %>

@@ -37,13 +37,12 @@ $(document).ready(function() {
 		$("#webbastic_list #thumbs a").remove();
 		
 		// Fetch new medias from media_rocket using JSON
-		url = "/medias/sites/1/galleries/" + gallery_id + "?format=json";
-		console.log(url);
-		$.getJSON(url,
+		$.getJSON("/library/galleries/" + gallery_id + "/medias/index.json",
 			function(data){
-				$.each(data.items, function(i,item){
-					$("<img/>").attr("src", item.media.thumbnail)
-						.appendTo($("<a>").attr("class", "media_thumb"))
+				$.each(data.medias, function(i,media){
+					$("<img/>").attr("src", media.url)
+						.appendTo($("<a>").attr("class", "media_thumb")
+										  .attr("alt", media.title))
 						.appendTo("#webbastic_list #thumbs");
 					if ( i == 6 ) $("<br/>").appendTo("#webbastic_list #thumbs");
 				});
@@ -71,7 +70,7 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$(".media_gallery_select").onLoad(function() {
+	$(".media_gallery_select").ready(function() {
 		load_media_thumb_list(1);
 	});
 	
