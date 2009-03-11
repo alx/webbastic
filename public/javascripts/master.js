@@ -34,17 +34,18 @@ $(document).ready(function() {
 		$("#webbastic_list #spinner").show();
 		
 		// Remove existing thumbs
-		$("#webbastic_list #thumbs a").remove();
+		$("#webbastic_list #thumbs a.media_thumb").remove();
 		
 		// Fetch new medias from media_rocket using JSON
 		$.getJSON("/library/galleries/" + gallery_id + "/medias/index.json",
 			function(data){
 				$.each(data.medias, function(i,media){
-					$("<img/>").attr("src", media.url)
-						.appendTo($("<a>").attr("class", "media_thumb")
-										  .attr("alt", media.title))
-						.appendTo("#webbastic_list #thumbs");
-					if ( i == 6 ) $("<br/>").appendTo("#webbastic_list #thumbs");
+					$("#webbastic_list #thumbs").append(
+						"<a class='media_thumb' rel='" + media.url + "'>" +
+						"<img src='" + media.icon + "' title='" + media.title + "'/>" +
+						"</a>"
+					);
+					if ( i == 6 ) $("#webbastic_list #thumbs").append("<br/>");
 				});
 			}
 		);
