@@ -17,7 +17,8 @@ class Webbastic::Pages < Webbastic::Application
   def new
     only_provides :html
     @page = Webbastic::Page.new
-    display @page
+    #display @page
+    render :static
   end
   
   # GET /pages/:id/edit
