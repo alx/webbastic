@@ -71,14 +71,25 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$(".media_gallery_select").ready(function() {
+	$("#media_gallery_select").ready(function() {
 		load_media_thumb_list(1);
 	});
 	
+	
 	//
-	// User click on a thumbnail to be displayed in editor
+	// Initialize wymeditor
 	//
-	$(".media_thumb").click(function() {
-		$(".mceEditor").append(this.$("img").rel)
-	});
+	$('.editor').wymeditor({
+    
+        postInit: function(wym) {
+	
+			//
+			// User click on a thumbnail to be displayed in editor
+			//
+			$('a.media_thumb').livequery('click', function(event) { 
+				wym.insert("<img src='" + this.rel + "'/>");
+				return false; 
+			});
+        }
+    });
 });

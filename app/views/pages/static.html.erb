@@ -1,6 +1,6 @@
 <form action="<%= url(:webbastic_site_page, @page.site, @page) %>" method="post" accept-charset="utf-8">
 
-	<p><textarea name="page[content]" rows="20" cols="100" class="mceEditor"><%= @page.static_widget.content %></textarea></p>
+	<p><textarea name="page[content]" rows="20" cols="100" class="editor"><%= @page.static_widget.content %></textarea></p>
 	
 	<p><label for="format_url">Format URL</label>
 	<input type="text" name="page[headers][format_url]" value="<%= @page.header_content :format_url %>" id="format_url"></p>
