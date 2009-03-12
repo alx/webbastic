@@ -31,9 +31,17 @@ class Webbastic::Site
       self.default_layout = options[:default_layout]  || self.default_layout + ".txt"
       self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
       
+      # Create default page and layout
+      create_defaults
+      
       Webby::Apps::Generator.new.run [self.template, self.path]
     end
     
+  end
+  
+  def create_defaults
+    Webbastic::Page.create(:name => :index, :site_id => self.id)
+    Webbastic::Layout.create(:name => self.default_layout, :site_id => self.id)
   end
   
   #
