@@ -1,20 +1,6 @@
-<h2>Headers</h2>
+<%= partial 'shared/headers', :webby_headers => @page.headers, :type => :page %>
 
-<table id="header-table">
-	<thead>
-		<tr>
-			<th class="left">Name</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody id="the-list" class="list:header">
-		<% @page.headers.each do |header| -%>
-		<%= partial 'shared/header', :header => header, :type => :page, :row_class => cycle("alternate", "") %>
-		<%- end %>
-	</tbody>
-</table>
-
-<%= partial 'shared/header_form', 
+<%= partial 'shared/headers/form', 
 			:action => url(:webbastic_site_page, @page.site, @page),
 			:type => :page,
 			:obj_id => @page.id %>
