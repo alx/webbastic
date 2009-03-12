@@ -32,8 +32,6 @@ class Webbastic::Layout
   
   # Generate YAML header from current page eader and its children
   def generate_header
-    
-    
     self.reload
     self.headers.reload
     

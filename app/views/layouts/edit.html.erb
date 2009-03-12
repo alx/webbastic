@@ -1,24 +1,10 @@
-<h2>Headers</h2>
+<%= partial 'shared/headers', :webby_headers => @layout.headers, :type => :layout %>
 
-<table id="header-table">
-	<thead>
-		<tr>
-			<th class="left">Name</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody id="the-list" class="list:header">
-		<% @layout.headers.each do |header| -%>
-		<%= partial 'shared/header', :header => header, :type => :layout, :row_class => cycle("alternate", "") %>
-		<%- end %>
-	</tbody>
-</table>
-
-<%= partial 'shared/header_form', 
+<%= partial 'shared/headers/form', 
 			:action => url(:webbastic_site_layout, @layout.site.id, @layout.id),
 			:type => :layout,
 			:obj_id => @layout.id %>
-
+			
 <h2>Content</h2>
 
 <form action="<%= url(:webbastic_site_layout, @layout.site.id, @layout.id) %>" method="post" accept-charset="utf-8">
