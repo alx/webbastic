@@ -9,6 +9,11 @@
     <script src="<%= webbastic_javascript_path 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
     <script src="<%= webbastic_javascript_path 'jquery/jquery.livequery.js' %>" type="text/javascript" charset="utf-8"></script>
  	<script src="<%= webbastic_javascript_path 'wymeditor/jquery.wymeditor.js' %>" type="text/javascript" charset="utf-8"></script>
+
+	<% if Merb.const_defined? :MediaRocket -%>
+    <script src="<%= webbastic_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+	<%- end %>
+
     <script src="<%= webbastic_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
   </head>
   <!-- you can override this layout at slices/webbastic/app/views/layout/webbastic.html.erb -->
