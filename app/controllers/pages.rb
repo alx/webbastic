@@ -57,6 +57,7 @@ class Webbastic::Pages < Webbastic::Application
 
     # Update layout
     if params[:layout_id]
+      Merb.logger.info "Update layout: #{params[:layout_id]}"
       Webbastic::Layout.first(:id => params[:layout_id]).update_attributes(:page_id => @page.id)
     end
     

@@ -20,7 +20,7 @@
   <body class="webbastic-slice">
   <div id="container">
 	
-	<%= admin_menu(params[:site_id] || @site.id) if params[:site_id]  || @site.id %>
+	<%= admin_menu %>
 	
     <div id="main"><%= catch_content :for_layout %></div>
   </div>

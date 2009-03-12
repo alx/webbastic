@@ -12,8 +12,8 @@ class Webbastic::Layout
   property :generated_content, Text, :default => ""
   
   belongs_to :site, :class_name => Webbastic::Site
-  belongs_to :page, :class_name => Webbastic::Page
   
+  has n, :pages, :class_name => Webbastic::Page
   has n, :headers, :class_name => Webbastic::Header
   
   def path
@@ -24,6 +24,7 @@ class Webbastic::Layout
   def write_file
     self.generate_header
     # Write generated page to static file
+    File.unlink self.path
     File.open self.path, "w+" do |f|
       f.write(self.generated_header)
       f.write(self.content)

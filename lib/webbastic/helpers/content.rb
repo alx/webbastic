@@ -5,15 +5,8 @@ module Webbastic
       #
       # Construct admin menu to be placed on top of edited site
       #
-      def admin_menu(site_id)
-        
-        # Create new site with Merb.root name if current site_id not found
-        unless site = ::Webbastic::Site.first(:id => site_id)
-          # TODO: replace Merb.root[/\/(.[^\/]*)$/,1] by something more elegant
-          site = ::Webbastic::Site.create(:id => site_id, :name => Merb.root[/\/(.[^\/]*)$/,1])
-        end
-        
-        admin_layout(site)
+      def admin_menu(site_id = 1)
+        admin_layout(::Webbastic::Site.first_or_create(:id => site_id))
       end
       
       #

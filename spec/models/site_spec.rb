@@ -17,13 +17,24 @@ describe Webbastic::Site do
     @site.destroy
   end
   
+  it "should be named as Merb root folder name if option name not specified" do
+    @site = Webbastic::Site.new
+    @site.name.should == "webbastic"
+  end
+  
+  it "should be named with :name option" do
+    @site = Webbastic::Site.new :name => "test"
+    @site.name.should == "test"
+  end
+  
   it "should save site in database" do
     @site = Webbastic::Site.new :name => "test"
     
     @site.save
+    site_id = @site.id
     
     # Verify attributes
-    @saved = Webbastic::Site.first
+    @saved = Webbastic::Site.first :id => site_id
     
     @saved.should_not be(nil)
     @saved.path.should_not be(nil)
@@ -55,13 +66,26 @@ describe Webbastic::Site do
   
   it "should generate website" do
     @site = Webbastic::Site.create :name => "test"
-    @page = Webbastic::Page.create :name => "home", :site_id => @site.id
-    @widget = Webbastic::Widget.create :name => "home", :content => Time.now, :page_id => @page.id
+    @page = @site.pages.build :name => "home"
+    @widget = @page.widgets.build :name => "home", :content => Time.now
     
     @site.generate
     
     path = File.join( File.dirname(__FILE__), '..', '..', "public", 'test', 'home.html' )
     File.exists?(path).should == true
+    
+    @site.destroy
+  end
+  
+  it "shoud have a default page and layout" do
+    @site = Webbastic::Site.create :name => "test"
+    
+    @site.pages.size.should == 1
+    @site.layouts.size.should == 1
+    
+    layout = @site.default_layout
+    layout.kind_of?(Webbastic::Layout).should be(true)
+    layout.site.id.should == @site.id
     
     @site.destroy
   end

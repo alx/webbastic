@@ -10,11 +10,11 @@ class Webbastic::Page
   property :generated_header, Text, :default => ""
   property :generated_content, Text, :default => ""
   
-  belongs_to :site, :class_name => Webbastic::Site
+  belongs_to :site,   :class_name => Webbastic::Site
+  belongs_to :layout, :class_name => Webbastic::Layout
   
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
-  has 1, :layout,   :class_name => Webbastic::Layout
   
   # =====
   #
@@ -25,7 +25,8 @@ class Webbastic::Page
   def write_page_file
     self.generate
     # Write generated page to static file
-    File.open self.path, "w+" do |f|
+    File.unlink self.path
+    File.open self.path, "r+" do |f|
       f.write(self.generated_header)
       f.write(self.generated_content)
     end # File.open
@@ -132,15 +133,13 @@ class Webbastic::Page
   # =====
   
   def path
-    File.join(self.site.content_dir, self.name)
+    File.join(self.site.content_dir, self.name + ".txt")
   end
   
   def layout_path
-    layout = self.layout.name || self.site.default_layout
-    File.join(relative_path(self.site.layout_dir), layout + ".txt")
-  end
-  
-  def relative_path(dir)
-    Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
+    Merb.logger.info "self.layout: #{self.layout}"
+      Merb.logger.info "site.layout: #{self.site.default_layout.name}"
+    layout = self.layout || self.site.default_layout
+    layout.path
   end
 end

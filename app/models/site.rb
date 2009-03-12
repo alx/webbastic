@@ -11,37 +11,36 @@ class Webbastic::Site
   property :layout_dir,     Text, :default => ""
   property :template_dir,   Text, :default => ""
   property :output_dir,     Text, :default => ""
-  property :default_layout, Text, :default => "default"
   
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
   
+  after :save, :create_defaults
+  
   before :destroy, :unlink_site
   
   def initialize(options = {})
-    # Create webby layout for this site
-    if options[:name]
-      self.name = options[:name]
-      
-      self.template       = options[:template]        || "website"
-      self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
-      self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
-      self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
-      self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
-      self.default_layout = options[:default_layout]  || self.default_layout + ".txt"
-      self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
-      
-      # Create default page and layout
-      create_defaults
-      
-      Webby::Apps::Generator.new.run [self.template, self.path]
-    end
     
+    self.name           = options[:name]            || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
+    self.template       = options[:template]        || "website"
+    self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
+    self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
+    self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
+    self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
+    self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
+    
+    # Generate webby app with this site parameters
+    Webby::Apps::Generator.new.run [self.template, self.path]
   end
   
+  # Create default page and layout after site has been saved
   def create_defaults
-    Webbastic::Page.create(:name => :index, :site_id => self.id) if self.pages.size == 0
-    Webbastic::Layout.create(:name => self.default_layout, :site_id => self.id) if self.layouts.size == 0
+    self.pages.create   :name => "index"
+    self.layouts.create :name => "default"
+  end
+  
+  def default_layout
+    self.layouts.first
   end
   
   #
@@ -56,7 +55,7 @@ class Webbastic::Site
     Webby.site.layout_dir     = relative_path(self.layout_dir)
     Webby.site.template_dir   = relative_path(self.template_dir)
     Webby.site.output_dir     = relative_path(self.output_dir)
-    Webby.site.page_defaults  = {'layout' => File.join(Webby.site.layout_dir, self.default_layout),
+    Webby.site.page_defaults  = {'layout' => File.join(self.default_layout.path),
                                  'directory' => "."}
 
     # TDB: :rebuild => false
