@@ -1,0 +1,17 @@
+<form action="<%= url(:webbastic_site_page, @page.site, @page) %>" method="post" accept-charset="utf-8">
+
+	<p><textarea name="page[content]" rows="20" cols="100" class="editor"><%= @page.static_widget.content %></textarea></p>
+	
+	<p><label for="format_url">Format URL</label>
+	<input type="text" name="page[headers][format_url]" value="<%= @page.header_content :format_url %>" id="format_url"></p>
+	
+	<p><label for="meta_description">Meta Description</label>
+	<input type="text" name="page[headers][meta_description]" value="<%= @page.header_content :meta_description %>" id="meta_description"></p>
+	
+	
+	<input type="hidden" name="_method" value="put"/>
+	<input type="hidden" name="page_type" value="static"/>
+	<p><input type="submit" value="Update page"></p>
+</form>
+
+<%= partial 'shared/media' %>
