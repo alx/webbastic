@@ -44,7 +44,7 @@ class Webbastic::Widgets < Webbastic::Application
     @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
     if @widget.update_attributes(params[:widget])
-       redirect resource(@widget)
+       display @widget, :show
     else
       display @widget, :edit
     end
