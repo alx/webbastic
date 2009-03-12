@@ -40,8 +40,8 @@ class Webbastic::Site
   end
   
   def create_defaults
-    Webbastic::Page.create(:name => :index, :site_id => self.id)
-    Webbastic::Layout.create(:name => self.default_layout, :site_id => self.id)
+    Webbastic::Page.create(:name => :index, :site_id => self.id) if self.pages.size == 0
+    Webbastic::Layout.create(:name => self.default_layout, :site_id => self.id) if self.layouts.size == 0
   end
   
   #
