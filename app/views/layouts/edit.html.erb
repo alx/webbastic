@@ -1,6 +1,6 @@
-<%= partial 'shared/headers', :webby_headers => @layout.headers, :type => :layout %>
+<%= partial 'headers/list', :webby_headers => @layout.headers, :type => :layout %>
 
-<%= partial 'shared/headers/form', 
+<%= partial 'headers/form', 
 			:action => url(:webbastic_site_layout, @layout.site.id, @layout.id),
 			:type => :layout,
 			:obj_id => @layout.id %>
