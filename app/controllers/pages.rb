@@ -81,9 +81,10 @@ class Webbastic::Pages < Webbastic::Application
 
   def delete
     @page = Webbastic::Page.get(params[:id])
+    site = @page.site
     raise NotFound unless @page
     if @page.destroy
-      render :index
+      redirect url(:webbastic_site_pages, site)
     else
       raise InternalServerError
     end

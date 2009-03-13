@@ -15,7 +15,7 @@ class Webbastic::Site
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
   
-  after :save, :create_defaults
+  after :create, :create_defaults
   
   before :destroy, :unlink_site
   
@@ -37,8 +37,8 @@ class Webbastic::Site
   
   # Create default page and layout after site has been saved
   def create_defaults
-    self.layouts.create :name => "default"
-    self.pages.create   :name => "index"
+    self.layouts.create :name => "default"  if self.layouts.size == 0
+    self.pages.create   :name => "index"    if self.pages.size == 0
   end
   
   def default_layout
