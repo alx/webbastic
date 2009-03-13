@@ -75,7 +75,9 @@ class Webbastic::Sites < Webbastic::Application
   def generate
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
-    if @site.generate
+    
+    # Webby builder return nil if sucess
+    if @site.generate.nil?
       redirect url(:webbastic_site, @site)
     else
       raise InternalServerError

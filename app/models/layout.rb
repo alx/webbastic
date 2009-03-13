@@ -47,7 +47,6 @@ class Webbastic::Layout
     end
     
     update_attributes(:generated_header => YAML::dump(yaml_headers) + "---\n")
-    Merb.logger.info "generated_header: #{self.generated_header}"
   end
   
   def header_content(header_name)
