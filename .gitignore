@@ -22,5 +22,10 @@ src/*
 gems/gems/*
 gems/specifications/*
 merb_profile_results
-public/uploads/*
 *_override.*
+public/uploads/*
+public/*
+!public/uploads
+!public/javascripts
+!public/stylesheets
+!public/images
