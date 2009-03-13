@@ -14,6 +14,4 @@ Merb::Router.prepare do |scope|
   scope.match('/sites/:id/generated').to(:controller => 'sites', :action => 'generated').name(:webbastic_generated_site)
   
   scope.match('/sites/:id/medias').to(:controller => 'sites', :action => 'medias').name(:library)
-  
-  scope.match('/').to(:controller => 'sites', :action => 'index').name(:home)
 end

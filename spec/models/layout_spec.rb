@@ -19,7 +19,7 @@ describe Webbastic::Layout do
 
     default_layout = @site.layouts.first
     @page1.layout.id.should == default_layout.id
-    @page2.layout.id.should == default_layout.id
+    @page2  .layout.id.should == default_layout.id
     @page1.layout.id.should == @page2.layout.id
     
     @site.destroy
