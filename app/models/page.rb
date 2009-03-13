@@ -16,6 +16,11 @@ class Webbastic::Page
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
   
+  def initialize(options = {})
+    super
+    self.layout = self.site.default_layout
+  end
+  
   # =====
   #
   # Page generation
@@ -25,8 +30,8 @@ class Webbastic::Page
   def write_page_file
     self.generate
     # Write generated page to static file
-    File.unlink self.path
-    File.open self.path, "r+" do |f|
+    File.unlink self.path if File.exists? self.path
+    File.open self.path, "w" do |f|
       f.write(self.generated_header)
       f.write(self.generated_content)
     end # File.open
@@ -49,7 +54,7 @@ class Webbastic::Page
                     'created_at' => Time.now,
                     'extension' => 'html',
                     'filter' => 'erb',
-                    'layout' => self.layout_path}
+                    'layout' => self.current_layout.name}
                         
     self.headers.each do |header|
       yaml_headers[header.name] = header.content
@@ -136,10 +141,7 @@ class Webbastic::Page
     File.join(self.site.content_dir, self.name + ".txt")
   end
   
-  def layout_path
-    Merb.logger.info "self.layout: #{self.layout}"
-      Merb.logger.info "site.layout: #{self.site.default_layout.name}"
-    layout = self.layout || self.site.default_layout
-    layout.path
+  def current_layout
+    self.layout || self.site.default_layout
   end
 end
