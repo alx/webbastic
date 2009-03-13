@@ -20,17 +20,18 @@ describe Webbastic::Site do
   it "should be named as Merb root folder name if option name not specified" do
     @site = Webbastic::Site.new
     @site.name.should == "webbastic"
+    @site.destroy
   end
   
   it "should be named with :name option" do
     @site = Webbastic::Site.new :name => "test"
     @site.name.should == "test"
+    @site.destroy
   end
   
   it "should save site in database" do
-    @site = Webbastic::Site.new :name => "test"
+    @site = Webbastic::Site.create :name => "test"
     
-    @site.save
     site_id = @site.id
     
     # Verify attributes
@@ -55,19 +56,21 @@ describe Webbastic::Site do
   end
   
   it "should contains pages" do
-    @site = Webbastic::Site.new :name => "test"
-    @site.pages << Webbastic::Page.new(:name => "home")
+    @site = Webbastic::Site.create :name => "test"
     
     @site.pages.size.should == 1
-    @site.pages.first.name.should == "home"
+    @site.pages.first.name.should == "index"
+    
+    @site.pages.create :name => "home"
+    @site.pages.size.should == 2
     
     @site.destroy
   end
   
   it "should generate website" do
     @site = Webbastic::Site.create :name => "test"
-    @page = @site.pages.build :name => "home"
-    @widget = @page.widgets.build :name => "home", :content => Time.now
+    @page = @site.pages.create :name => "home"
+    @widget = @page.widgets.create :name => "home", :content => Time.now
     
     @site.generate
     

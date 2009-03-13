@@ -35,8 +35,8 @@ class Webbastic::Site
   
   # Create default page and layout after site has been saved
   def create_defaults
-    self.pages.create   :name => "index"
     self.layouts.create :name => "default"
+    self.pages.create   :name => "index"
   end
   
   def default_layout
