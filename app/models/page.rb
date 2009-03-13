@@ -54,14 +54,13 @@ class Webbastic::Page
                     'created_at' => Time.now,
                     'extension' => 'html',
                     'filter' => 'erb',
-                    'layout' => self.current_layout.name}
+                    'layout' => relative_path(self.current_layout.path)}
                         
     self.headers.each do |header|
       yaml_headers[header.name] = header.content
     end
     
     update_attributes(:generated_header => YAML::dump(yaml_headers) + "---\n")
-    Merb.logger.info "generated_header: #{self.generated_header}"
   end
   
   def generate_content
@@ -71,14 +70,11 @@ class Webbastic::Page
     
     content = ""
     
-    Merb.logger.info "widgets: #{self.widgets.size} - #{self.widgets.class}"
     self.widgets.each do |widget|
-      Merb.logger.info "generate_content with widget: #{widget.name} - #{widget.class} - #{widget.created_at}"
       content += (widget.content || "")
     end
     
     update_attributes(:generated_content => content)
-    Merb.logger.info "generate_content: #{self.generated_content}"
   end
   
   # =====
@@ -143,5 +139,9 @@ class Webbastic::Page
   
   def current_layout
     self.layout || self.site.default_layout
+  end
+  
+  def relative_path(dir)
+    Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
   end
 end

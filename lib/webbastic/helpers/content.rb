@@ -6,13 +6,11 @@ module Webbastic
       # Construct admin menu to be placed on top of edited site
       #
       def admin_menu(site_id = 1)
-        admin_layout(::Webbastic::Site.first_or_create(:id => site_id))
-      end
-      
-      #
-      # Build admin menu
-      #
-      def admin_layout(site)
+        
+        unless site = ::Webbastic::Site.first(:id => site_id)
+          site = ::Webbastic::Site.create(:id => site_id)
+        end
+        
         tag :div, :id => "admin_menu" do
           tag :div, :id => "admin_menu_buttons" do
             admin_status(site) <<

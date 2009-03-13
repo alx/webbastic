@@ -50,12 +50,12 @@ class Webbastic::Layouts < Webbastic::Application
     display @layout, :edit
   end
 
-  # DELETE /layouts/:id
-  def destroy
+  def delete
     @layout = Webbastic::Layout.get(params[:id])
     raise NotFound unless @layout
+    site = @layout.site
     if @layout.destroy
-      redirect resource(:layouts)
+      redirect url(:webbastic_site_layouts, site)
     else
       raise InternalServerError
     end

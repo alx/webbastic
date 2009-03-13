@@ -15,13 +15,14 @@ class Webbastic::Site
   has n, :pages,    :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
   
-  after :save, :create_defaults
+  after :create, :create_defaults
   
   before :destroy, :unlink_site
   
   def initialize(options = {})
     
     self.name           = options[:name]            || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
+    
     self.template       = options[:template]        || "website"
     self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
     self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
@@ -35,8 +36,8 @@ class Webbastic::Site
   
   # Create default page and layout after site has been saved
   def create_defaults
-    self.layouts.create :name => "default"
-    self.pages.create   :name => "index"
+    self.layouts.create :name => "default"  if self.layouts.size == 0
+    self.pages.create   :name => "index"    if self.pages.size == 0
   end
   
   def default_layout
@@ -55,7 +56,7 @@ class Webbastic::Site
     Webby.site.layout_dir     = relative_path(self.layout_dir)
     Webby.site.template_dir   = relative_path(self.template_dir)
     Webby.site.output_dir     = relative_path(self.output_dir)
-    Webby.site.page_defaults  = {'layout' => File.join(self.default_layout.path),
+    Webby.site.page_defaults  = {'layout' => self.default_layout.path,
                                  'directory' => "."}
 
     # TDB: :rebuild => false
@@ -64,20 +65,19 @@ class Webbastic::Site
     # always be compiled when the builder is run. Conversely, setting the
     # dirty flag to +false+ will cause the content to never be compiled or
     # copied to the output folder.
-    Webby::Builder.run :rebuild => true, :verbose => true
-    return true
+    #
+    # returns nil if success 
+    Webby::Builder.run(:rebuild => true, :verbose => true)
   end
 
   def generate_layouts
     self.layouts.each do |layout|
-      Merb.logger.info "==== Write layout: #{layout.name}"
       layout.write_file
     end
   end
   
   def generate_pages
     self.pages.each do |page|
-      Merb.logger.info "==== Write page: #{page.name}"
       page.write_page_file
     end
   end
@@ -112,6 +112,5 @@ class Webbastic::Site
     def relative_path(dir)
       Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
     end
-  
   
 end

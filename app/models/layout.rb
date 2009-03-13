@@ -26,13 +26,9 @@ class Webbastic::Layout
     # Write generated page to static file
     if(File.exist?(File.dirname(self.path)))
       File.unlink self.path if File.exists? self.path
-      Merb.logger.info "self.path: #{self.path}"
-      Merb.logger.info "self.path exist?: #{File.exists? self.path}"
-      Merb.logger.info "dirname: #{File.dirname(self.path)}"
-      Merb.logger.info "dirname exist?: #{File.exists? File.dirname(self.path)}"
       File.open self.path, "w" do |f|
         f.write(self.generated_header)
-        f.write(self.generated_content)
+        f.write(self.content)
       end # File.open
     end
   end
@@ -51,7 +47,6 @@ class Webbastic::Layout
     end
     
     update_attributes(:generated_header => YAML::dump(yaml_headers) + "---\n")
-    Merb.logger.info "generated_header: #{self.generated_header}"
   end
   
   def header_content(header_name)
