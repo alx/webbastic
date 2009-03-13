@@ -82,8 +82,4 @@ class Webbastic::Sites < Webbastic::Application
     end
   end
   
-  def generated
-    render ""
-  end
-  
 end
