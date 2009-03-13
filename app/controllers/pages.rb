@@ -81,8 +81,8 @@ class Webbastic::Pages < Webbastic::Application
 
   def delete
     @page = Webbastic::Page.get(params[:id])
-    site = @page.site
     raise NotFound unless @page
+    site = @page.site
     if @page.destroy
       redirect url(:webbastic_site_pages, site)
     else
