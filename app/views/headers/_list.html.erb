@@ -1,0 +1,17 @@
+<h2>Headers</h2>
+
+<table id="header-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% webby_headers.each do |header| -%>
+		<%= partial 'headers/content', :header => header, 
+						  			   :type => type, 
+									   :row_class => cycle("alternate", "") %>
+		<%- end %>
+	</tbody>
+</table>
