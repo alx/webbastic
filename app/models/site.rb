@@ -20,8 +20,10 @@ class Webbastic::Site
   before :destroy, :unlink_site
   
   def initialize(options = {})
-    
+    Merb.logger.info "initialize site: #{options[:id]}"
     self.name           = options[:name]            || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
+    
+      Merb.logger.info "site name: #{self.name}"
     self.template       = options[:template]        || "website"
     self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
     self.content_dir    = options[:content_dir]     || File.join(self.path, "content")

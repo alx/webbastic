@@ -13,7 +13,7 @@
 	<input type="text" name="site[output_dir]" value="<%= @site.output_dir %>" id="output_dir"></p>
 	
 	<p><label for="default_layout">Default Layout</label><br>
-	<input type="text" name="site[default_layout]" value="<%= @site.default_layout %>" id="default_layout"></p>
+	<input type="text" name="site[default_layout]" value="<%= @site.default_layout.name %>" id="default_layout"></p>
 	
 	<input type="hidden" name="_method" value="put"/>
 	<p><input type="submit" value="Update Configuration"></p>
