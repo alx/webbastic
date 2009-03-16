@@ -14,7 +14,7 @@ class Webbastic::Site
   
   def initialize(options = {})
     
-    self.name = options[:name] || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
+    self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) # TODO: elegant regexp for Merb.root folder
     
     # Generate webby app with this site parameters
     # use --force to rewrite website (avoid console prompt on overwrite)
@@ -82,13 +82,13 @@ class Webbastic::Site
   # =====
   
   def relative_path
-    File.join("webby", sanitize_filename(self.name))
+    File.join("webby", self.name)
   end
   
   def absolute_path
     if File.symlink? Merb.root
       # Symlink is used in Capistrano, go fetch webby content in shared dir
-      File.join(Merb.root, "..", "shared", self.relative_path)
+      File.join(Merb.root, "..", "..", "shared", self.relative_path)
     else
       File.join(Merb.root, self.relative_path)
     end
