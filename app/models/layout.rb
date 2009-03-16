@@ -16,21 +16,38 @@ class Webbastic::Layout
   has n, :pages, :class_name => Webbastic::Page
   has n, :headers, :class_name => Webbastic::Header
   
-  def path
+  # =====
+  #
+  # File Path
+  #
+  # =====
+  
+  def relative_path
     File.join(self.site.layout_dir, self.name + ".txt")
+  end
+  
+  def absolute_path
+    File.join(self.site.layout_dir(:absolute => true), self.name + ".txt")
   end
   
   # Write generated page to static file
   def write_file
-    self.generate_header
-    # Write generated page to static file
-    if(File.exist?(File.dirname(self.path)))
-      File.unlink self.path if File.exists? self.path
-      File.open self.path, "w" do |f|
-        f.write(self.generated_header)
-        f.write(self.content)
-      end # File.open
+    self.generate
+    File.delete self.absolute_path if File.exists? self.absolute_path
+    File.open(self.absolute_path, 'w+') do |f| 
+      f.write(self.generated_header)
+      f.write(self.content)
     end
+  end
+  
+  # =====
+  #
+  # Header and content generation
+  #
+  # =====
+  
+  def generate
+    self.generate_header
   end
   
   # Generate YAML header from current page eader and its children

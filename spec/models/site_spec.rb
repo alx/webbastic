@@ -5,14 +5,28 @@ describe Webbastic::Site do
   it "should create a new webby directory" do
     @site = Webbastic::Site.new :name => "test"
     
-    # Verify attributes
-    @site.should_not be(nil)
-    @site.path.should_not be(nil)
-    @site.template.should == "website"
-    
     # Verify site has been created
     path = File.join( File.dirname(__FILE__), '..', '..', "webby", 'test' )
     File.exists?(path).should == true
+    
+    @site.destroy
+  end
+  
+  it "should have correct path" do
+    @site = Webbastic::Site.new :name => "test"
+    
+    # Verify relative path
+    @site.relative_path.should  == "webby/test"
+    @site.content_dir.should    == "webby/test/content"
+    @site.layout_dir.should     == "webby/test/layouts"
+    @site.template_dir.should   == "webby/test/templates"
+    
+    # Verify absolute path
+    absolute_path = Merb.root
+    @site.absolute_path.should  == File.join(absolute_path, "webby/test")
+    @site.content_dir(:absolute => true).should    == File.join(absolute_path, "webby/test/content")
+    @site.layout_dir(:absolute => true).should     == File.join(absolute_path, "webby/test/layouts")
+    @site.template_dir(:absolute => true).should   == File.join(absolute_path, "webby/test/templates")
     
     @site.destroy
   end
@@ -38,9 +52,7 @@ describe Webbastic::Site do
     @saved = Webbastic::Site.first :id => site_id
     
     @saved.should_not be(nil)
-    @saved.path.should_not be(nil)
     @saved.name.should == "test"
-    @saved.template.should == "website"
     
     @site.destroy
   end
@@ -74,7 +86,7 @@ describe Webbastic::Site do
     
     @site.generate
     
-    path = File.join( File.dirname(__FILE__), '..', '..', "public", 'test', 'home.html' )
+    path = File.join( File.dirname(__FILE__), '..', '..', "public", 'home.html' )
     File.exists?(path).should == true
     
     @site.destroy

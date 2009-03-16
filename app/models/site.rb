@@ -3,16 +3,9 @@ class Webbastic::Site
 
   property :id, Serial
   property :name, Text
-  property :template, Text
-  property :path, Text, :default => ""
   property :created_at, DateTime
   
-  property :content_dir,    Text, :default => ""
-  property :layout_dir,     Text, :default => ""
-  property :template_dir,   Text, :default => ""
-  property :output_dir,     Text, :default => ""
-  
-  has n, :pages,    :class_name => Webbastic::Page
+  has n, :pages,  :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
   
   after :create, :create_defaults
@@ -21,23 +14,20 @@ class Webbastic::Site
   
   def initialize(options = {})
     
-    self.name           = options[:name]            || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
-    
-    self.template       = options[:template]        || "website"
-    self.path           = options[:path]            || File.join(Merb.root, "webby", sanitize_filename(self.name))
-    self.content_dir    = options[:content_dir]     || File.join(self.path, "content")
-    self.layout_dir     = options[:layout_dir]      || File.join(self.path, "layouts")
-    self.template_dir   = options[:template_dir]    || File.join(self.path, "templates")
-    self.output_dir     = options[:output_dir]      || File.join(Merb.root, 'public', sanitize_filename(self.name))
+    self.name = options[:name] || Merb.root[/\/(.[^\/]*)$/,1] # TODO: elegant regexp for Merb.root folder
     
     # Generate webby app with this site parameters
-    Webby::Apps::Generator.new.run [self.template, self.path]
+    # use --force to rewrite website (avoid console prompt on overwrite)
+    Webby::Apps::Generator.new.run ["--force", "website", File.join("webby", sanitize_filename(self.name))]
   end
   
   # Create default page and layout after site has been saved
   def create_defaults
-    self.layouts.create :name => "default"  if self.layouts.size == 0
-    self.pages.create   :name => "index"    if self.pages.size == 0
+    @layout = self.layouts.create :name => "default"
+    self.layouts.reload
+    
+    @page = self.pages.create :name => "index"
+    @page.layout = @layout
   end
   
   def default_layout
@@ -49,15 +39,18 @@ class Webbastic::Site
   #
   def generate
     
-    generate_layouts
-    generate_pages
+    self.layouts.each {|layout| layout.write_file}
+    self.pages.each {|page| page.write_file}
     
-    Webby.site.content_dir    = relative_path(self.content_dir)
-    Webby.site.layout_dir     = relative_path(self.layout_dir)
-    Webby.site.template_dir   = relative_path(self.template_dir)
-    Webby.site.output_dir     = relative_path(self.output_dir)
-    Webby.site.page_defaults  = {'layout' => self.default_layout.path,
-                                 'directory' => "."}
+    Webby.site.content_dir    = self.content_dir
+    Webby.site.layout_dir     = self.layout_dir
+    Webby.site.template_dir   = self.template_dir
+    Webby.site.output_dir     = File.join(Merb.root, 'public')
+    
+    # Use directory => '.' option to generate the site in output_dir
+    Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
+                                 'directory' => '.',
+                                 'collision' => :force}
 
     # TDB: :rebuild => false
     # A content file can mark itself as dirty by setting the +dirty+ flag to
@@ -67,19 +60,7 @@ class Webbastic::Site
     # copied to the output folder.
     #
     # returns nil if success 
-    Webby::Builder.run(:rebuild => true, :verbose => true)
-  end
-
-  def generate_layouts
-    self.layouts.each do |layout|
-      layout.write_file
-    end
-  end
-  
-  def generate_pages
-    self.pages.each do |page|
-      page.write_page_file
-    end
+    Webby::Builder.run(:rebuild => true)
   end
   
   def status
@@ -91,9 +72,40 @@ class Webbastic::Site
   # be sure to delete the webby folder that's been created on initialization
   #
   def unlink_site
-    if self.path and File.exists?(self.path)
-      FileUtils.rm_rf self.path
-    end
+    FileUtils.rm_rf(self.absolute_path) if File.exists?(self.absolute_path)
+  end
+  
+  # =====
+  #
+  # Site path
+  #
+  # =====
+  
+  def relative_path
+    File.join("webby", sanitize_filename(self.name))
+  end
+  
+  def absolute_path
+    File.join(Merb.root, self.relative_path)
+  end
+  
+  def content_dir(options = {})
+    options[:dir] = "content"
+    build_webby_path(options)
+  end
+  
+  def layout_dir(options = {})
+    options[:dir] = "layouts"
+    build_webby_path(options)
+  end
+  
+  def template_dir(options = {})
+    options[:dir] = "templates"
+    build_webby_path(options)
+  end
+  
+  def build_webby_path(options = {})
+    File.join(options[:absolute] ? self.absolute_path : self.relative_path, options[:dir]) unless options[:dir].nil?
   end
   
   protected
@@ -109,8 +121,4 @@ class Webbastic::Site
       end
     end
     
-    def relative_path(dir)
-      Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
-    end
-  
 end

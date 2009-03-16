@@ -12,13 +12,12 @@ describe Webbastic::Page do
     @site = Webbastic::Site.new :name => "test"
     @site.save
     
-    @page = Webbastic::Page.new :name => "home", :site_id => @site.id
-    @page.save
+    @page = @site.pages.create :name => "home"
     
-    @page.write_page_file
+    @page.write_file
     
-    path = File.join( Merb.root, 'webby', 'test', 'content', 'home' )
-    @page.path.should == path
+    path = File.join( @site.content_dir(:absolute => true), 'home.txt' )
+    @page.absolute_path.should == path
     File.exists?(path).should == true
   end
   
@@ -28,8 +27,12 @@ describe Webbastic::Page do
     
     header = YAML.load(@page.generated_header)
     
-    # default header: {'title' => self.name, 'created_at' => Time.now}
-    header.size.should == 2
+    # default header: {'title' => self.name,
+    #                 'created_at' => Time.now, 
+    #                 'extension' => 'html',
+    #                 'filter' => 'erb',
+    #                 'layout' => layout}
+    header.size.should == 5
     header['title'].should == "home"
   end
   

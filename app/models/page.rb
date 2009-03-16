@@ -10,15 +10,35 @@ class Webbastic::Page
   property :generated_header, Text, :default => ""
   property :generated_content, Text, :default => ""
   
-  belongs_to :site,   :class_name => Webbastic::Site
-  belongs_to :layout, :class_name => Webbastic::Layout
+  belongs_to :site,         :class_name => Webbastic::Site
+  belongs_to :layout,       :class_name => Webbastic::Layout
   
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
   
-  def initialize(options = {})
-    super
-    self.layout = self.site.default_layout
+  # =====
+  #
+  # File Path
+  #
+  # =====
+  
+  def relative_path
+    File.join(self.site.content_dir, self.name + ".txt")
+  end
+  
+  def absolute_path
+    File.join(self.site.content_dir(:absolute => true), self.name + ".txt")
+  end
+  
+  # Write generated page to static file
+  def write_file
+    self.generate
+    # Write generated page to static file
+    File.delete self.absolute_path if File.exists? self.absolute_path
+    File.open(self.absolute_path, 'w+') do |f| 
+      f.write(self.generated_header)
+      f.write(self.generated_content)
+    end
   end
   
   # =====
@@ -26,16 +46,6 @@ class Webbastic::Page
   # Page generation
   #
   # =====
-  
-  def write_page_file
-    self.generate
-    # Write generated page to static file
-    File.unlink self.path if File.exists? self.path
-    File.open self.path, "w" do |f|
-      f.write(self.generated_header)
-      f.write(self.generated_content)
-    end # File.open
-  end
   
   def generate
     generate_header
@@ -45,16 +55,17 @@ class Webbastic::Page
   # Generate YAML header from current page eader and its children
   def generate_header
     
-    
     self.reload
     self.headers.reload
+    
+    layout = self.current_layout.relative_path unless self.current_layout.nil?
     
     # Default header values
     yaml_headers = {'title' => self.name, 
                     'created_at' => Time.now,
                     'extension' => 'html',
                     'filter' => 'erb',
-                    'layout' => relative_path(self.current_layout.path)}
+                    'layout' => layout}
                         
     self.headers.each do |header|
       yaml_headers[header.name] = header.content
@@ -129,19 +140,11 @@ class Webbastic::Page
   
   # =====
   #
-  # Misc
+  # Layout
   #
   # =====
   
-  def path
-    File.join(self.site.content_dir, self.name + ".txt")
-  end
-  
   def current_layout
-    self.layout || self.site.default_layout
-  end
-  
-  def relative_path(dir)
-    Pathname.new(dir).relative_path_from(Pathname.new(Merb.root))
+    self.layout || (self.site.default_layout unless self.site.nil?)
   end
 end
