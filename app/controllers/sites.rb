@@ -84,4 +84,18 @@ class Webbastic::Sites < Webbastic::Application
     end
   end
   
+  # GET /sites/:id/content
+  def content
+    if params[:dir] && !params[:dir].empty?
+      folder_id = params[:dir].split("/")[1]
+      content = Webbastic::ContentDir.first(:id  => folder_id)
+      @content = {:folders => content.children, :pages => content.pages}
+    else
+      @site = Webbastic::Site.get(params[:id])
+      raise NotFound unless @site
+      @content = {:folders => @site.folders, :pages => @site.pages}
+    end
+    display @content, :layout => false
+  end
+  
 end

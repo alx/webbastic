@@ -1,0 +1,9 @@
+<ul class="jqueryFileTree" style="display: none;">
+	<% @content[:folders].each do |folder| -%>
+	<li class="directory collapsed"><a href="#" rel="folder/<%= folder.id %>/"><%= folder.name %></a></li>
+	<%- end %>
+	
+	<% @content[:pages].each do |page| -%>
+	<li class="file ext_txt"><a href="#" rel="page/<%= page.id %>/"><%= page.name %></a></li>
+	<%- end  %>
+</ul>

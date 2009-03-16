@@ -17,6 +17,8 @@
 </table>
 <%- end %>
 
+<div id="file_tree"></div>
+
 <%= form :action => url(:webbastic_site_pages) do %>
 	<input class="clear" type="text" name="page[name]" value="Type Page Name"/>
 	<input type="hidden" name="page[site_id]" value="<%= params[:site_id] %>"/>

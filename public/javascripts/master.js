@@ -20,4 +20,14 @@ $(document).ready(function() {
 	
 	$(".clear").clear_value();
 	
+	// =====
+	//
+	// File Tree
+	//
+	// ===== 
+	
+	$('#file_tree').fileTree({ root: '', script: 'content' }, function(file) {
+		alert(file);
+	});
+	
 });

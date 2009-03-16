@@ -15,6 +15,7 @@ module Webbastic
 
       # Url to generate a site
       scope.match('/sites/:id/generate').to(:controller => 'sites', :action => 'generate').name(:site_generate)
+      scope.match('/sites/:id/content').to(:controller => 'sites', :action => 'content').name(:site_filetree)
       
       scope.match('/sites/:id/medias').to(:controller => 'sites', :action => 'medias').name(:library)
       

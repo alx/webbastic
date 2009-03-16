@@ -4,16 +4,18 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Fresh Webbastic Slice</title>
     <link href="<%= webbastic_stylesheet_path 'master.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
-
+	<link href="<%= webbastic_stylesheet_path 'jquery.filetree.css' %>" type="text/css" charset="utf-8" rel="stylesheet" media="all" />
+	
 	<script src="<%= webbastic_javascript_path 'jquery/jquery.js' %>" type="text/javascript" charset="utf-8"></script>
     <script src="<%= webbastic_javascript_path 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
     <script src="<%= webbastic_javascript_path 'jquery/jquery.livequery.js' %>" type="text/javascript" charset="utf-8"></script>
  	<script src="<%= webbastic_javascript_path 'wymeditor/jquery.wymeditor.js' %>" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= webbastic_javascript_path 'jquery/jquery.filetree.js' %>" type="text/javascript" charset="utf-8"></script>
 
 	<% if Merb.const_defined? :MediaRocket -%>
-    <script src="<%= webbastic_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= webbastic_javascript_path 'media_rocket.js' %>" type="text/javascript" charset="utf-8"></script>
 	<%- end %>
-
+	
     <script src="<%= webbastic_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
   </head>
   <!-- you can override this layout at slices/webbastic/app/views/layout/webbastic.html.erb -->

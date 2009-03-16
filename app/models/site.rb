@@ -7,6 +7,7 @@ class Webbastic::Site
   
   has n, :pages,  :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
+  has n, :folders,  :class_name => Webbastic::ContentDir
   
   after :create, :create_defaults
   
@@ -23,11 +24,30 @@ class Webbastic::Site
   
   # Create default page and layout after site has been saved
   def create_defaults
-    @layout = self.layouts.create :name => "default"
-    self.layouts.reload
-    
-    @page = self.pages.create :name => "index"
-    @page.layout = @layout
+    import_content(self.layout_dir(:absolute => true))
+    import_content(self.content_dir(:absolute => true))
+  end
+  
+  def import_content(directory, parent_folder = nil)
+    Merb.logger.info "=== import_content: #{directory}"
+    Dir.new(directory).each do |path|
+      next if path.match(/^\.+/)
+      Merb.logger.info "=== path:  #{path}"
+      if FileTest.directory?(File.join(directory, path))
+        if parent_folder
+          @folder = parent_folder.children.create :name => path
+        else
+          @folder = self.folders.create :name => path
+        end
+        import_content(File.join(directory, path), @folder)
+      else
+        if parent_folder
+          parent_folder.pages.create :name => path
+        else
+          self.pages.create :name => path
+        end
+      end
+    end
   end
   
   def default_layout

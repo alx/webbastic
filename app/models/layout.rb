@@ -22,12 +22,12 @@ class Webbastic::Layout
   #
   # =====
   
-  def relative_path
-    File.join(self.site.layout_dir, self.name + ".txt")
+  def relative_path(options = {})
+    File.join(self.site.layout_dir(options), self.name)
   end
   
   def absolute_path
-    File.join(self.site.layout_dir(:absolute => true), self.name + ".txt")
+    relative_path(:absolute => true)
   end
   
   # Write generated page to static file
