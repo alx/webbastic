@@ -4,6 +4,6 @@
 	<%- end %>
 	
 	<% @content[:pages].each do |page| -%>
-	<li class="file ext_txt"><a href="#" rel="page/<%= page.id %>/"><%= page.name %></a></li>
+	<li class="file ext_txt"><a href="/sites/1/static_pages/<%= page.id %>/edit"><%= page.name %></a></li>
 	<%- end  %>
 </ul>

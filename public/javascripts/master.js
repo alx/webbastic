@@ -26,8 +26,6 @@ $(document).ready(function() {
 	//
 	// ===== 
 	
-	$('#file_tree').fileTree({ root: '', script: 'content' }, function(file) {
-		alert(file);
-	});
+	$('#file_tree').fileTree({ root: '', script: 'content' });
 	
 });
