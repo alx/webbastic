@@ -1,1 +1,12 @@
-<%= partial "widgets/static" %>
+<h1>Edit</h1>
+
+<%= partial "widgets/static", :widget => @page.static_widget %>
+
+<h1>Configure</h1>
+
+<%= partial 'headers/list', :webby_headers => @page.headers, :type => :page %>
+
+<%= partial 'headers/form', 
+			:action => url(:webbastic_site_page, @page.site, @page),
+			:type => :page,
+			:obj_id => @page.id %>

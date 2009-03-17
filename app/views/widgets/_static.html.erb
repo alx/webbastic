@@ -1,9 +1,9 @@
-<form action="<%= url(:webbastic_widget, @page.static_widget.id) %>" method="post" accept-charset="utf-8">
+<form action="<%= url(:webbastic_widget, widget.id) %>" method="post" accept-charset="utf-8">
 
 	<p><textarea name="widget[content]" rows="20" cols="100" class="editor"></textarea></p>	
 	
 	<input type="hidden" name="_method" value="put"/>
-	<p><input type="submit" value="Update page" class="wymupdate"></p>
+	<p><input type="submit" value="Update Content" class="wymupdate"></p>
 </form>
 
 <%= partial 'shared/media' %>
@@ -11,7 +11,7 @@
 <script type="text/javascript">
 jQuery('.editor').wymeditor({
     
-        html: '<%= @page.static_widget.content %>'
+        html: '<%= widget.content %>'
     
     });
 </script>

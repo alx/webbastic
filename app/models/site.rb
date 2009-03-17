@@ -13,13 +13,22 @@ class Webbastic::Site
   
   before :destroy, :unlink_site
   
+  # =====
+  #
+  # Site creation
+  #
+  # =====
+  
   def initialize(options = {})
     
-    self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) # TODO: elegant regexp for Merb.root folder
+    # TODO: elegant regexp for Merb.root folder
+    self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) 
     
     # Generate webby app with this site parameters
     # use --force to rewrite website (avoid console prompt on overwrite)
-    Webby::Apps::Generator.new.run ["--force", "website", File.join("webby", sanitize_filename(self.name))]
+    Webby::Apps::Generator.new.run ["--force",                      # options
+                                    "website",                      # template
+                                    File.join("webby", self.name)]  # path
   end
   
   # Create default page and layout after site has been saved
@@ -28,11 +37,12 @@ class Webbastic::Site
     import_content(self.content_dir(:absolute => true))
   end
   
+  # Follow directory path and import its files into DB
   def import_content(directory, parent_folder = nil)
-    Merb.logger.info "=== import_content: #{directory}"
     Dir.new(directory).each do |path|
       next if path.match(/^\.+/)
-      Merb.logger.info "=== path:  #{path}"
+      
+      # Create a new Webbastic::ContentDir object for every folders
       if FileTest.directory?(File.join(directory, path))
         if parent_folder
           @folder = parent_folder.children.create :name => path
@@ -40,19 +50,30 @@ class Webbastic::Site
           @folder = self.folders.create :name => path
         end
         import_content(File.join(directory, path), @folder)
+        
+      # Create a new Webbastic::Page object for every files
+      # and read its content to put it in a static widget
       else
         if parent_folder
-          parent_folder.pages.create :name => path
+          @page = parent_folder.pages.create :name => path
         else
-          self.pages.create :name => path
+          @page = self.pages.create :name => path
         end
+        
+        # Add file content as page static content that could be modified later
+        File.open(File.join(directory, path), "r") do |file|
+          @page.add_static_content file.read
+        end
+        
       end
     end
   end
   
-  def default_layout
-    self.layouts.first
-  end
+  # =====
+  #
+  # Site generate
+  #
+  # =====
   
   #
   # Generate site content base on its structure
@@ -83,36 +104,11 @@ class Webbastic::Site
     Webby::Builder.run(:rebuild => true)
   end
   
-  def status
-    "generated"
-  end
-  
-  #
-  # When destroying a site,
-  # be sure to delete the webby folder that's been created on initialization
-  #
-  def unlink_site
-    FileUtils.rm_rf(self.absolute_path) if File.exists?(self.absolute_path)
-  end
-  
   # =====
   #
   # Site path
   #
   # =====
-  
-  def relative_path
-    File.join("webby", self.name)
-  end
-  
-  def absolute_path
-    if File.symlink? Merb.root
-      # Symlink is used in Capistrano, go fetch webby content in shared dir
-      File.join(Merb.root, "..", "..", "shared", self.relative_path)
-    else
-      File.join(Merb.root, self.relative_path)
-    end
-  end
   
   def content_dir(options = {})
     options[:dir] = "content"
@@ -130,7 +126,45 @@ class Webbastic::Site
   end
   
   def build_webby_path(options = {})
-    File.join(options[:absolute] ? self.absolute_path : self.relative_path, options[:dir]) unless options[:dir].nil?
+    webby_path =  options[:absolute] ? self.absolute_path  : self.relative_path
+    
+    # options[:dir] contains the name of the folder to fetch
+    options[:dir].nil? ? webby_path : File.join(webby_path, options[:dir])
+  end
+  
+  def absolute_path
+    if File.symlink? Merb.root
+      # Symlink is used in Capistrano, go fetch webby content in shared dir
+      File.join(Merb.root, "..", "..", "shared", self.relative_path)
+    else
+      File.join(Merb.root, self.relative_path)
+    end
+  end
+  
+  def relative_path
+    File.join("webby", self.name)
+  end
+  
+  # =====
+  #
+  # Misc
+  #
+  # =====
+  
+  def default_layout
+    self.layouts.first
+  end
+  
+  def status
+    "generated"
+  end
+  
+  #
+  # When destroying a site,
+  # be sure to delete the webby folder that's been created on initialization
+  #
+  def unlink_site
+    FileUtils.rm_rf(self.absolute_path) if File.exists?(self.absolute_path)
   end
   
   protected

@@ -1,28 +1,21 @@
-<h2>Headers</h2>
+<h2>Edit</h2>
 
-<table id="header-table">
-	<thead>
-		<tr>
-			<th class="left">Name</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody id="the-list" class="list:header">
-		<% @widget.headers.each do |header| -%>
-		<%= partial 'shared/header', :header => header, :type => :layout, :row_class => cycle("alternate", "") %>
-		<%- end %>
-	</tbody>
-</table>
+<form action="<%= url(:webbastic_widget, @widget.id) %>" method="post" accept-charset="utf-8">
 
-<%= partial 'shared/header_form', 
-			:action => url(:webbastic_site_page_widget, @widget.page.site.id, @widget.page.id, @widget.id),
+	<p><textarea name="widget[content]" rows="20" cols="100" id="widget-content-<%= @widget.id %>" class="editor"></textarea></p>	
+	
+	<input type="hidden" name="_method" value="put"/>
+	<p><input type="submit" value="Update Content" class="wymupdate"></p>
+</form>
+
+<!-- Fill editor with current widget content -->
+<script type="text/javascript">$('#widget-content-<%= @widget.id %>').wymeditor({html:'<%= @widget.content %>'});</script>
+
+<h2>Configure</h2>
+
+<%= partial 'headers/list', :webby_headers => @widget.headers, :type => :widget %>
+
+<%= partial 'headers/form', 
+			:action => url(:webbastic_widget, @widget.id),
 			:type => :widget,
 			:obj_id => @widget.id %>
-
-<h2>Content</h2>
-
-<form action="<%= url(:webbastic_site_page_widget, @widget.page.site.id, @widget.page.id, @widget.id) %>" method="post" accept-charset="utf-8">
-	<textarea name="widget[content]" rows="20" cols="100" class="mceEditor"><%= @widget.content %></textarea>
-	<input type="hidden" name="_method" value="put"/>
-	<p><input type="submit" value="Save &rarr;"></p>
-</form>
