@@ -104,5 +104,11 @@ describe Webbastic::Site do
     
     @site.destroy
   end
+  
+  # it "should contains headers for each pages" do
+  #   @site = Webbastic::Site.create :name => "test"
+  #   @site.pages.first.headers.size.should > 0
+  #   @site.destroy
+  # end
 
 end

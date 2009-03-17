@@ -75,7 +75,8 @@ class Webbastic::Site
         
         # Add file content as page static content that could be modified later
         File.open(File.join(directory, path), "r") do |file|
-          @page.add_static_content file.read
+          #headers = get_page_headers(file.read)
+          @page.add_static_content get_content(file.read)
         end
         
       end
@@ -192,5 +193,23 @@ class Webbastic::Site
         name.gsub! /[^\w\.\-]/, '_'
       end
     end
-    
+  
+  # Remove the page headers, return the content of the page
+  def get_page_content page_content
+    format = page_content.split("---")
+    if format.size > 0
+    page_content = page_content.gsub(format[1],"")
+    page_content = page_content.gsub("------","")
+    end
+    return page_content
+  end
+  # Remove the page content, return the headers
+  def get_page_headers page_content
+     format = page_content.split("---")
+     if format.size > 0
+      return YAML.load(format[1])
+     else
+       return nil
+     end
+   end
 end
