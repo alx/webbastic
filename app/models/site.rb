@@ -191,7 +191,7 @@ class Webbastic::Site
   # Remove the page headers, return the content of the page
   def read_content(content)
     unless content.empty?
-      content.gsub(/-{3}.*-{3}/m, '').gsub("\n", '')
+      content.gsub(/-{3}.*-{3}\n/m, '')
     end
   end
   
