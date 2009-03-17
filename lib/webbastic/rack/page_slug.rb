@@ -15,7 +15,7 @@ module Merb
                else
                  Merb::Const::EMPTY_STRING
                end
-               
+        
         # Verify path doesn't contain extension (won't be a page slug)
         # and get the header corresponding to the slug if it exists
         if File.extname(path).empty? && 
@@ -34,7 +34,7 @@ module Merb
       end
       
       def page_path(page)
-        path = page.name.gsub(".txt", ".html")
+        path = page.name.gsub(".txt", "") << ".html"
         path
       end
       
