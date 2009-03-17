@@ -75,7 +75,7 @@ $(document).ready(function() {
 						wym.insert("<img src='" + this.rel + "'/>");
 						break
 					default:
-						title = this.children(":first").alt;
+						title = this.firstChild.alt;
 						wym.insert("<a href='" + this.rel + "'/>" + title + "</a>");
 				}
 				return false; 

@@ -73,12 +73,6 @@ class Webbastic::Site
           @page = self.pages.create :name => path
         end
         
-        # Add file content as page static content that could be modified later
-        File.open(File.join(directory, path), "r") do |file|
-          #headers = get_page_headers(file.read)
-          @page.add_static_content read_content(file.read)
-        end
-        
       end
     end
   end
@@ -197,7 +191,7 @@ class Webbastic::Site
   # Remove the page headers, return the content of the page
   def read_content(content)
     unless content.empty?
-      content.gsub(/-{3}.*-{3}\n/m, '')
+      content.gsub(/-{3}.*-{3}/m, '').gsub("\n", '')
     end
   end
   
