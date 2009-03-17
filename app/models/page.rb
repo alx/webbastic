@@ -12,6 +12,7 @@ class Webbastic::Page
   
   belongs_to :site,         :class_name => Webbastic::Site
   belongs_to :layout,       :class_name => Webbastic::Layout
+  belongs_to :content_dir,  :class_name => Webbastic::ContentDir
   
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
@@ -147,4 +148,10 @@ class Webbastic::Page
   def current_layout
     self.layout || (self.site.default_layout unless self.site.nil?)
   end
+  
+  # =====
+  #
+  # Misc
+  #
+  # =====
 end

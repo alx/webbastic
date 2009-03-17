@@ -64,6 +64,7 @@ if defined?(Merb::Plugins)
   
   # Slice dependencies
   require "webbastic/router"
+  require "webbastic/rack/page_slug"
   
   # stdlib dependencies
   require "tempfile"

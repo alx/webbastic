@@ -69,10 +69,8 @@ class Webbastic::Pages < Webbastic::Application
     end
     
     # Update headers
-    if params[:page] && params[:page][:headers]
-      params[:page][:headers].each do |name, content|
-        @page.add_header name, content
-      end
+    if header = params[:header]
+      @page.headers.create header
     end
     
     display @page, :edit
