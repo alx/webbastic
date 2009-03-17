@@ -33,8 +33,19 @@ class Webbastic::Site
   
   # Create default page and layout after site has been saved
   def create_defaults
-    import_content(self.layout_dir(:absolute => true))
+    import_layout(self.layout_dir(:absolute => true))
     import_content(self.content_dir(:absolute => true))
+  end
+  
+  def import_layout(directory)
+    Dir.new(directory).each do |path|
+      @layout = self.layouts.create :name => path
+      
+      # Add file content as layout content that could be modified later
+      File.open(File.join(directory, path), "r") do |file|
+        @layout.content file.read
+      end
+    end
   end
   
   # Follow directory path and import its files into DB
