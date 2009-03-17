@@ -45,7 +45,7 @@ class Webbastic::Site
       
       # Add file content as layout content that could be modified later
       File.open(File.join(directory, path), "r") do |file|
-        @layout.content = file.read
+        @layout.content = read_content(file.read)
       end
     end
   end
@@ -76,7 +76,7 @@ class Webbastic::Site
         # Add file content as page static content that could be modified later
         File.open(File.join(directory, path), "r") do |file|
           #headers = get_page_headers(file.read)
-          @page.add_static_content get_page_content(file.read)
+          @page.add_static_content read_content(file.read)
         end
         
       end
@@ -195,18 +195,14 @@ class Webbastic::Site
     end
   
   # Remove the page headers, return the content of the page
-  def get_page_content(page_content)
-    unless page_content.empty?
-      if format = page_content.split("---")[1]
-        page_content = page_content.gsub(format,"")
-        page_content = page_content.gsub(/-{6}/,"")
-      end
+  def read_content(content)
+    unless content.empty?
+      content.gsub(/-{3}.*-{3}\n/m, '')
     end
-    return page_content
   end
   
   # Remove the page content, return the headers
-  def get_page_headers(page_content)
+  def read_headers(page_content)
      format = page_content.split("---")
      if format.size > 0
       return YAML.load(format[1])
