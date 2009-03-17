@@ -39,6 +39,8 @@ class Webbastic::Site
   
   def import_layout(directory)
     Dir.new(directory).each do |path|
+      next if path.match(/^\.+/)
+      
       @layout = self.layouts.create :name => path
       
       # Add file content as layout content that could be modified later
