@@ -39,6 +39,10 @@ class Webbastic::Widget
     ""
   end
   
+  def safe_content
+    content.gsub('/', '\/').gsub('"', '\'')
+  end
+  
   def header_content(header_name)
     if header = self.headers.first(:name => header_name)
       return header.content
