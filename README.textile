@@ -1,0 +1,19 @@
+h1. Webbastic
+
+Webbastic is a Merb Slice sitting on top of Webby to provide an CMS-like interface to build your static website.
+
+h2. Features
+
+h3. Integration with MediaRocket
+
+"MediaRocket":http://github.com/alx/media_rocket/ is a media upload manager build in a Merb Slice.
+
+Connecting MediaRocket and Webbastic, user can upload media or documents on one side,
+and integrate them on their website pages on the other.
+
+To connect MediaRocket to Webbastic, you need to create a new Merb App, and include both Slices in dependencies and router.
+
+h3. Page Slugs with Rack
+
+Shortcut to pages can be defined with a 'page-slug' header.
+If declared, Merb::Rack::PageSlug middleware will fetch the request and redirect it to the static file.
