@@ -45,7 +45,7 @@ class Webbastic::Site
       
       # Add file content as layout content that could be modified later
       File.open(File.join(directory, path), "r") do |file|
-        @layout.content file.read
+        @layout.content = file.read
       end
     end
   end
