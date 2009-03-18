@@ -59,7 +59,7 @@ class Webbastic::Pages < Webbastic::Application
 
     # Update layout
     if params[:layout_id]
-      Webbastic::Layout.first(:id => params[:layout_id]).update_attributes(:page_id => @page.id)
+      @page.update_attributes :layout_id => params[:layout_id]
     end
     
     # Update widgets
