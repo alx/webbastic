@@ -57,30 +57,20 @@ $(document).ready(function() {
 
 
 	//
-	// Initialize wymeditor
+	// User click on a thumbnail to be displayed in editor
 	//
-	$('.wymeditor').wymeditor({
-
-	    postInit: function(wym) {
-
-			//
-			// User click on a thumbnail to be displayed in editor
-			//
-			$('a.media_thumb').livequery('click', function(event) {
-				switch(this.type){
-					case "jpg":
-					case "jpeg":
-					case "gif":
-					case "png":
-						wym.insert("<img src='" + this.rel + "'/>");
-						break
-					default:
-						title = this.firstChild.alt;
-						wym.insert("<a href='" + this.rel + "'/>" + title + "</a>");
-				}
-				return false; 
-			});
-	    }
+	$('a.media_thumb').livequery('click', function(event) {
+		switch(this.type){
+			case "jpg":
+			case "jpeg":
+			case "gif":
+			case "png":
+				$.wymeditors(0).insert("<img src='" + this.rel + "'/>");
+				break
+			default:
+				title = this.firstChild.alt;
+				$.wymeditors(0).insert("<a href='" + this.rel + "'/>" + title + "</a>");
+		}
+		return false; 
 	});
-	
 });

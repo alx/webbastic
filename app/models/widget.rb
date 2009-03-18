@@ -40,7 +40,7 @@ class Webbastic::Widget
   end
   
   def safe_content
-    content.gsub('/', '\/').gsub('"', '\'')
+    content.gsub('/', '\/').gsub(/'/, "\\\\'")
   end
   
   def header_content(header_name)
