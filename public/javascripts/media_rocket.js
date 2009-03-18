@@ -59,7 +59,7 @@ $(document).ready(function() {
 	//
 	// Initialize wymeditor
 	//
-	$('.editor').wymeditor({
+	$('.wymeditor').wymeditor({
 
 	    postInit: function(wym) {
 
