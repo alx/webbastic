@@ -34,9 +34,12 @@ class Webbastic::Page
   # Write generated page to static file
   def write_file
     self.generate
+    
+    filename = self.absolute_path.gsub(".txt", "")
+    
     # Write generated page to static file
-    File.delete self.absolute_path if File.exists? self.absolute_path
-    File.open(self.absolute_path, 'w+') do |f| 
+    File.delete filename if File.exists? filename
+    File.open(filename, 'w+') do |f| 
       f.write(self.generated_header)
       f.write(self.generated_content)
     end
