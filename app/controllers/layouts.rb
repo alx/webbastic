@@ -1,7 +1,5 @@
 class Webbastic::Layouts < Webbastic::Application
   
-  before :ensure_authenticated
-  
   # GET /layouts
   def index
     @layouts = Webbastic::Layout.all :site_id => params[:site_id]
