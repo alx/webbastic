@@ -38,18 +38,17 @@ class Webbastic::Widget
   def widget_content
     ""
   end
-  
+      
+  JS_ESCAPE_MAP = {
+    '\\'    => '\\\\',
+    '</'    => '<\/',
+    "\r\n"  => '\n',
+    "\n"    => '\n',
+    "\r"    => '\n',
+    '"'     => '\\"',
+    "'"     => "\\'" }
+      
   def js_content
-    
-    JS_ESCAPE_MAP = {
-      '\\'    => '\\\\',
-      '</'    => '<\/',
-      "\r\n"  => '\n',
-      "\n"    => '\n',
-      "\r"    => '\n',
-      '"'     => '\\"',
-      "'"     => "\\'" }
-    
     content.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { JS_ESCAPE_MAP[$1] }
   end
   
