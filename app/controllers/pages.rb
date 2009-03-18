@@ -62,19 +62,6 @@ class Webbastic::Pages < Webbastic::Application
       @page.update_attributes :layout_id => params[:layout_id]
     end
     
-    # Update widgets
-    if params[:page_type] == "static"
-      @page.add_static_content params[:page][:content]
-      display @page, :static
-    else
-      @page.update_attributes(params[:page]) if params[:page]
-    end
-    
-    # Update headers
-    if header = params[:header]
-      @page.headers.create header
-    end
-    
     display @page, :edit
   end
 
