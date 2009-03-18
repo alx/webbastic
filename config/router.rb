@@ -1,7 +1,7 @@
 Merb::Router.prepare do |scope|
     
   scope.identify DataMapper::Resource => :id do |s|
-    s.resources :pages, ::Webbastic::Widgets
+    s.resources :pages, ::Webbastic::Pages
     s.resources :widgets, ::Webbastic::Widgets
     s.resources :sites,   "Webbastic::Sites" do |r|
       r.resources :layouts, "Webbastic::Layouts"
