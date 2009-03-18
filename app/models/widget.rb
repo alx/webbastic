@@ -39,8 +39,18 @@ class Webbastic::Widget
     ""
   end
   
-  def safe_content
-    content.gsub('/', '\/').gsub(/'/, "\\\\'").gsub(/\w/, "")
+  def js_content
+    
+    JS_ESCAPE_MAP = {
+      '\\'    => '\\\\',
+      '</'    => '<\/',
+      "\r\n"  => '\n',
+      "\n"    => '\n',
+      "\r"    => '\n',
+      '"'     => '\\"',
+      "'"     => "\\'" }
+    
+    content.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { JS_ESCAPE_MAP[$1] }
   end
   
   def header_content(header_name)
