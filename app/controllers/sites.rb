@@ -1,6 +1,6 @@
 class Webbastic::Sites < Webbastic::Application
   
-  before :ensure_authenticated
+  #before :ensure_authenticated
   
   # GET /sites
   def index

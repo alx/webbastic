@@ -1,6 +1,6 @@
 class Webbastic::Pages < Webbastic::Application
   
-  before :ensure_authenticated
+  #before :ensure_authenticated
   
   # GET /pages
   def index

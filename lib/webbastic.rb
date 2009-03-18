@@ -45,18 +45,24 @@ if defined?(Merb::Plugins)
 
   # Merb dependencies
   merb_version = ">= 1.0.9"
-  dependency 'merb-assets',     merb_version
-  dependency 'merb-cache',     merb_version
-  dependency 'merb-helpers',    merb_version
-  dependency 'merb_datamapper', merb_version
+  dependency 'merb-assets',               merb_version
+  dependency 'merb-cache',                merb_version
+  dependency 'merb-helpers',              merb_version
+  dependency 'merb_datamapper',           merb_version
+  dependency "merb-mailer",               merb_version
+  dependency "merb-auth-core",            merb_version
+  dependency "merb-auth-more",            merb_version
+  dependency "merb-auth-slice-password",  merb_version
+  dependency "merb-param-protection",     merb_version
+  dependency "merb-exceptions",           merb_version
   
   # Datamapper dependencies
-  dm_gems_version   = ">= 0.9.10"
-  dependency "dm-core",           dm_gems_version         
-  dependency "dm-aggregates",     dm_gems_version  
-  dependency "dm-timestamps",     dm_gems_version
-  dependency "dm-is-nested_set",  dm_gems_version
-  dependency "dm-is-tree",        dm_gems_version
+  dm_version   = ">= 0.9.10"
+  dependency "dm-core",           dm_version         
+  dependency "dm-aggregates",     dm_version  
+  dependency "dm-timestamps",     dm_version
+  dependency "dm-is-nested_set",  dm_version
+  dependency "dm-is-tree",        dm_version
   
   # Various dependencies
   dependency "do_sqlite3"

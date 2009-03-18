@@ -1,6 +1,6 @@
 class Webbastic::Layouts < Webbastic::Application
   
-  before :ensure_authenticated
+  #before :ensure_authenticated
   
   # GET /layouts
   def index
