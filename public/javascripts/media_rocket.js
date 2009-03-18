@@ -17,7 +17,7 @@ $(document).ready(function() {
 		$("#webbastic_list #thumbs a.media_thumb").remove();
 	
 		// Fetch new medias from media_rocket using JSON
-		$.getJSON("/library/galleries/" + gallery_id + "/medias/index.json",
+		$.getJSON("/library/gallery/" + gallery_id + ".json",
 			function(data){
 				$.each(data.medias, function(i,media){
 					$("#webbastic_list #thumbs").append(
@@ -54,7 +54,6 @@ $(document).ready(function() {
 	$(".media_gallery_select").ready(function() {
 		load_media_thumb_list(1);
 	});
-
 
 	//
 	// User click on a thumbnail to be displayed in editor
