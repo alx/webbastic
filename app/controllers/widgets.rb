@@ -1,5 +1,7 @@
 class Webbastic::Widgets < Webbastic::Application
 
+  before :ensure_authenticated
+
   # GET /widgets
   def index
     @widgets = Webbastic::Widget.all

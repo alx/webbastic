@@ -1,5 +1,7 @@
 class Webbastic::Pages < Webbastic::Application
   
+  before :ensure_authenticated
+  
   # GET /pages
   def index
     @pages = Webbastic::Page.all :site_id => params[:site_id]
