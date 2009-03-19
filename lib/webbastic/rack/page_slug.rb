@@ -11,7 +11,7 @@ module Merb
       # :api: plugin
       def call(env)        
         path = if env[Merb::Const::PATH_INFO]
-                 env[Merb::Const::PATH_INFO].gsub(/^\//, '')
+                 env[Merb::Const::PATH_INFO]
                else
                  Merb::Const::EMPTY_STRING
                end
