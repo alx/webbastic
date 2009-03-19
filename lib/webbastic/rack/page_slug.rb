@@ -11,11 +11,11 @@ module Merb
       # :api: plugin
       def call(env)        
         path = if env[Merb::Const::PATH_INFO]
-                 env[Merb::Const::PATH_INFO]
+                 env[Merb::Const::PATH_INFO].gsub(/^\//, '')
                else
                  Merb::Const::EMPTY_STRING
                end
-
+        
         Merb.logger.debug "[Merb::Rack::PageSlug] Path: #{path}"
         Merb.logger.debug "[Merb::Rack::PageSlug] File.extname(path).empty?: #{File.extname(path).empty?}"
         Merb.logger.debug "[Merb::Rack::PageSlug] path.slice().nil?: #{path.slice("/").nil?}"

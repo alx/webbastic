@@ -60,6 +60,11 @@ class Webbastic::Pages < Webbastic::Application
       @page.update_attributes :layout_id => params[:layout_id]
     end
     
+    # Update headers
+    if header = params[:header]
+          @page.headers.create header
+    end
+    
     display @page, :edit
   end
 
