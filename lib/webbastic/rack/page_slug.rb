@@ -27,9 +27,7 @@ module Merb
           Merb.logger.debug "[Merb::Rack::PageSlug] Get ::Webbastic::Header"
           
           # Get the header corresponding to the slug if it exists
-          if header = ::Webbastic::Header.first(:name => 'page-slug', :content => path)
-          
-            path = page_path(header.page)
+          if paht = page_path_from_header(path)
             
             Merb.logger.debug "[Merb::Rack::PageSlug] Page path: #{path}"
             
@@ -45,9 +43,19 @@ module Merb
         @app.call(env)
       end
       
-      def page_path(page)
-        Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{page.name} << .html"
-        page.name.gsub(".txt", "") + ".html"
+      # ==== Parameters
+      # slug<String>:: Slug to found in Webbastic::Headers
+      #
+      # ==== Returns
+      # String:: Path of the static file corresponding to this slug
+      #
+      # :api: private
+      def page_path_from_header(slug)
+        if header = ::Webbastic::Header.first(:name => 'page-slug', :content => slug)
+          Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{page.name} << .html"
+          return header.page.name.gsub(".txt", "") + ".html"
+        end
+        nil
       end
       
       # ==== Parameters
