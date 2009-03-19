@@ -46,8 +46,8 @@ module Merb
       end
       
       def page_path(page)
-        path = page.name.gsub(".txt", "") << ".html"
-        path
+        Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{page.name} << .html"
+        page.name.gsub(".txt", "") + ".html"
       end
       
       # ==== Parameters
