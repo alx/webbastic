@@ -27,7 +27,7 @@ module Merb
           Merb.logger.debug "[Merb::Rack::PageSlug] Get ::Webbastic::Header"
           
           # Get the header corresponding to the slug if it exists
-          if paht = page_path_from_header(path)
+          if path = page_path_from_header(path)
             
             Merb.logger.debug "[Merb::Rack::PageSlug] Page path: #{path}"
             
