@@ -22,7 +22,7 @@ module Merb
         
         # Verify path doesn't contain extension (won't be a page slug)
         # and that it doesn't contain / char (no traversal)
-        if File.extname(path).empty? && path.slice("/").nil?
+        if !path.empty? && File.extname(path).empty? && path.slice("/").nil?
           
           Merb.logger.debug "[Merb::Rack::PageSlug] Get ::Webbastic::Header"
           
