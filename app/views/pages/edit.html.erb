@@ -11,7 +11,8 @@
 	<label for="layout">Layout:</label><br/>
 	<select name="layout_id" id="layout" size="1">
 		<% @page.site.layouts.each do |layout| %>
-		<option value="<%= layout.id %>"><%= layout.name %></option>
+		<option value="<%= layout.id %>" <%=  "selected='selected'" if(layout.id == @page.layout.id) %>>
+		<%= layout.name %></option>
 		<% end %>
 	</select>
 
