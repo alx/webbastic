@@ -1,17 +1,5 @@
 <form action="<%= url(:webbastic_site, @site) %>" method="post" accept-charset="utf-8">
 	
-	<p><label for="content_dir">Content Directory</label><br>
-	<input type="text" name="site[content_dir]" value="<%= @site.content_dir %>" id="content_dir"><br></p>
-	
-	<p><label for="layout_dir">Layout Directory</label><br>
-	<input type="text" name="site[layout_dir]" value="<%= @site.layout_dir %>" id="layout_dir"></p>
-	
-	<p><label for="template_dir">Template Directory</label><br>
-	<input type="text" name="site[template_dir]" value="<%= @site.template_dir %>" id="template_dir"></p>
-	
-	<p><label for="output_dir">Output Directory</label><br>
-	<input type="text" name="site[output_dir]" value="<%= @site.output_dir %>" id="output_dir"></p>
-	
 	<p><label for="default_layout">Default Layout</label>
 	<select name="default_layout" id="default_layout">
 		<% @site.layouts.each do |layout| -%>
