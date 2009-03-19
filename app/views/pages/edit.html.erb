@@ -5,7 +5,8 @@
 			:type => :page,
 			:obj_id => @page.id %>
 
-<form action="<%= url(:webbastic_pages, @page) %>" method="post" accept-charset="utf-8">
+
+<form action="<%= url(:webbastic_site_page, @page.site.id, @page.id) %>" method="post" accept-charset="utf-8">
 
 	<label for="layout">Layout:</label><br/>
 	<select name="layout_id" id="layout" size="1">
@@ -13,40 +14,7 @@
 		<option value="<%= layout.id %>"><%= layout.name %></option>
 		<% end %>
 	</select>
-	
+
 	<input type="hidden" name="_method" value="put"/>
 	<p><input type="submit" value="Set Layout"></p>
 </form>
-
-<h2>Widgets</h2>
-
-<table border="0" cellspacing="5" cellpadding="5">
-	<tr><th>Name</th><th></th><th></th></tr>
-	
-	<% @page.widgets.each do |widget| %>
-	<tr>
-		<td><%= widget.name %></td>
-		<td>
-			<a href="<%= url(:edit_webbastic_site_page_widget, @page.site.id, @page.id, widget.id) %>">Edit</a> - 
-			<a href="<%= url(:delete_webbastic_site_page_widget, @page.site.id, @page.id, widget.id) %>">Delete</a>
-		</td>
-	</tr>
-	<% end %>
-</table>
-
-
-<table border="0" cellspacing="5" cellpadding="5">
-	<tr><th>Name</th><th></th><th></th></tr>
-	
-	<%  Webbastic::Helpers::Widgets.constants.each do |widget_name| -%>
-	<tr>
-		<td><%= widget_name %></td>
-		<td>
-			<form action="<%= url(:webbastic_site_page_widgets, @page.site.id, @page.id) %>" method="post" accept-charset="utf-8">
-				<input type="hidden" value="Webbastic::Helpers::Widgets::<%= widget_name %>" name="widget_name">
-				<input type="submit" value="Add &rarr;">
-			</form>
-		</td>
-	</tr>
-	<% end %>
-</table>
