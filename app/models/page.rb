@@ -17,6 +17,8 @@ class Webbastic::Page
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
   
+  before :destroy, :delete_page
+  
   # =====
   #
   # File Path
@@ -38,11 +40,16 @@ class Webbastic::Page
     filename = self.absolute_path.gsub(".txt", "")
     
     # Write generated page to static file
-    File.delete filename if File.exists? filename
+    delete_file
     File.open(filename, 'w+') do |f| 
       f.write(self.generated_header)
       f.write(self.generated_content)
     end
+  end
+  
+  def delete_file
+    filename = self.absolute_path.gsub(".txt", "")
+    File.delete filename if File.exists? filename
   end
   
   # =====
