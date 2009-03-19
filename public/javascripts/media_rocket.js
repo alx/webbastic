@@ -22,7 +22,7 @@ $(document).ready(function() {
 				$.each(data.medias, function(i,media){
 					$("#webbastic_list #thumbs").append(
 						"<a class='media_thumb' rel='" + media.url + "' type='" + media.mime + "'>" +
-						"<img src='" + media.icon + "' alt='" + media.title + "'/>" +
+						"<img src='" + media.icon + "' alt='" + media.title + "'/>" + media.title +
 						"</a>"
 					);
 					if ( i == 6 ) $("#webbastic_list #thumbs").append("<br/>");
