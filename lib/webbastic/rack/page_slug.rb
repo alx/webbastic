@@ -52,8 +52,8 @@ module Merb
       # :api: private
       def page_path_from_header(slug)
         if header = ::Webbastic::Header.first(:name => 'page-slug', :content => slug)
-          Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{page.name} << .html"
-          return header.page.name.gsub(".txt", "") + ".html"
+          Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{header.page.name} << .html"
+          return header.page.name.gsub(".txt", "") << ".html"
         end
         nil
       end
