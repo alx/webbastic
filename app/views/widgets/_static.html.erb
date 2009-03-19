@@ -9,5 +9,8 @@
 <%= partial 'shared/media' %>
 
 <script type="text/javascript">
-$('.wymeditor').wymeditor({html: '<%= widget.js_content %>'});
+$('.wymeditor').wymeditor({
+							stylesheet: '<%= webbastic_stylesheet_path %>/stylesheets-test.css',
+							html: '<%= widget.js_content %>'}
+						);
 </script>
