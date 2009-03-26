@@ -24,11 +24,19 @@ class Webbastic::Site
     # TODO: elegant regexp for Merb.root folder
     self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) 
     
+    path = File.join("webby", self.name)
+    
     # Generate webby app with this site parameters
     # use --force to rewrite website (avoid console prompt on overwrite)
-    Webby::Apps::Generator.new.run ["--force",                      # options
-                                    "website",                      # template
-                                    File.join("webby", self.name)]  # path
+    Webby::Apps::Generator.new.run ["--force",  # options
+                                    "website",  # template
+                                    path]       # path
+                                    
+    # rename index file, without extension
+    index_file = File.join(path, "content", "index.txt")
+    if File.exists?(index_file)
+      File.rename index_file, File.join(path, "content", "index")
+    end
   end
   
   # Create default page and layout after site has been saved
@@ -88,8 +96,19 @@ class Webbastic::Site
   #
   def generate
     
-    self.layouts.each {|layout| layout.write_file}
-    self.pages.each {|page| page.write_file}
+    self.layouts.each do |layout| 
+      if layout.is_dirty?
+        layout.not_dirty # Do not keep header in layout
+        layout.write_file
+      end
+    end
+    
+    self.pages.each do |page| 
+      if page.is_dirty?
+        page.write_file
+        page.not_dirty
+      end
+    end
     
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
@@ -100,16 +119,9 @@ class Webbastic::Site
     Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
                                  'directory' => '.',
                                  'collision' => :force}
-
-    # TDB: :rebuild => false
-    # A content file can mark itself as dirty by setting the +dirty+ flag to
-    # +true+ in the meta-data of the file. This will cause the contenet to
-    # always be compiled when the builder is run. Conversely, setting the
-    # dirty flag to +false+ will cause the content to never be compiled or
-    # copied to the output folder.
-    #
+                                 
     # returns nil if success 
-    Webby::Builder.run(:rebuild => true)
+    Webby::Builder.run
   end
   
   # =====

@@ -16,6 +16,9 @@ class Webbastic::Layout
   has n, :pages, :class_name => Webbastic::Page
   has n, :headers, :class_name => Webbastic::Header
   
+  # Add :dirty header to rewrite file during next generation
+  after :update, :is_dirty
+  
   # =====
   #
   # File Path
@@ -66,9 +69,46 @@ class Webbastic::Layout
     update_attributes(:generated_header => YAML::dump(yaml_headers) + "---\n")
   end
   
+  # =====
+  #
+  # Headers
+  #
+  # =====
+  
+  def add_header(name, content)
+    if header = self.headers.first(:name => name)
+      header.update_attributes(:content => content)
+    else
+      Webbastic::Header.create :name => name,
+                               :content => content,
+                               :page_id => self.id
+    end
+  end
+  
   def header_content(header_name)
     if header = self.headers.first(:name => header_name)
       return header.content
     end
+  end
+  
+  # =====
+  #
+  # Dirty
+  #
+  # =====
+  
+  # Make this page dirty, it'll force Webby to re-generate page
+  def is_dirty
+    add_header(:dirty, true)
+  end
+  
+  # Remove dirty header for this page
+  def not_dirty
+    headers.first(:name => :dirty).destroy if is_dirty?
+  end
+  
+  # Verify if page is dirty
+  def is_dirty?
+    return !header_content(:dirty).nil?
   end
 end

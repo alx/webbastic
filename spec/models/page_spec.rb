@@ -16,7 +16,7 @@ describe Webbastic::Page do
     
     @page.write_file
     
-    path = File.join( @site.content_dir(:absolute => true), 'home.txt' )
+    path = File.join( @site.content_dir(:absolute => true), 'home' )
     @page.absolute_path.should == path
     File.exists?(path).should == true
   end
@@ -48,4 +48,20 @@ describe Webbastic::Page do
     
     @page.static_widget.content.should == "pop"
   end
+  
+  it "should be dirty with new content" do
+    @page = Webbastic::Page.create :name => "test"
+    @page.add_static_content "pop"
+    
+    @page.is_dirty?.should == true
+    
+    @page.widgets.size.should == 1
+    @page.widgets.first.content.should == "pop"
+    
+    @page.generate
+    @page.generated_content.should == "pop"
+    
+    @page.static_widget.content.should == "pop"
+  end
+  
 end

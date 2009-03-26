@@ -17,6 +17,7 @@ class Webbastic::Page
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
   
+  # Delete page from filesystem
   before :destroy, :delete_page
   
   # =====
@@ -97,6 +98,27 @@ class Webbastic::Page
     end
     
     update_attributes(:generated_content => content)
+  end
+  
+  # =====
+  #
+  # Dirty
+  #
+  # =====
+  
+  # Make this page dirty, it'll force Webby to re-generate page
+  def is_dirty
+    add_header(:dirty, true)
+  end
+  
+  # Remove dirty header for this page
+  def not_dirty
+    headers.first(:name => :dirty).destroy if is_dirty?
+  end
+  
+  # Verify if page is dirty
+  def is_dirty?
+    return !header_content(:dirty).nil?
   end
   
   # =====

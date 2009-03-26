@@ -14,6 +14,9 @@ class Webbastic::Widget
   
   after :create, :default_values
   
+  # Add :dirty header to only re-generate this page
+  after :update, :page_is_dirty
+  
   def default_values
     default_headers
     default_content
@@ -56,5 +59,9 @@ class Webbastic::Widget
     if header = self.headers.first(:name => header_name)
       return header.content
     end
+  end
+  
+  def page_is_dirty
+    self.page.is_dirty if self.page
   end
 end
