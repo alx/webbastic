@@ -54,14 +54,6 @@ describe Webbastic::Page do
     @page.add_static_content "pop"
     
     @page.is_dirty?.should == true
-    
-    @page.widgets.size.should == 1
-    @page.widgets.first.content.should == "pop"
-    
-    @page.generate
-    @page.generated_content.should == "pop"
-    
-    @page.static_widget.content.should == "pop"
   end
   
 end
