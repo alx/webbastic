@@ -16,6 +16,9 @@ class Webbastic::Layout
   has n, :pages, :class_name => Webbastic::Page
   has n, :headers, :class_name => Webbastic::Header
   
+  # Force layout generation on first time
+  after :create, :is_dirty
+  
   # Add :dirty header to rewrite file during next generation
   after :update, :is_dirty
   

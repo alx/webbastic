@@ -17,6 +17,9 @@ class Webbastic::Page
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
   
+  # Force page generation on first time
+  after :create, :is_dirty
+  
   # Delete page from filesystem
   before :destroy, :delete_page
   

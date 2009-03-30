@@ -105,10 +105,27 @@ describe Webbastic::Site do
     @site.destroy
   end
   
-  # it "should contains headers for each pages" do
-  #   @site = Webbastic::Site.create :name => "test"
-  #   @site.pages.first.headers.size.should > 0
-  #   @site.destroy
-  # end
+  it "should generate website each time a widget is modified" do
+    @site = Webbastic::Site.create :name => "test"
+    @site.pages.create :name => "home"
+    
+    @site.generate
+    
+    index_path = File.join( File.dirname(__FILE__), '..', '..', "public", 'index.html' )
+    home_path = File.join( File.dirname(__FILE__), '..', '..', "public", 'home.html' )
+    
+    File.exists?(index_path).should == true
+    File.exists?(home_path).should == true
+    
+    index_size = index_path.size
+    home_size = home_path.size
+    
+    @site.pages.first.add_static_content "long string to modify file size"
+    
+    index_path.size.should >= index_size
+    home_path.size.should == home_size
+    
+    @site.destroy
+  end
 
 end
