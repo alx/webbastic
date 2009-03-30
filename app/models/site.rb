@@ -96,19 +96,8 @@ class Webbastic::Site
   #
   def generate
     
-    self.layouts.each do |layout| 
-      if layout.is_dirty?
-        layout.not_dirty # Do not keep header in layout
-        layout.write_file
-      end
-    end
-    
-    self.pages.each do |page| 
-      if page.is_dirty?
-        page.write_file
-        page.not_dirty
-      end
-    end
+    self.layouts.each {|layout| layout.write_file}
+    self.pages.each {|page| page.write_file}
     
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir

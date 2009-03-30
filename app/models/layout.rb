@@ -38,11 +38,14 @@ class Webbastic::Layout
   
   # Write generated page to static file
   def write_file
-    self.generate
-    File.delete self.absolute_path if File.exists? self.absolute_path
-    File.open(self.absolute_path, 'w+') do |f| 
-      f.write(self.generated_header)
-      f.write(self.content)
+    if self.is_dirty?
+      self.generate
+      File.delete self.absolute_path if File.exists? self.absolute_path
+      File.open(self.absolute_path, 'w+') do |f| 
+        f.write(self.generated_header)
+        f.write(self.content)
+      end
+      self.not_dirty
     end
   end
   
@@ -103,6 +106,7 @@ class Webbastic::Layout
   # Make this page dirty, it'll force Webby to re-generate page
   def is_dirty
     add_header(:dirty, true)
+    self.pages.each {|page| page.is_dirty }
   end
   
   # Remove dirty header for this page

@@ -19,6 +19,7 @@ class Webbastic::Page
   
   # Force page generation on first time
   after :create, :is_dirty
+  after :update, :is_dirty
   
   # Delete page from filesystem
   before :destroy, :delete_page
@@ -39,15 +40,19 @@ class Webbastic::Page
   
   # Write generated page to static file
   def write_file
-    self.generate
     
-    filename = self.absolute_path.gsub(".txt", "")
+    if self.is_dirty?
+      self.generate
     
-    # Write generated page to static file
-    delete_file
-    File.open(filename, 'w+') do |f| 
-      f.write(self.generated_header)
-      f.write(self.generated_content)
+      filename = self.absolute_path.gsub(".txt", "")
+    
+      # Write generated page to static file
+      delete_file
+      File.open(filename, 'w+') do |f| 
+        f.write(self.generated_header)
+        f.write(self.generated_content)
+      end
+      self.not_dirty
     end
   end
   
