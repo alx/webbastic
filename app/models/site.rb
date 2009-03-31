@@ -110,7 +110,8 @@ class Webbastic::Site
                                  'collision' => :force}
                                  
     # returns nil if success 
-    Webby::Builder.run
+    # Webby::Builder.run
+    Webby::Builder.run :rebuild => true
   end
   
   # =====
