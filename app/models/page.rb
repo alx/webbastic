@@ -18,11 +18,23 @@ class Webbastic::Page
   has n, :widgets,  :class_name => Webbastic::Widget
   
   # Force page generation on first time
-  after :create, :is_dirty
-  after :update, :is_dirty
+  after :create, :create_defaults
+  # after :update, :is_dirty
   
   # Delete page from filesystem
   before :destroy, :delete_page
+  
+  # =====
+  #
+  # Defaults
+  #
+  # =====
+  
+  def create_defaults
+    self.headers.create :name => "extension", :content => "html"
+    self.headers.create :name => "filter", :content => "erb"
+    self.headers.create :name => "dirty", :content => true
+  end
   
   # =====
   #
@@ -41,18 +53,18 @@ class Webbastic::Page
   # Write generated page to static file
   def write_file
     
-    if self.is_dirty?
-      self.generate
+    # if dirty?
+      generate
     
-      filename = self.absolute_path.gsub(".txt", "")
+      filename = absolute_path.gsub(".txt", "")
       delete_file filename
       
       File.open(filename, 'w+') do |f| 
-        f.write(self.generated_header)
-        f.write(self.generated_content)
+        f.write(generated_header)
+        f.write(generated_content)
       end
-      self.not_dirty
-    end
+    #   not_dirty
+    # end
   end
   
   def delete_file(filename)
@@ -68,6 +80,7 @@ class Webbastic::Page
   def generate
     generate_header
     generate_content
+    not_dirty
   end
   
   # Generate YAML header from current page eader and its children
@@ -76,14 +89,12 @@ class Webbastic::Page
     self.reload
     self.headers.reload
     
-    layout = self.current_layout.relative_path unless self.current_layout.nil?
+    layout_path = self.current_layout.relative_path unless self.current_layout.nil?
     
     # Default header values
     yaml_headers = {'title' => self.name, 
                     'created_at' => Time.now,
-                    'extension' => 'html',
-                    'filter' => 'erb',
-                    'layout' => layout}
+                    'layout' => layout_path}
                         
     self.headers.each do |header|
       yaml_headers[header.name] = header.content
@@ -114,17 +125,17 @@ class Webbastic::Page
   
   # Make this page dirty, it'll force Webby to re-generate page
   def is_dirty
-    self.add_header(:dirty, true) unless is_dirty?
+    self.headers.first_or_create(:name => :dirty)
   end
   
   # Remove dirty header for this page
   def not_dirty
-    self.headers.first(:name => :dirty).destroy if is_dirty?
+    self.headers.first(:name => :dirty).destroy
   end
   
   # Verify if page is dirty
-  def is_dirty?
-    return !self.header_content(:dirty).nil?
+  def dirty?
+    return !self.headers.first(:name => :dirty).nil?
   end
   
   # =====
@@ -137,9 +148,8 @@ class Webbastic::Page
     if header = self.headers.first(:name => name)
       header.update_attributes(:content => content)
     else
-      Webbastic::Header.create :name => name,
-                               :content => content,
-                               :page_id => self.id
+      self.headers.create :name => name,
+                          :content => content
     end
   end
   

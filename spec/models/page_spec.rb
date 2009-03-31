@@ -53,7 +53,7 @@ describe Webbastic::Page do
     @page = Webbastic::Page.create :name => "test"
     @page.add_static_content "pop"
     
-    @page.is_dirty?.should == true
+    @page.dirty?.should == true
   end
   
 end

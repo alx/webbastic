@@ -23,7 +23,34 @@ describe Webbastic::Layout do
     @layout = @site.layouts.create :name => "new_layout"
     @page1.layout = @layout
     
+    @page1.current_layout.id.should_not == @site.default_layout.id
     @page1.current_layout.id.should_not == @page2.current_layout.id
+    
+    @site.destroy
+  end
+
+  it "should be dirty" do
+    @site = Webbastic::Site.create :name => "test"
+    @page = @site.pages.create :name => "home"
+    @layout = @site.default_layout
+    
+    @page.dirty?.should == true
+    @layout.dirty?.should == true
+    
+    @site.generate
+    
+    @page.dirty?.should == false
+    @layout.dirty?.should == false
+    
+    @layout.update_attributes :content => "123"
+    
+    @page.dirty?.should == true
+    @layout.dirty?.should == true
+    
+    @layout.not_dirty
+    
+    @page.dirty?.should == true
+    @layout.dirty?.should == false
     
     @site.destroy
   end

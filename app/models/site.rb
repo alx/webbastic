@@ -76,9 +76,9 @@ class Webbastic::Site
       # and read its content to put it in a static widget
       else
         if parent_folder
-          @page = parent_folder.pages.create :name => path
+          @page = parent_folder.pages.create :name => path, :layout => self.default_layout
         else
-          @page = self.pages.create :name => path
+          @page = self.pages.create :name => path, :layout => self.default_layout
         end
         
       end
