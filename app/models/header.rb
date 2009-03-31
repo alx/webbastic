@@ -8,7 +8,7 @@ class Webbastic::Header
   
   is :tree, :order => name
   
-  belongs_to :page,   :class_name => Webbastic::Page
-  belongs_to :layout, :class_name => Webbastic::Layout
-  belongs_to :widget, :class_name => Webbastic::Widget
+  belongs_to :page,   :class_name => Webbastic::Page,   :child_key => [:page_id]
+  belongs_to :layout, :class_name => Webbastic::Layout, :child_key => [:layout_id]
+  belongs_to :widget, :class_name => Webbastic::Widget, :child_key => [:widget_id]
 end

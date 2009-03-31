@@ -8,7 +8,7 @@ class Webbastic::Widget
   
   has n, :headers,  :class_name => Webbastic::Header
   
-  belongs_to :page, :class_name => Webbastic::Page
+  belongs_to :page, :class_name => Webbastic::Page, :child_key => [:page_id]
   
   is :nested_set, :scope => [:page_id]
   

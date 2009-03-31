@@ -11,7 +11,7 @@ class Webbastic::Layout
   property :generated_header, Text, :default => ""
   property :generated_content, Text, :default => ""
   
-  belongs_to :site, :class_name => Webbastic::Site
+  belongs_to :site, :class_name => Webbastic::Site, :child_key => [:site_id]
   
   has n, :pages, :class_name => Webbastic::Page
   has n, :headers, :class_name => Webbastic::Header

@@ -10,9 +10,9 @@ class Webbastic::Page
   property :generated_header, Text, :default => ""
   property :generated_content, Text, :default => ""
   
-  belongs_to :site,         :class_name => Webbastic::Site
-  belongs_to :layout,       :class_name => Webbastic::Layout
-  belongs_to :content_dir,  :class_name => Webbastic::ContentDir
+  belongs_to :site,         :class_name => Webbastic::Site,       :child_key => [:site_id]
+  belongs_to :layout,       :class_name => Webbastic::Layout,     :child_key => [:layout_id]
+  belongs_to :content_dir,  :class_name => Webbastic::ContentDir, :child_key => [:content_dir_id]
   
   has n, :headers,  :class_name => Webbastic::Header
   has n, :widgets,  :class_name => Webbastic::Widget
@@ -45,9 +45,8 @@ class Webbastic::Page
       self.generate
     
       filename = self.absolute_path.gsub(".txt", "")
-    
-      # Write generated page to static file
-      delete_file
+      delete_file filename
+      
       File.open(filename, 'w+') do |f| 
         f.write(self.generated_header)
         f.write(self.generated_content)
@@ -56,8 +55,7 @@ class Webbastic::Page
     end
   end
   
-  def delete_file
-    filename = self.absolute_path.gsub(".txt", "")
+  def delete_file(filename)
     File.delete filename if File.exists? filename
   end
   
@@ -116,17 +114,17 @@ class Webbastic::Page
   
   # Make this page dirty, it'll force Webby to re-generate page
   def is_dirty
-    add_header(:dirty, true)
+    self.add_header(:dirty, true) unless is_dirty?
   end
   
   # Remove dirty header for this page
   def not_dirty
-    headers.first(:name => :dirty).destroy if is_dirty?
+    self.headers.first(:name => :dirty).destroy if is_dirty?
   end
   
   # Verify if page is dirty
   def is_dirty?
-    return !header_content(:dirty).nil?
+    return !self.header_content(:dirty).nil?
   end
   
   # =====
