@@ -18,7 +18,7 @@
 </table>
 
 <% if page -%>
-<form action="<%= url(:new_webbastic_page_widget, page.id) %>" method="post" accept-charset="utf-8">
+<form action="<%= url(:webbastic_page_widgets, page.id) %>" method="post" accept-charset="utf-8">
 	<select name="widget">
 		<% Webbastic::Helpers::Widgets.constants.each do |widget_name| -%>
 		<option value='<%= widget_name %>'><%= widget_name %></option>

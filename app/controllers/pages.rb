@@ -63,11 +63,6 @@ class Webbastic::Pages < Webbastic::Application
       @page.headers.create header
     end
     
-    # Update widgets
-    if widget = params[:widget]
-      @page.widgets.create qualified_const_get("Webbastic::Helpers::Widgets::" << params[:widget])
-    end
-    
     display @page, :edit
   end
 
