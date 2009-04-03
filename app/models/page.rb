@@ -178,13 +178,7 @@ class Webbastic::Page
     end
     
     # create widget if non-existent
-    self.add_widget Webbastic::Helpers::Widgets::StaticWidget.new(:page_id => self.id)
-  end
-  
-  def add_widget(widget)
-    widget.save
-    self.widgets << widget
-    widget
+    self.widgets.create Webbastic::Helpers::Widgets::StaticWidget
   end
   
   # =====

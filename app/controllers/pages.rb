@@ -25,7 +25,6 @@ class Webbastic::Pages < Webbastic::Application
   def edit
     only_provides :html
     @page = Webbastic::Page.get(params[:id])
-    @widgets = Webbastic::Helpers::Widgets.constants
     raise NotFound unless @page
     display @page
   end
@@ -34,7 +33,6 @@ class Webbastic::Pages < Webbastic::Application
   def static
     only_provides :html
     @page = Webbastic::Page.get(params[:id])
-    @widgets = Webbastic::Helpers::Widgets.constants
     raise NotFound unless @page
     display @page
   end
@@ -62,7 +60,12 @@ class Webbastic::Pages < Webbastic::Application
     
     # Update headers
     if header = params[:header]
-          @page.headers.create header
+      @page.headers.create header
+    end
+    
+    # Update widgets
+    if widget = params[:widget]
+      @page.widgets.create qualified_const_get("Webbastic::Helpers::Widgets::" << params[:widget])
     end
     
     display @page, :edit

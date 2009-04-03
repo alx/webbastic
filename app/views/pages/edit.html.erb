@@ -20,4 +20,4 @@
 	<p><input type="submit" value="Set Layout"></p>
 </form>
 
-<%= partial 'widgets/list', :webby_widgets => @page.widgets %>
+<%= partial 'widgets/list', :page => @page, :widgets => @page.widgets %>
