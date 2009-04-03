@@ -49,9 +49,9 @@ module Webbastic
 
         def widget_content
           if Merb.const_defined? :MediaRocket
-            # Find gallery header,
+            # Find gallery header, and be sure some galleries are inside the system
             # if not present, display all galleries thumbnail
-            if gallery_id = self.headers.first(:name => 'gallery_id').content
+            if gallery_id = self.headers.first(:name => 'gallery_id').content && MediaRocket::Gallery.all.size > 0
               gallery = MediaRocket::Gallery.first(:id => gallery_id)
               content = list_html(gallery.medias.select{|media| media.original?})
             else
