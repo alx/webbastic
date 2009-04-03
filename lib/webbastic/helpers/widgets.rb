@@ -47,15 +47,26 @@ module Webbastic
         end
 
         def widget_content
-          gallery_id = self.headers.first(:name => 'gallery_id').content
-          gallery = ::MediaRocket::Gallery.first(:id => gallery_id)
-          medias = gallery.medias.select{|media| media.original?}
-
-          content = "<ul>"
-          medias.each do |media|
-            content << "<li><a href='#{media.url}'>#{media.url}</a></li>"
+          # Find gallery header,
+          # if not present, display all galleries thumbnail
+          if gallery_id = self.headers.first(:name => 'gallery_id').content
+            gallery = ::MediaRocket::Gallery.first(:id => gallery_id)
+            content = list_html(gallery.medias.select{|media| media.original?})
+          else
+            content = list_html(::MediaRocket::Gallery.all)
           end
-          content << "</ul>"
+        end
+        
+        # Build hmtl content for a list of media or gallery
+        # as long as the object accepts .thumbnail method
+        def list_html(medias)
+          tag :ul do
+            medias.each do |media|
+              tag :li do
+                tag :a, self_closing_tag(:img, media.thumbnail)
+              end
+            end
+          end
         end
       end
       
