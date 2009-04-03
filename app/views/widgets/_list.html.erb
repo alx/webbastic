@@ -1,0 +1,18 @@
+<h2>Widgets</h2>
+
+<table id="widget-table">
+	<thead>
+		<tr>
+			<th class="left">Name</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="the-list" class="list:header">
+		<% webby_widgets.each do |widget| -%>
+		<tr>
+			<td><%= widget.name %></td>
+			<td><a href="<%= url(:webbastic_widget_edit, widget.id) %>">edit</a></td>
+		</tr>
+		<%- end %>
+	</tbody>
+</table>
