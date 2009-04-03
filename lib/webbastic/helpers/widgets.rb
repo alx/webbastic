@@ -34,6 +34,7 @@ module Webbastic
         
       end
      
+     if Merb.const_defined? :MediaRocket
       class MediaListWidget < Webbastic::Widget
         def initialize(options)
           super
@@ -71,6 +72,7 @@ module Webbastic
           end
         end
       end
+    end
       
     end
   end
