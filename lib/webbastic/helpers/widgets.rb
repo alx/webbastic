@@ -69,7 +69,7 @@ module Webbastic
         def list_html(medias)
           list = ""
           medias.each do |media|
-            list << "<li><img src='" << media.thumbnail << "'></li>"
+            list << "<li><img src='" << media.icon << "'></li>"
           end
           "<ul>#{list}</ul>"
         end # def list_html
