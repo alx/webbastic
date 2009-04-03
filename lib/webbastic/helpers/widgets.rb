@@ -47,13 +47,15 @@ module Webbastic
         end
 
         def widget_content
-          # Find gallery header,
-          # if not present, display all galleries thumbnail
-          if gallery_id = self.headers.first(:name => 'gallery_id').content
-            gallery = ::MediaRocket::Gallery.first(:id => gallery_id)
-            content = list_html(gallery.medias.select{|media| media.original?})
-          else
-            content = list_html(::MediaRocket::Gallery.all)
+          if Merb.const_defined? :MediaRocket
+            # Find gallery header,
+            # if not present, display all galleries thumbnail
+            if gallery_id = self.headers.first(:name => 'gallery_id').content
+              gallery = MediaRocket::Gallery.first(:id => gallery_id)
+              content = list_html(gallery.medias.select{|media| media.original?})
+            else
+              content = list_html(MediaRocket::Gallery.all)
+            end
           end
         end
         
