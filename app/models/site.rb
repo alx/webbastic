@@ -81,6 +81,14 @@ class Webbastic::Site
           @page = self.pages.create :name => path, :layout => self.default_layout
         end
         
+        file = File.new(File.join(directory, path), "r")
+        content = ""
+        while (line = file.gets)
+          content << line
+        end
+        file.close
+        
+        @page.add_static_content
       end
     end
   end
