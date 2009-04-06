@@ -64,24 +64,20 @@ if defined?(Merb::Plugins)
   # Various dependencies
   dependency "do_sqlite3"
   dependency "webby", ">= 0.9.3"
+  dependency "hpricot", ">= 0.7"
   
   # Slice dependencies
   require "webbastic/router"
   require "webbastic/rack/page_slug"
   
   # stdlib dependencies
-  require "tempfile"
-  require "yaml"
-  
-  # Widget dependencies
+  require 'tempfile'
+  require 'yaml'
   require 'open-uri'
-  require "hpricot", ">= 0.7"
-  
-  # Export dependencies
-  require 'Logger'
+  require 'logger'
   require 'benchmark'
   require 'ping'
-  require 'FileUtils'
+  require 'fileutils'
   require 'open3'
   
   
