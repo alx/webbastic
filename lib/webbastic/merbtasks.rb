@@ -36,8 +36,12 @@ namespace :slices do
   
     desc "Copy public assets to host application"
     task :copy_assets do
+      
+      Webbastic.push_path(:flash, Webbastic.dir_for(:public) / "flash", nil)
+      Webbastic.push_app_path(:flash, Webbastic.app_dir_for(:public) / "flash", nil)
+      
       puts "Copying assets for Webbastic - resolves any collisions"
-      components = Webbastic.mirrored_public_components & [:flash]
+      components = Webbastic.mirrored_public_components + [:flash]
       copied, preserved = Webbastic.mirror_files_for(components)
       puts "- no files to copy" if copied.empty? && preserved.empty?
       copied.each { |f| puts "- copied #{f}" }
