@@ -77,6 +77,14 @@ if defined?(Merb::Plugins)
   require 'open-uri'
   require "hpricot"
   
+  # Export dependencies
+  require 'Logger'
+  require 'benchmark'
+  require 'ping'
+  require 'FileUtils'
+  require 'open3'
+  
+  
 end
 
 module Kernel
