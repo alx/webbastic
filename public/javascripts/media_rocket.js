@@ -66,6 +66,15 @@ $(document).ready(function() {
 			case "png":
 				$.wymeditors(0).insert("<img src='" + this.rel + "'/>");
 				break
+			case "mp3":
+				var flash_player = "<object type='application/x-shockwave-flash' width='400' height='170' ";
+				flash_player += "data='/slices/webbastic/flash/xspf_player_slim.swf?";
+				flash_player += "song_url='" + this.rel + "'>";
+				flash_player += "<param name='movie' value='/slices/webbastic/flash/xspf_player_slim.swf?";
+				flash_player += "song_url='" + this.rel + "'>";
+				flash_player += this.rel + "' /></object>";
+				$.wymeditors(0).insert(flash_player);
+				break
 			default:
 				title = this.firstChild.alt;
 				$.wymeditors(0).insert("<a href='" + this.rel + "'/>" + title + "</a>");
