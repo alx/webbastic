@@ -37,7 +37,8 @@ namespace :slices do
     desc "Copy public assets to host application"
     task :copy_assets do
       puts "Copying assets for Webbastic - resolves any collisions"
-      copied, preserved = Webbastic.mirror_public!
+      components = Webbastic.mirrored_public_components & [:flash]
+      copied, preserved = Webbastic.mirror_files_for(components)
       puts "- no files to copy" if copied.empty? && preserved.empty?
       copied.each { |f| puts "- copied #{f}" }
       preserved.each { |f| puts "! preserved override as #{f}" }

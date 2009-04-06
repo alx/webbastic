@@ -64,7 +64,7 @@ if defined?(Merb::Plugins)
   # Various dependencies
   dependency "do_sqlite3"
   dependency "webby", ">= 0.9.3"
-  dependency "hpricot", ">= 0.7"
+  dependency "hpricot"
   
   # Slice dependencies
   require "webbastic/router"
