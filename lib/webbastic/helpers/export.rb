@@ -2,7 +2,7 @@ module Webbastic
   module Helpers
     module Export
       
-      class rsync_export
+      class RsyncExport
         
         def initialize(options = {})
           
