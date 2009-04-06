@@ -75,7 +75,7 @@ if defined?(Merb::Plugins)
   
   # Widget dependencies
   require 'open-uri'
-  require "hpricot"
+  require "hpricot", ">= 0.7"
   
   # Export dependencies
   require 'Logger'
