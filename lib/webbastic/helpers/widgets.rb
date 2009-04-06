@@ -7,7 +7,6 @@ module Webbastic
         
         def initialize(options)
           self.name = "Static Widget"
-          self.page_id = options[:page_id]
           super
         end
         
@@ -17,7 +16,6 @@ module Webbastic
         
         def initialize(options)
           self.name = "Header Widget"
-          self.page_id = options[:page_id]
           super
         end
         
@@ -32,6 +30,41 @@ module Webbastic
            </div>"
         end
         
+      end
+      
+      class RssWidget < Webbastic::Widget
+        
+        def initialize(options)
+          self.name = "RSS Widget"
+          super
+        end
+        
+        def widget_headers
+          [['rss_link', 'http://alexgirard.com/rss.xml'], 
+          ['rss_items', '5'],
+          ['rss_item_length', '0']]
+        end
+        
+        def widget_content
+          rss_link        = self.headers.first(:name => 'rss_link').content
+          rss_item_length = self.headers.first(:name => 'rss_item_length').content
+          rss             = Hpricot(open(rss_link))
+
+          out = "<ul>\n"
+          rss.search("source").each do |source|
+            break if source.nil?
+            out << "<li><a href='#{source[:url]}'>#{truncate_words(source.inner_html, rss_item_length)}</a></li>"
+          end
+          out << "\n</ul>\n"
+        end
+        
+        def truncate_words(text, length = 30, end_string = ' …')
+          return if text == nil
+          return text if length == 0
+          
+          words = text.split()
+          words[0..(length-1)].join(' ') + (words.length > length ? end_string : '')
+        end
       end
      
      if Merb.const_defined? :MediaRocket

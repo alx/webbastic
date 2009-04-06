@@ -73,6 +73,10 @@ if defined?(Merb::Plugins)
   require "tempfile"
   require "yaml"
   
+  # Widget dependencies
+  require 'open-uri'
+  require "hpricot"
+  
 end
 
 module Kernel
