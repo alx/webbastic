@@ -69,11 +69,15 @@ module Webbastic
      
      if Merb.const_defined? :MediaRocket
       class MediaListWidget < Webbastic::Widget
+        
         def initialize(options)
           super
           self.name = "Media List"
-          self.page_id = options[:page_id]
           super
+        end
+        
+        def edit_partial
+          list_html(MediaRocket::Gallery.all)
         end
 
         def widget_headers

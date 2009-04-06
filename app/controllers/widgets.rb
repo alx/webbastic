@@ -25,7 +25,12 @@ class Webbastic::Widgets < Webbastic::Application
     only_provides :html
     @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
-    display @widget
+    
+    if partial = @widget.edit_partial
+      display partial
+    else
+      display @widget
+    end
   end
 
   # POST /widgets
