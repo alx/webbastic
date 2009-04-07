@@ -13,9 +13,8 @@ module Webbastic
                                                    
           text_area = tag :textarea, "", {:name => "widget[content]", 
                                           :rows => 20, 
-                                          :cols => 100, 
-                                          :id => "#widget-content-#{self.id}",
-                                          :class => :editor}
+                                          :cols => 100,
+                                          :class => :wymeditor}
                                           
           submit = self_closing_tag :input, {:type => :submit, 
                                              :value => "Update Content", 
@@ -25,7 +24,7 @@ module Webbastic
           form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, self.id), 
                                                                 :method => :post}
           
-          script = tag :script, "$('#widget-content-#{self.id}').wymeditor({html:'#{self.content}'});",
+          script = tag :script, "$('.wymeditor').wymeditor({html:'#{self.content}'});",
                       {:type => "text/javascript"}
                       
           form + script
