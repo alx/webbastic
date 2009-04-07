@@ -5,8 +5,6 @@ module Webbastic
       # Store static content in this widget
       module StaticWidget
         
-        @name = "Static Widget"
-        
         def edit_partial
           
           input_method = self_closing_tag :input, {:type => :hidden, 
@@ -16,7 +14,7 @@ module Webbastic
           text_area = tag :textarea, "", {:name => "widget[content]", 
                                           :rows => 20, 
                                           :cols => 100, 
-                                          :id => self.id,
+                                          :id => "#widget-content-#{self.id}",
                                           :class => :editor}
                                           
           submit = self_closing_tag :input, {:type => :submit, 
@@ -24,7 +22,7 @@ module Webbastic
                                              :class => "wymupdate"}
           
           
-          form = tag :form, input_method + text_area + submit, {:action => url(:webbastic_widget, self.id), 
+          form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, self.id), 
                                                                 :method => :post}
           
           script = tag :script, "$('#widget-content-#{self.id}').wymeditor({html:'#{self.content}'});",
@@ -36,8 +34,6 @@ module Webbastic
       end
       
       module RssWidget
-        
-        @name = "RSS Widget"
         
         def widget_headers
           [['rss_link', 'http://alexgirard.com/rss.xml'], 
@@ -69,8 +65,6 @@ module Webbastic
      
      if Merb.const_defined? :MediaRocket
       module MediaListWidget
-        
-        @name = "Media List"
         
         def edit_partial
           list_html(MediaRocket::Gallery.all)

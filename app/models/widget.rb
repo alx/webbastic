@@ -1,5 +1,6 @@
 class Webbastic::Widget
   include DataMapper::Resource
+  include Merb::GlobalHelpers
 
   property :id, Serial
   property :name, Text
@@ -17,17 +18,24 @@ class Webbastic::Widget
   
   # Add :dirty header to only re-generate this page
   after :update, :page_is_dirty
-  after :update, :generate_content
   
   def default_headers
-    self.widget_headers.each do |name, content|
-      self.headers.create :name => name,
-                          :content => content
+    if load_module && defined? self.widget_headers
+      self.widget_headers.each do |name, content|
+        self.headers.create :name => name,
+                            :content => content
+      end
     end
   end
   
   def generate_content
-    self.update_attributes :content => self.widget_content
+    if load_module && defined? self.widget_content
+      self.update_attributes :content => self.widget_content
+    end
+  end
+  
+  def load_module
+    self.extend(Webbastic::Helpers::Widgets.full_const_get self.module) if self.module
   end
       
   JS_ESCAPE_MAP = {

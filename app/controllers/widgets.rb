@@ -25,14 +25,12 @@ class Webbastic::Widgets < Webbastic::Application
     only_provides :html
     @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
-    
+    @widget.load_module if @widget.module
     display @widget.edit_partial
   end
 
   # POST /widgets
   def create
-    
-    klass = Kernel.qualified_const_get("Webbastic::Helpers::Widgets::" << params[:widget])
     
     if widget = Webbastic::Widget.create(:module => params[:widget])
       

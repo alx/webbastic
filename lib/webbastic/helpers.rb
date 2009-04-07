@@ -7,7 +7,7 @@ require helpers / "widgets"
 module Webbastic
   module Helpers
     def self.setup
-      [Assets, Content, Widgets, Export].each do |helper|
+      [Assets, Content, Export].each do |helper|
         ::Merb::GlobalHelpers.send(:include, helper)
       end
     end

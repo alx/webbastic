@@ -10,7 +10,7 @@
 	<tbody id="the-list" class="list:header">
 		<% widgets.each do |widget| -%>
 		<tr>
-			<td><%= widget.name %></td>
+			<td><%= widget.module %></td>
 			<td><a href="<%= url(:edit_webbastic_widget, widget.id) %>">edit</a></td>
 		</tr>
 		<%- end %>
