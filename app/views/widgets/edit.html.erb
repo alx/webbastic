@@ -1,17 +1,4 @@
-<h2>Edit</h2>
-
-<form action="<%= url(:webbastic_widget, @widget.id) %>" method="post" accept-charset="utf-8">
-
-	<p><textarea name="widget[content]" rows="20" cols="100" id="widget-content-<%= @widget.id %>" class="editor"></textarea></p>	
-	
-	<input type="hidden" name="_method" value="put"/>
-	<p><input type="submit" value="Update Content" class="wymupdate"></p>
-</form>
-
-<!-- Fill editor with current widget content -->
-<script type="text/javascript">$('#widget-content-<%= @widget.id %>').wymeditor({html:'<%= @widget.content %>'});</script>
-
-<h2>Configure</h2>
+<%= @widget.edit_partial %>
 
 <%= partial 'headers/list', :webby_headers => @widget.headers, :type => :widget %>
 

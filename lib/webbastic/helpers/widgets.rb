@@ -3,41 +3,41 @@ module Webbastic
     module Widgets
       
       # Store static content in this widget
-      class StaticWidget < Webbastic::Widget
+      module StaticWidget
         
-        def initialize(options)
-          self.name = "Static Widget"
-          super
+        @name = "Static Widget"
+        
+        def edit_partial
+          
+          input_method = self_closing_tag :input, {:type => :hidden, 
+                                                   :name => :_method, 
+                                                   :value => :put}
+                                                   
+          text_area = tag :textarea, "", {:name => "widget[content]", 
+                                          :rows => 20, 
+                                          :cols => 100, 
+                                          :id => self.id,
+                                          :class => :editor}
+                                          
+          submit = self_closing_tag :input, {:type => :submit, 
+                                             :value => "Update Content", 
+                                             :class => "wymupdate"}
+          
+          
+          form = tag :form, input_method + text_area + submit, {:action => url(:webbastic_widget, self.id), 
+                                                                :method => :post}
+          
+          script = tag :script, "$('#widget-content-#{self.id}').wymeditor({html:'#{self.content}'});",
+                      {:type => "text/javascript"}
+                      
+          form + script
         end
         
       end
       
-      class HeaderWidget < Webbastic::Widget
+      module RssWidget
         
-        def initialize(options)
-          self.name = "Header Widget"
-          super
-        end
-        
-        def widget_headers
-          [['width', '100%'], ['border', '1px solid #333']]
-        end
-        
-        def widget_content
-          "<div class='column span-20 prepend-2 append-2 first last' id='header'>
-             <p class='title'>A New Website</p>
-             <hr>
-           </div>"
-        end
-        
-      end
-      
-      class RssWidget < Webbastic::Widget
-        
-        def initialize(options)
-          self.name = "RSS Widget"
-          super
-        end
+        @name = "RSS Widget"
         
         def widget_headers
           [['rss_link', 'http://alexgirard.com/rss.xml'], 
@@ -68,13 +68,9 @@ module Webbastic
       end
      
      if Merb.const_defined? :MediaRocket
-      class MediaListWidget < Webbastic::Widget
+      module MediaListWidget
         
-        def initialize(options)
-          super
-          self.name = "Media List"
-          super
-        end
+        @name = "Media List"
         
         def edit_partial
           list_html(MediaRocket::Gallery.all)
@@ -106,7 +102,7 @@ module Webbastic
         def list_html(medias)
           list = ""
           medias.each do |media|
-            list << "<li><img src='" << media.icon << "'></li>"
+            list << "<li><img src='" << media.icon << "'><br>" << media.title || media.name << "</li>"
           end
           "<ul>#{list}</ul>"
         end # def list_html

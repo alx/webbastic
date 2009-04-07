@@ -26,17 +26,15 @@ class Webbastic::Widgets < Webbastic::Application
     @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
     
-    if partial = @widget.edit_partial
-      display partial
-    else
-      display @widget
-    end
+    display @widget.edit_partial
   end
 
   # POST /widgets
   def create
     
-    if widget = Kernel.qualified_const_get("Webbastic::Helpers::Widgets::" << params[:widget]).create
+    klass = Kernel.qualified_const_get("Webbastic::Helpers::Widgets::" << params[:widget])
+    
+    if widget = Webbastic::Widget.create(:module => params[:widget])
       
       # Add widget to page if parameter included
       if params[:page_id] && page = Webbastic::Page.first(:id  => params[:page_id])

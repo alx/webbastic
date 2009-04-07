@@ -3,8 +3,9 @@ class Webbastic::Widget
 
   property :id, Serial
   property :name, Text
-  property :content, Text
+  property :content, Text, :default => ""
   property :created_at, DateTime
+  property :module, Text, :default => ""
   
   has n, :headers,  :class_name => Webbastic::Header
   
@@ -12,15 +13,11 @@ class Webbastic::Widget
   
   is :nested_set, :scope => [:page_id]
   
-  after :create, :default_values
+  after :create, :default_headers
   
   # Add :dirty header to only re-generate this page
   after :update, :page_is_dirty
-  
-  def default_values
-    default_headers
-    default_content
-  end
+  after :update, :generate_content
   
   def default_headers
     self.widget_headers.each do |name, content|
@@ -29,16 +26,8 @@ class Webbastic::Widget
     end
   end
   
-  def default_content
+  def generate_content
     self.update_attributes :content => self.widget_content
-  end
-  
-  def widget_headers
-    []
-  end
-  
-  def widget_content
-    ""
   end
       
   JS_ESCAPE_MAP = {

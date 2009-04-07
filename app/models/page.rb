@@ -111,6 +111,7 @@ class Webbastic::Page
     content = ""
     
     self.widgets.each do |widget|
+      widget.extend(widget.module) unless widget.module.empty?
       content += (widget.content || "")
     end
     
@@ -178,7 +179,7 @@ class Webbastic::Page
     end
     
     # create widget if non-existent
-    self.add_widget Webbastic::Helpers::Widgets::StaticWidget.create
+    self.add_widget Webbastic::Widget.create :name => "Static Widget"
   end
   
   def add_widget(widget)
