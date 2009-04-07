@@ -17,11 +17,11 @@ module Webbastic
                                           :class => :wymeditor}
                                           
           submit = self_closing_tag :input, {:type => :submit, 
-                                             :value => "Update Content", 
+                                             :value => "Update Content #{self.id}", 
                                              :class => "wymupdate"}
           
           
-          form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, self.id), 
+          form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, :id => self.id), 
                                                                 :method => :post}
           
           script = tag :script, "$('.wymeditor').wymeditor({html:'#{self.content}'});",
