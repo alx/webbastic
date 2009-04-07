@@ -11,18 +11,18 @@ module Webbastic
                                                    :name => :_method, 
                                                    :value => :put}
                                                    
-          text_area = tag :textarea, "", {:name => "widget[content]", 
-                                          :rows => 20, 
-                                          :cols => 100,
-                                          :class => :wymeditor}
+          input_area = tag :textarea, "", {:name => "widget[content]", 
+                                           :rows => 20, 
+                                           :cols => 100,
+                                           :class => :wymeditor}
                                           
           submit = self_closing_tag :input, {:type => :submit, 
                                              :value => "Update Content #{self.id}", 
                                              :class => "wymupdate"}
           
           
-          form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, :id => self.id), 
-                                                                :method => :post}
+          form = tag :form, input_method + input_area + submit, {:action => Merb::Router.url(:webbastic_widget, :id => self.id), 
+                                                                 :method => :post}
           
           script = tag :script, "$('.wymeditor').wymeditor({html:'#{self.content}'});",
                       {:type => "text/javascript"}
@@ -33,6 +33,20 @@ module Webbastic
       end
       
       module RssWidget
+        
+        def edit_partial
+          rss_link        = self.headers.first(:name => 'rss_link').content
+          rss_item_length = self.headers.first(:name => 'rss_item_length').content
+          
+          input_method = self_closing_tag :input, {:type => :hidden, 
+                                                   :name => :_method, 
+                                                   :value => :put}
+          
+          input_area = tag :input, rss_link, {:name => "widget[header][rss_link]", :type => :text}
+                                                   
+          form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, :id => self.id), 
+                                                                :method => :post}
+        end
         
         def widget_headers
           [['rss_link', 'http://alexgirard.com/rss.xml'], 
