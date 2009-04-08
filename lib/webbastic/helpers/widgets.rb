@@ -17,7 +17,7 @@ module Webbastic
                                            :class => :wymeditor}
                                           
           submit = self_closing_tag :input, {:type => :submit, 
-                                             :value => "Update Content #{self.id}", 
+                                             :value => "Update Content", 
                                              :class => "wymupdate"}
           
           
