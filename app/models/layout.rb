@@ -69,7 +69,7 @@ class Webbastic::Layout
   
   def generate
     self.generate_header
-    self.not_dirty
+    #self.not_dirty
   end
   
   # Generate YAML header from current page eader and its children
