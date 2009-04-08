@@ -31,7 +31,7 @@ class Webbastic::Layout
   def create_defaults
     self.headers.create :name => "extension", :content => "html"
     self.headers.create :name => "filter", :content => "erb"
-    self.headers.create :name => "dirty", :content => true
+    # self.headers.create :name => "dirty", :content => true
   end
   
   # =====

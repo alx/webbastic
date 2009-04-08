@@ -17,7 +17,7 @@ class Webbastic::Widget
   after :create, :default_headers
   
   # Add :dirty header to only re-generate this page
-  after :update, :page_is_dirty
+  # after :update, :page_is_dirty
   
   def default_headers
     if load_module && defined? self.widget_headers
