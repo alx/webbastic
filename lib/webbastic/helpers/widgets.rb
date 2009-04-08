@@ -35,17 +35,25 @@ module Webbastic
       module RssWidget
         
         def edit_partial
-          rss_link        = self.headers.first(:name => 'rss_link').content
-          rss_item_length = self.headers.first(:name => 'rss_item_length').content
-          
           input_method = self_closing_tag :input, {:type => :hidden, 
                                                    :name => :_method, 
                                                    :value => :put}
           
-          input_area = tag :input, rss_link, {:name => "widget[header][rss_link]", :type => :text}
+          input_area = header_input("rss_link") << "<br/>" << header_input("rss_item_lenght")
                                                    
           form = tag :form, input_method + text_area + submit, {:action => Merb::Router.url(:webbastic_widget, :id => self.id), 
                                                                 :method => :post}
+        end
+        
+        def header_input(header_name)
+          header = self.headers.first(:name => header_name).content
+          dom_id = "header-#{header_name}-#{header.id}"
+          tag :label, header_name, {:for => dom_id} do
+            tag :input, header, {:name  => "widget[header][#{header_name}]", 
+                                 :type  => :text, 
+                                 :id    => dom_id,
+                                 :class => "input-header"}
+          end
         end
         
         def widget_headers
