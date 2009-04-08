@@ -16,20 +16,20 @@ module Merb
                  Merb::Const::EMPTY_STRING
                end
         
-        Merb.logger.info "[Merb::Rack::PageSlug] Path: #{path}"
-        Merb.logger.info "[Merb::Rack::PageSlug] File.extname(path).empty?: #{File.extname(path).empty?}"
-        Merb.logger.info "[Merb::Rack::PageSlug] path.slice().nil?: #{path.slice("/").nil?}"
+        Merb.logger.debug "[Merb::Rack::PageSlug] Path: #{path}"
+        Merb.logger.debug "[Merb::Rack::PageSlug] File.extname(path).empty?: #{File.extname(path).empty?}"
+        Merb.logger.debug "[Merb::Rack::PageSlug] path.slice().nil?: #{path.slice("/").nil?}"
         
         # Verify path doesn't contain extension (won't be a page slug)
         # and that it doesn't contain / char (no deep slug)
         if path != "/" && File.extname(path).empty? && path !~ /.*\//
           
-          Merb.logger.info "[Merb::Rack::PageSlug] Get ::Webbastic::Header"
+          Merb.logger.debug "[Merb::Rack::PageSlug] Get ::Webbastic::Header"
           
           # Get the header corresponding to the slug if it exists
           if path = page_path_from_header(path)
             
-            Merb.logger.info "[Merb::Rack::PageSlug] Page path: #{path}"
+            Merb.logger.debug "[Merb::Rack::PageSlug] Page path: #{path}"
             
             # Serve the file if it's there and the request method is GET or HEAD
             if file_exist?(path) && env[Merb::Const::REQUEST_METHOD] =~ /GET|HEAD/ 
@@ -52,7 +52,7 @@ module Merb
       # :api: private
       def page_path_from_header(slug)
         if header = ::Webbastic::Header.first(:name => 'page-slug', :content => slug)
-          Merb.logger.info "[Merb::Rack::PageSlug] Build page path: #{header.page.name} << .html"
+          Merb.logger.debug "[Merb::Rack::PageSlug] Build page path: #{header.page.name} << .html"
           return header.page.name.gsub(".txt", "") << ".html"
         end
         nil
