@@ -22,7 +22,7 @@ class Webbastic::Page
   # after :update, :is_dirty
   
   # Delete page from filesystem
-  before :destroy, :delete_page
+  before :destroy, :delete_file
   
   # =====
   #
