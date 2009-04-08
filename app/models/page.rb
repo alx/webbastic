@@ -111,13 +111,14 @@ class Webbastic::Page
     content = ""
     
     self.widgets.each do |widget|
-      widget.extend(widget.module) unless widget.module.empty?
+      widget.load_module
       widget.generate_content
       content += (widget.content || "")
     end
     
     update_attributes(:generated_content => content)
   end
+  
   
   # =====
   #
