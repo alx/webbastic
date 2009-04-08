@@ -55,11 +55,9 @@ class Webbastic::Page
     
     # if dirty?
       generate
-    
-      filename = absolute_path.gsub(".txt", "")
-      delete_file filename
       
-      File.open(filename, 'w+') do |f| 
+      delete_file
+      File.open(absolute_path.gsub(".txt", ""), 'w+') do |f| 
         f.write(generated_header)
         f.write(generated_content)
       end
@@ -67,7 +65,8 @@ class Webbastic::Page
     # end
   end
   
-  def delete_file(filename)
+  def delete_file
+    filename = absolute_path.gsub(".txt", "")
     File.delete filename if File.exists? filename
   end
   
