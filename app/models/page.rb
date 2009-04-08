@@ -80,7 +80,7 @@ class Webbastic::Page
   def generate
     generate_header
     generate_content
-    not_dirty
+    #not_dirty
   end
   
   # Generate YAML header from current page eader and its children
