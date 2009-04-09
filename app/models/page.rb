@@ -10,6 +10,16 @@ class Webbastic::Page
   property :generated_header, Text, :default => ""
   property :generated_content, Text, :default => ""
   
+  has n, :associated_pages, :class_name => ::Webbastic::AssociatedPage
+  has n, :pages,            :class_name => ::Webbastic::AssociatedPage,
+                            :through => :associated_pages, 
+                            :remote_name => :parent_page, 
+                            :child_key => [:parent_page_id]
+  has n, :associated_to,    :class_name => ::Webbastic::AssociatedPage,
+                            :through => :associated_pages,
+                            :remote_name => :page,
+                            :child_key => [:page_id]
+  
   belongs_to :site,         :class_name => Webbastic::Site,       :child_key => [:site_id]
   belongs_to :layout,       :class_name => Webbastic::Layout,     :child_key => [:layout_id]
   belongs_to :content_dir,  :class_name => Webbastic::ContentDir, :child_key => [:content_dir_id]
@@ -22,6 +32,7 @@ class Webbastic::Page
   # after :update, :is_dirty
   
   # Delete page from filesystem
+  before :destroy, :delete_associated_pages
   before :destroy, :delete_file
   
   # =====
@@ -68,6 +79,12 @@ class Webbastic::Page
   def delete_file
     filename = absolute_path.gsub(/\.txt$/, "")
     File.delete filename if File.exists? filename
+  end
+  
+  def delete_associated_pages
+    self.associated_pages.each do |page|
+      page.destroy
+    end
   end
   
   # =====

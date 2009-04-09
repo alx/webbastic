@@ -90,24 +90,23 @@ module Webbastic
         def edit_partial
           list_html(MediaRocket::Gallery.all)
         end
-
-        def widget_headers
-          [['gallery_id', 1]]
-        end
         
         def gallery_id
           self.headers.first(:name => 'gallery_id').content
         end
 
         def widget_content
-          if Merb.const_defined? :MediaRocket
-            # Find gallery header, and be sure some galleries are inside the system
-            # if not present, display all galleries thumbnail
-            if MediaRocket::Gallery.all.size > 0
-              gallery = MediaRocket::Gallery.first(:id => self.gallery_id)
-              content = list_html(gallery.medias.select{|media| media.original?})
-            else
-              content = list_html(MediaRocket::Gallery.all)
+          # Widget has gallery_id header, just display this gallery
+          if gallery_id
+            list_html MediaRocket::Gallery.first(:id => gallery_id).original_medias
+          else
+            MediaRocket::Gallery.all.each do |gallery|
+              # Create new widget with specific gallery to display
+              @widget = MediaListWidget.create
+              @widget.headers.create :name => :gallery_id, :content => gallery.id
+              # Create an associated page to display this widget
+              @page = self.page.associated_pages.create :name => gallery.name
+              @page.add_widget @widget
             end
           end
         end # def widget_content
@@ -117,7 +116,7 @@ module Webbastic
         def list_html(medias)
           list = ""
           medias.each do |media|
-            list << "<li><img src='" << media.icon << "'><br>" << media.title || media.name << "</li>"
+            list << "<li><img src='" << media.icon << "'><br>" << media.title << "</li>"
           end
           "<ul>#{list}</ul>"
         end # def list_html
