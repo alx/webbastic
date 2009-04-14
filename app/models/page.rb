@@ -11,11 +11,11 @@ class Webbastic::Page
   property :generated_content, Text, :default => ""
   
   has n, :associated_pages, :class_name => ::Webbastic::AssociatedPage
-  has n, :pages,            :class_name => ::Webbastic::AssociatedPage,
+  has n, :pages,            :class_name => ::Webbastic::Page,
                             :through => :associated_pages, 
                             :remote_name => :parent_page, 
                             :child_key => [:parent_page_id]
-  has n, :associated_to,    :class_name => ::Webbastic::AssociatedPage,
+  has n, :associated_to,    :class_name => ::Webbastic::Page,
                             :through => :associated_pages,
                             :remote_name => :page,
                             :child_key => [:page_id]
@@ -85,6 +85,12 @@ class Webbastic::Page
     self.associated_pages.each do |page|
       page.destroy
     end
+  end
+  
+  # Return link to this page
+  # Return slug if page has corresponding header
+  def link
+    return slug = self.header_content(:slug) ? slug : self.name << ".html"
   end
   
   # =====

@@ -60,4 +60,25 @@ class Webbastic::Widget
   def page_is_dirty
     self.page.is_dirty if self.page
   end
+  
+  # =====
+  #
+  # Headers
+  #
+  # =====
+  
+  def add_header(name, content)
+    if header = self.headers.first(:name => name)
+      header.update_attributes(:content => content)
+    else
+      self.headers.create :name => name,
+                          :content => content
+    end
+  end
+  
+  def header_content(header_name)
+    if header = self.headers.first(:name => header_name)
+      return header.content
+    end
+  end
 end

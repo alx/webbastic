@@ -110,7 +110,7 @@ class Webbastic::Site
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
     Webby.site.template_dir   = self.template_dir
-    Webby.site.output_dir     = File.join(Merb.root, 'public')
+    Webby.site.output_dir     = self.output_dir
     
     # Use directory => '.' option to generate the site in output_dir
     Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
@@ -127,6 +127,11 @@ class Webbastic::Site
   # Site path
   #
   # =====
+  
+  def output_dir(options = {})
+    options[:dir] = "generate"
+    build_webby_path(options)
+  end
   
   def content_dir(options = {})
     options[:dir] = "content"
