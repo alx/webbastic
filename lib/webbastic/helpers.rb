@@ -2,6 +2,7 @@ helpers = Pathname(__FILE__).dirname.expand_path / "helpers"
 require helpers / "assets"
 require helpers / "content"
 require helpers / "export"
+require helpers / "widgets"
 
 module Webbastic
   module Helpers
