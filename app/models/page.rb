@@ -170,16 +170,18 @@ class Webbastic::Page
   # =====
   
   def add_header(name, content)
-    if header = self.headers.first(:name => name)
+    if header = Webbastic::Header.first(:page_id => self.id, :name => name)
       header.update_attributes(:content => content)
     else
-      self.headers.create :name => name,
-                          :content => content
+      Webbastic::Header.create :name => name,
+                               :content => content
+                               :page_id => self.id
     end
+    self.headers.reload
   end
   
   def header_content(header_name)
-    if header = self.headers.first(:name => header_name)
+    if header = Webbastic::Header.first(:page_id => self.id, :name => header_name)
       return header.content
     end
   end

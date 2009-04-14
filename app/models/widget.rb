@@ -51,12 +51,6 @@ class Webbastic::Widget
     content.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { JS_ESCAPE_MAP[$1] }
   end
   
-  def header_content(header_name)
-    if header = self.headers.first(:name => header_name)
-      return header.content
-    end
-  end
-  
   def page_is_dirty
     self.page.is_dirty if self.page
   end
@@ -68,16 +62,18 @@ class Webbastic::Widget
   # =====
   
   def add_header(name, content)
-    if header = self.headers.first(:name => name)
+    if header = Webbastic::Header.first(:widget_id => self.id, :name => header_name)
       header.update_attributes(:content => content)
     else
-      self.headers.create :name => name,
-                          :content => content
+       Webbastic::Header.create :name => name,
+                                :content => content,
+                                :widget_id => self.id
     end
+    self.headers.reload
   end
   
   def header_content(header_name)
-    if header = self.headers.first(:name => header_name)
+    if header = Webbastic::Header.first(:widget_id => self.id, :name => header_name)
       return header.content
     end
   end

@@ -110,15 +110,21 @@ module Webbastic
         end # def widget_content
         
         def create_gallery_page(gallery)
+          
           # Create a new associated page that'll store the specific gallery
           log "create new page for gallery: #{gallery.name} - #{gallery.id}"
           current_site = self.page.site
+          
           unless gallery_page = current_site.pages.first(:name => gallery.name)
+            
             gallery_page = current_site.pages.create :name => gallery.name
             gallery_page.associated_pages.create(:parent_page => self.page)
+            
             # Create a widget with the necessary gallery_id
             widget = gallery_page.widgets.create :module => "MediaListWidget"
             widget.add_header "gallery_id", gallery.id
+            gallery_page.widgets.reload
+            
             # Write file that would be display on site
             log "generate page #{gallery_page.name}"
             gallery_page.write_file
@@ -127,10 +133,10 @@ module Webbastic
         end
         
         def log(message)
-          Merb.logger.info " ===== "
-          Merb.logger.info " [Webbastic::Helpers::Widgets::GalleryBuilderWidget]"
-          Merb.logger.info message
-          Merb.logger.info " ===== "
+          Merb.logger.debug " ===== "
+          Merb.logger.debug " [Webbastic::Helpers::Widgets::GalleryBuilderWidget]"
+          Merb.logger.debug message
+          Merb.logger.debug " ===== "
         end
         
         # Build hmtl content for a list of media or gallery
@@ -161,7 +167,7 @@ module Webbastic
 
         def widget_content
           # Widget has gallery_id header, just display this gallery
-          if gallery_id = self.header_content('gallery_id')
+          if gallery_id = self.header_content(:gallery_id)
             log "generate widget_content for #{self.page.name} with gallery #{gallery_id}"
             list_html MediaRocket::Gallery.get(gallery_id).original_medias
           end
@@ -180,10 +186,10 @@ module Webbastic
         end # def list_html
         
         def log(message)
-          Merb.logger.info " ===== "
-          Merb.logger.info " [Webbastic::Helpers::Widgets::MediaListWidget]"
-          Merb.logger.info message
-          Merb.logger.info " ===== "
+          Merb.logger.debug " ===== "
+          Merb.logger.debug " [Webbastic::Helpers::Widgets::MediaListWidget]"
+          Merb.logger.debug message
+          Merb.logger.debug " ===== "
         end
       end # class MediaListWidget
     end # if Merb.const_defined? :MediaRocket
