@@ -174,7 +174,7 @@ class Webbastic::Page
       header.update_attributes(:content => content)
     else
       Webbastic::Header.create :name => name,
-                               :content => content
+                               :content => content,
                                :page_id => self.id
     end
     self.headers.reload
