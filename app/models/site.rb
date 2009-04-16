@@ -8,6 +8,7 @@ class Webbastic::Site
   has n, :pages,  :class_name => Webbastic::Page
   has n, :layouts,  :class_name => Webbastic::Layout
   has n, :folders,  :class_name => Webbastic::ContentDir
+  has 1, :default_layout, :class_name =>  Webbastic::Layout, :default=>1
   
   after :create, :create_defaults
   
@@ -173,10 +174,6 @@ class Webbastic::Site
   # Misc
   #
   # =====
-  
-  def default_layout
-    self.layouts.first
-  end
   
   def status
     "generated"
