@@ -43,8 +43,13 @@ class Webbastic::Sites < Webbastic::Application
   def update
     @site = Webbastic::Site.get(params[:id])
     raise NotFound unless @site
-    if @site.update_attributes(params[:site])
-       redirect url(:webbastic_site, @site)
+    
+    if params[:default_layout]
+      @site.update_attributes :default_layout => Webbastic::Layout.first(:id => params[:default_layout])
+      redirect url(:webbastic_site, @site)
+    elsif params[:site]
+      @site.update_attributes(params[:site])
+      redirect url(:webbastic_site, @site)
     else
       display @site, :edit
     end
