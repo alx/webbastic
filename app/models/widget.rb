@@ -62,7 +62,7 @@ class Webbastic::Widget
   # =====
   
   def add_header(name, content)
-    if header = Webbastic::Header.first(:widget_id => self.id, :name => header_name)
+    if header = Webbastic::Header.first(:widget_id => self.id, :name => name)
       header.update_attributes(:content => content)
     else
        Webbastic::Header.create :name => name,
