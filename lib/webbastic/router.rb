@@ -6,15 +6,16 @@ module Webbastic
       Merb::Router.prepare do
         
         scope.identify DataMapper::Resource => :id do |s|
-          s.resources :pages,   ::Webbastic::Pages do |r|
-            r.resources :widgets, ::Webbastic::Widgets
+          s.resources :headers,     ::Webbastic::Headers
+          s.resources :pages,       ::Webbastic::Pages do |r|
+            r.resources :widgets,     ::Webbastic::Widgets
           end
-          s.resources :widgets, ::Webbastic::Widgets
-          s.resources :sites,   ::Webbastic::Sites do |r|
-            r.resources :layouts, ::Webbastic::Layouts
-            r.resources :pages,   ::Webbastic::Pages do |p|
-              p.resources :widgets, ::Webbastic::Widgets
-              p.resources :layouts, ::Webbastic::Layouts
+          s.resources :widgets,     ::Webbastic::Widgets
+          s.resources :sites,       ::Webbastic::Sites do |r|
+            r.resources :layouts,     ::Webbastic::Layouts
+            r.resources :pages,       ::Webbastic::Pages do |p|
+              p.resources :widgets,     ::Webbastic::Widgets
+              p.resources :layouts,     ::Webbastic::Layouts
             end
           end
         end

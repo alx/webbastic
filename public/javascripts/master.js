@@ -27,5 +27,5 @@ $(document).ready(function() {
 	// ===== 
 	
 	$('#file_tree').fileTree({ root: '', script: 'content' });
-	
+ 
 });

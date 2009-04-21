@@ -1,22 +1,16 @@
 <tr id="header-<%= header.id %>" class="<%= row_class %>">
-	<td class="left">
-		<label for="header[<%= header.id %>][name]" class="hidden">Key</label>
-		<input type="text" value="<%= header.name %>" size="20" tabindex="6" id="header[<%= header.id %>][name]" name="meta[3][key]"/>
-		<div class="submit">
-			<input type="submit" value="Delete" tabindex="6" class="deleteheader" name="deleteheader[<%= header.id %>]"/>
-		</div>
-		<% case type
-			when :layout %>
-			<input type="hidden" value="<%= header.layout.id %>" name="header[layout_id]" id="header[<%= header.layout.id %>]"/>
-		<%	when :page %>
-			<input type="hidden" value="<%= header.page.id %>" name="header[page_id]" id="header[<%= header.page.id %>]"/>
-		<% end %>
-	</td>
-	
+	<td class="label"><%= header.name %></td>
 	<td>
-		<label for="header[<%= header.id %>][content]" class="hidden">Value</label>
-		<textarea cols="30" rows="2" tabindex="6" id="header[<%= header.id %>][content]" name="header[<%= header.id %>][content]">
-		<%= header.content %>
-		</textarea>
+		<span class="editable" id="edit_header_<%= header.id %>" style="display: inline"><%= header.content %></span>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				$('#edit_header_<%= header.id %>').editable("<%= url(:webbastic_header, header.id) %>", {
+					type     	: 'text',
+					method		: 'PUT',
+					name		: 'header[content]',
+					submitdata 	: {id: "<%= header.id %>"}
+				});
+			});
+		</script>
 	</td>
 </tr>
