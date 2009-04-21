@@ -152,6 +152,10 @@ module Webbastic
             widget.add_header "gallery_id", gallery.id
             gallery_page.widgets.reload
             
+            # Add header to not display this page in the admin
+            gallery_page.headers.create :name => "admin_page_show", :content => "false"
+            gallery_page.headers.reload
+            
             # Write file that would be display on site
             log "generate page #{gallery_page.name}"
             gallery_page.write_file
