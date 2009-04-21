@@ -3,6 +3,10 @@ class Webbastic::Pages < Webbastic::Application
   # GET /pages
   def index
     @pages = Webbastic::Page.all :site_id => params[:site_id]
+    @pages = @pages.select do |page| 
+      header = page.header_content("admin_page_show")
+      header.nil? || header != "false"
+    end
     display @pages
   end
 
