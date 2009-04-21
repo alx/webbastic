@@ -25,18 +25,17 @@ class Webbastic::Site
     # TODO: elegant regexp for Merb.root folder
     self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) 
     
-    path = File.join("webby", self.name)
+    index = File.join("webby", self.name, "content", "index")
     
-    # Generate webby app with this site parameters
-    # use --force to rewrite website (avoid console prompt on overwrite)
-    Webby::Apps::Generator.new.run ["--force",  # options
-                                    "website",  # template
-                                    path]       # path
-                                    
-    # rename index file, without extension
-    index_file = File.join(path, "content", "index.txt")
-    if File.exists?(index_file)
-      File.rename index_file, File.join(path, "content", "index")
+    unless File.exists? index
+      # Generate webby app with this site parameters
+      # use --force to rewrite website (avoid console prompt on overwrite)
+      Webby::Apps::Generator.new.run ["--force",  # options
+                                      "website",  # template
+                                      path]       # path
+                                      
+      # rename index file, without extension
+      File.rename "#{index}.txt", index
     end
   end
   
@@ -104,7 +103,6 @@ class Webbastic::Site
   # Generate site content base on its structure
   #
   def generate
-    
     self.layouts.each {|layout| layout.write_file}
     self.pages.each {|page| page.write_file}
     

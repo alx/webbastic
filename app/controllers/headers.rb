@@ -4,11 +4,8 @@ class Webbastic::Headers < Webbastic::Application
   def update
     @header = Webbastic::Header.get(params[:id])
     raise NotFound unless @header
-    if @header.update_attributes(params[:header])
-      true
-    else
-      false
-    end
+    @header.update_attributes(params[:header])
+    params[:header][:content]
   end
 
   # DELETE /headers/:id
@@ -16,7 +13,7 @@ class Webbastic::Headers < Webbastic::Application
     @header = Webbastic::Header.get(params[:id])
     raise NotFound unless @header
     if @header.destroy
-      true
+      display false
     else
       raise InternalServerError
     end
