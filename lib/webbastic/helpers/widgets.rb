@@ -123,6 +123,8 @@ module Webbastic
         #
         
         def edit_partial
+          tag(:h2, "Select Galleries to display") <<
+          tag(:span, "Select all || Deselect all") <<
           list_html(MediaRocket::Gallery.all)
         end
         
@@ -174,14 +176,14 @@ module Webbastic
         # as long as the object accepts .thumbnail method
         def list_html(medias)
           list = ""
-          log "list_html: #{medias.size}"
           medias.each do |media|
-            log "media: #{media.title}"
-            list << "<li><img src='" << media.icon << "'><br>" << media.title << "</li>"
+            select_gallery = "<input class='checkbox_gallery' type='checkbox' value='something' name='gallery_#{media.id}'/>"
+            select_gallery << "<label for='checkbox_gallery'>Display</label>"
+            img = "<li><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</li>"
+            list << img
           end
           "<ul>#{list}</ul>"
         end # def list_html
-      end
       
       module MediaListWidget
         

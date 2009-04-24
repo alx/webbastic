@@ -50,6 +50,11 @@ class Webbastic::Widgets < Webbastic::Application
   def update
     @widget = Webbastic::Widget.get(params[:id])
     raise NotFound unless @widget
+    
+    if params[:header]
+      @widget.add_header params[:header][:name], params[:header][:content]
+    end
+    
     if @widget.update_attributes(params[:widget])
        display @widget, :show
     else

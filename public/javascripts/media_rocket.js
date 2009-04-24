@@ -81,4 +81,27 @@ $(document).ready(function() {
 		}
 		return false; 
 	});
+	
+	//
+	// In gallery builder widget, user can select the gallery to be displayed after generation
+	// Send id of selected galleries to widget headers "displayed_galleries"
+	//
+	$('.checkbox_gallery').livequery('click', function(event) {
+		
+		// Fetch widget_id
+		widget_id = $(this).parents('select').name.split("_").pop();
+		;
+		// Build gallery ids list that will be the content of the widget header "displayed_galleries"
+		galleries = "";
+		$(this).parents('select').children('option').each {
+			galleries += $(this).name.split("_").pop() + ",";
+		};
+
+		// query on widgets to modify header
+		$.post("/widgets/" + widget_id, { header: { name: 'displayed_galleries',
+													content: galleries},
+										_method: "PUT"
+		});
+		return false; 
+	});
 });
