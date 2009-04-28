@@ -123,19 +123,49 @@ module Webbastic
         #
         
         def edit_partial
+          tag(:h2, "Options") <<
+          tag(:p, "Number of columns: " << edit_header(self.header_content("gallery_columns"))) <<
           tag(:h2, "Select Galleries to display") <<
           tag(:span, "Select all || Deselect all") <<
           list_html(MediaRocket::Gallery.all)
         end
         
+        def edit_header(header)
+          
+          editable_script = "
+            $(document).ready(function() {
+      				$('#edit_header_#{header.id}').editable('#{url(:webbastic_header, header.id)}', {
+      					type     	: 'text',
+      					method		: 'PUT',
+      					name		: 'header[content]',
+      					submitdata 	: {id: '#{header.id}'}
+      				});
+      			});
+          "
+          
+          tag(:span, header.content, {:class => :editable,
+                                      :id => "edit_header_#{header.id}",
+                                      :style => "display: inline"}) <<
+          tag(:script, editable_script, {:type => "text/javascript",
+                                         :charset => "utf-8"})
+        end
+        
         def widget_content
-          list = ""
-          MediaRocket::Gallery.all.each do |gallery| 
-            page = create_gallery_page(gallery)
-            list << "<li><a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
-            list << page.name << "</li>"
+          @galleries = MediaRocket::Gallery.all
+          columns = self.header_content("gallery_columns").to_i
+          list = "<table>"
+          while @galleries.size > 0 do
+            list << "<tr>"
+            for i in columns do
+              if gallery = @galleries.pop
+                page = create_gallery_page(gallery)
+                list << "<td><a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
+                list << page.name << "</td>"
+              end
+            end
+            list << "</tr>"
           end
-          list
+          list << "</table>"
         end # def widget_content
         
         def create_gallery_page(gallery)
@@ -175,14 +205,14 @@ module Webbastic
         # Build hmtl content for a list of media or gallery
         # as long as the object accepts .thumbnail method
         def list_html(medias)
-          list = ""
+          list = "<ul>"
           medias.each do |media|
             select_gallery = "<input class='checkbox_gallery' type='checkbox' value='something' name='gallery_#{media.id}'/>"
             select_gallery << "<label for='checkbox_gallery'>Display</label>"
             img = "<li><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</li>"
             list << img
           end
-          "<ul>#{list}</ul>"
+          list << "</ul>"
         end # def list_html
       
       module MediaListWidget
