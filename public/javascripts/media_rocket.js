@@ -90,12 +90,12 @@ $(document).ready(function() {
 		
 		// Fetch widget_id
 		widget_id = $(this).parents('select').name.split("_").pop();
-		;
+
 		// Build gallery ids list that will be the content of the widget header "displayed_galleries"
-		galleries = "";
-		$(this).parents('select').children('option').each {
+		var galleries = "";
+		$(this).parents('select').children('option').each( function(index){
 			galleries += $(this).name.split("_").pop() + ",";
-		};
+		});
 
 		// query on widgets to modify header
 		$.post("/widgets/" + widget_id, { header: { name: 'displayed_galleries',

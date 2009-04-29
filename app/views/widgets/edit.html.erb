@@ -1,8 +1,1 @@
 <%= @widget.edit_partial %>
-
-<%= partial 'headers/list', :webby_headers => @widget.headers, :type => :widget %>
-
-<%= partial 'headers/form', 
-			:action => url(:webbastic_widget, @widget.id),
-			:type => :widget,
-			:obj_id => @widget.id %>

@@ -123,8 +123,9 @@ module Webbastic
         #
         
         def edit_partial
+          columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
           tag(:h2, "Options") <<
-          tag(:p, "Number of columns: " << edit_header(self.header_content("gallery_columns"))) <<
+          tag(:p, "Number of columns: " << edit_header(columns_header)) <<
           tag(:h2, "Select Galleries to display") <<
           tag(:span, "Select all || Deselect all") <<
           list_html(MediaRocket::Gallery.all)
@@ -134,7 +135,7 @@ module Webbastic
           
           editable_script = "
             $(document).ready(function() {
-      				$('#edit_header_#{header.id}').editable('#{url(:webbastic_header, header.id)}', {
+      				$('#edit_header_#{header.id}').editable('#{Merb::Router.url(:webbastic_header, :id => header.id)}', {
       					type     	: 'text',
       					method		: 'PUT',
       					name		: 'header[content]',
@@ -156,11 +157,11 @@ module Webbastic
           list = "<table>"
           while @galleries.size > 0 do
             list << "<tr>"
-            for i in columns do
+            columns.times do
               if gallery = @galleries.pop
                 page = create_gallery_page(gallery)
                 list << "<td><a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
-                list << page.name << "</td>"
+                list << "<span class='gallery_title'>" << gallery.name << "</span></td>"
               end
             end
             list << "</tr>"
