@@ -1,3 +1,5 @@
+Merb.logger.info! "=== Webbastic Lib ==="
+  
 if defined?(Merb::Plugins)
 
   $:.unshift File.dirname(__FILE__)
@@ -25,12 +27,13 @@ if defined?(Merb::Plugins)
     self.author = "Legodata"
     
     def self.init
+      ::Webbastc::Rack.setup
     end
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
     def self.loaded
-      require "webbastic/helpers"
+      Merb.logger.info! "=== Webbastic loaded ==="
       ::Webbastic::Helpers.setup
     end
     
@@ -67,8 +70,9 @@ if defined?(Merb::Plugins)
   dependency "hpricot"
   
   # Slice dependencies
+  require "webbastic/helpers"
   require "webbastic/router"
-  require "webbastic/rack/page_slug"
+  require "webbastic/rack"
   
   # stdlib dependencies
   require 'tempfile'
@@ -79,7 +83,6 @@ if defined?(Merb::Plugins)
   require 'ping'
   require 'fileutils'
   require 'open3'
-  
   
 end
 

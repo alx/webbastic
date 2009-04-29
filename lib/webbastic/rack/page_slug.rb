@@ -1,5 +1,6 @@
 module Merb
   module Rack
+    
     class PageSlug < Merb::Rack::Middleware
 
       # :api: private

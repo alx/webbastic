@@ -214,7 +214,7 @@ module Webbastic
           end
           list << "</ul>"
         end # def list_html
-      
+      end
       module MediaListWidget
         
         #
