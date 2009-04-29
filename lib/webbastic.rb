@@ -1,5 +1,3 @@
-Merb.logger.info! "=== Webbastic Lib ==="
-  
 if defined?(Merb::Plugins)
 
   $:.unshift File.dirname(__FILE__)
@@ -27,13 +25,12 @@ if defined?(Merb::Plugins)
     self.author = "Legodata"
     
     def self.init
-      ::Webbastc::Rack.setup
+      ::Webbastic::Rack.setup
     end
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
     def self.loaded
-      Merb.logger.info! "=== Webbastic loaded ==="
       ::Webbastic::Helpers.setup
     end
     

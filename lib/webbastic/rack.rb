@@ -1,8 +1,6 @@
-
 module Webbastic
   module Rack
     def self.setup
-      Merb.logger.info! "[Rack] loading PageSlug"
       Merb::Rack.autoload :PageSlug, 'webbastic/rack/page_slug'
     end
   end
