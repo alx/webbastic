@@ -124,11 +124,23 @@ module Webbastic
         
         def edit_partial
           columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
+          update_script = "
+          function update_widget(widget_content){
+            $.post(#{Merb::Router.url(:webbastic_widget, :id => self.id)},
+                    { header: { name: 'displayed_galleries',
+                      content: widget_content},
+                      _method: 'PUT'});
+          }
+          "
+          
           tag(:h2, "Options") <<
           tag(:p, "Number of columns: " << edit_header(columns_header)) <<
           tag(:h2, "Select Galleries to display") <<
           tag(:span, "Select all || Deselect all") <<
-          list_html(MediaRocket::Gallery.all)
+          list_html(MediaRocket::Gallery.all) <<
+          tag(:script, update_script, {:type => "text/javascript",
+                                         :charset => "utf-8"})
+      		"PUT"
         end
         
         def edit_header(header)

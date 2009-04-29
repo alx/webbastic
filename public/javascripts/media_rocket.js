@@ -97,11 +97,10 @@ $(document).ready(function() {
 			galleries += $(this).name.split("_").pop() + ",";
 		});
 
-		// query on widgets to modify header
-		$.post("/widgets/" + widget_id, { header: { name: 'displayed_galleries',
-													content: galleries},
-										_method: "PUT"
-		});
+		// query on widgets to modify header,
+		// method is defined in widget help to have the right route to header update
+		update_widget(galleries);
+
 		return false; 
 	});
 });
