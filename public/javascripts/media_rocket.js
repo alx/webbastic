@@ -40,7 +40,7 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$(".media_gallery_select").change(function() {
+	$("#media_gallery_select").change(function() {
 		// call method to load media_thumb_list
 		// with selected gallery
 		load_media_thumb_list(this.value);
@@ -51,7 +51,7 @@ $(document).ready(function() {
 	// call method to load media_thumb_list
 	// with first gallery
 	//
-	$(".media_gallery_select").ready(function() {
+	$("#media_gallery_select").ready(function() {
 		load_media_thumb_list(1);
 	});
 
