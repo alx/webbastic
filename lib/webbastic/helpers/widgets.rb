@@ -122,6 +122,10 @@ module Webbastic
         #   - each element of this gallery link to another page
         #
         
+        def widget_headers
+          [['gallery_columns', '4']]
+        end
+        
         def edit_partial
           columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
           update_script = "
