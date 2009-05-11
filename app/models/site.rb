@@ -248,6 +248,6 @@ class Webbastic::Site
     # Finally, replace all non alphanumeric, underscore or periods with underscore
     sanitized = filename.gsub /[^\w\.\-]/, '_'
     
-    sanitized
+    CGI.escape sanitized
   end
 end
