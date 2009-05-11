@@ -164,6 +164,7 @@ module Webbastic
         end
         
         def widget_content
+          log "widget_content"
           @galleries = MediaRocket::Gallery.all
           columns = self.header_content("gallery_columns").to_i
           list = "<table>"
