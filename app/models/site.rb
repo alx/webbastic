@@ -111,6 +111,8 @@ class Webbastic::Site
     Webby.site.template_dir   = self.template_dir
     Webby.site.output_dir     = self.output_dir
     
+    verify_path
+    
     # Use directory => '.' option to generate the site in output_dir
     Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
                                  'directory' => '.',
@@ -151,13 +153,16 @@ class Webbastic::Site
     webby_path =  options[:absolute] ? self.absolute_path  : self.relative_path
     
     # options[:dir] contains the name of the folder to fetch
-    path = options[:dir].nil? ? webby_path : File.join(webby_path, options[:dir])
-    
-    unless File.exists? path
-      FileUtils.mkdir_p path
+    options[:dir].nil? ? webby_path : File.join(webby_path, options[:dir])
+  end
+  
+  def verify_path
+    ["generate", "content", "layouts", "templates"].each do |path|
+      webby_path = File.join(self.absolute_path, path)
+      unless File.exists? webby_path
+        FileUtils.mkdir_p webby_path
+      end
     end
-    
-    path
   end
   
   def absolute_path
