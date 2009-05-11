@@ -110,8 +110,8 @@ class Webbastic::Site
     
     Webby.site.content_dir    = self.content_dir :absolute => true
     Webby.site.layout_dir     = self.layout_dir :absolute => true
-    Webby.site.template_dir   = self.template_dir
-    Webby.site.output_dir     = self.output_dir
+    Webby.site.template_dir   = self.template_dir :absolute => true
+    Webby.site.output_dir     = self.output_dir :absolute => true
     
     Merb.logger.debug "content_dir: #{Webby.site.content_dir}"
     Merb.logger.debug "layout_dir: #{Webby.site.layout_dir}"
