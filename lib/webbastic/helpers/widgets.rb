@@ -245,7 +245,7 @@ module Webbastic
           # Widget has gallery_id header, just display this gallery
           if gallery_id = self.header_content(:gallery_id)
             log "generate widget_content for #{self.page.name} with gallery #{gallery_id}"
-            list_html MediaRocket::Gallery.get(gallery_id).original_medias
+            list_html MediaRocket::Gallery.first(:id => gallery_id).original_medias
           end
         end # def widget_content
         
