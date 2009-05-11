@@ -164,7 +164,7 @@ class Webbastic::Site
         webby_current = File.join(Merb.root, "webby")
         webby_shared  = File.join(Merb.root, "..", "..", "shared", "webby")
         
-        File.move webby_current, webby_shared
+        FileUtils.mv   webby_current, webby_shared
         FileUtils.ln_s webby_shared, webby_current
       end
       shared_path
