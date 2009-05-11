@@ -41,7 +41,7 @@ class Webbastic::Layout
   # =====
   
   def relative_path(options = {})
-    File.join(self.site.layout_dir(options), self.name.gsub(/^.*(\\|\/)/, ''))
+    File.join(self.site.layout_dir(options), sanitize_filename(self.name))
   end
   
   def absolute_path
@@ -128,5 +128,22 @@ class Webbastic::Layout
   # Verify if page is dirty
   def dirty?
     return !self.headers.first(:name => :dirty).nil?
+  end
+  
+  # =====
+  #
+  # Misc
+  #
+  # =====
+   
+  def sanitize_filename(filename)
+    returning filename.strip do |name|
+      # NOTE: File.basename doesn't work right with Windows paths on Unix
+      # get only the filename, not the whole path
+      name.gsub! /^.*(\\|\/)/, ''
+
+      # Finally, replace all non alphanumeric, underscore or periods with underscore
+      name.gsub! /[^\w\.\-]/, '_'
+    end
   end
 end

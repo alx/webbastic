@@ -187,7 +187,7 @@ class Webbastic::Site
   end
   
   def relative_path
-    File.join("webby", self.name.gsub(/^.*(\\|\/)/, ''))
+    File.join("webby", sanitize_filename(self.name))
   end
   
   # =====
@@ -230,11 +230,23 @@ class Webbastic::Site
   
   # Remove the page content, return the headers
   def read_headers(page_content)
-     format = page_content.split("---")
-     if format.size > 0
+    format = page_content.split("---")
+    if format.size > 0
       return YAML.load(format[1])
-     else
-       return nil
-     end
-   end
+    else
+      return nil
+    end
+  end
+   
+  def sanitize_filename(filename)
+    returning filename.strip do |name|
+      # NOTE: File.basename doesn't work right with Windows paths on Unix
+      # get only the filename, not the whole path
+      name.gsub! /^.*(\\|\/)/, ''
+
+      # Finally, replace all non alphanumeric, underscore or periods with underscore
+      name.gsub! /[^\w\.\-]/, '_'
+    end
+  end
+   
 end

@@ -54,7 +54,7 @@ class Webbastic::Page
   # =====
   
   def relative_path(options = {})
-    File.join(self.site.content_dir(options), self.name.gsub(/^.*(\\|\/)/, ''))
+    File.join(self.site.content_dir(options), sanitize_filename(self.name))
   end
   
   def absolute_path
@@ -90,7 +90,7 @@ class Webbastic::Page
   # Return link to this page
   # Return slug if page has corresponding header
   def link
-    return slug = self.header_content(:slug) ? slug : self.name << ".html"
+    return slug = self.header_content(:slug) ? slug : sanitize_filename(self.name) << ".html"
   end
   
   # =====
@@ -232,4 +232,15 @@ class Webbastic::Page
   # Misc
   #
   # =====
+  
+  def sanitize_filename(filename)
+    returning filename.strip do |name|
+      # NOTE: File.basename doesn't work right with Windows paths on Unix
+      # get only the filename, not the whole path
+      name.gsub! /^.*(\\|\/)/, ''
+
+      # Finally, replace all non alphanumeric, underscore or periods with underscore
+      name.gsub! /[^\w\.\-]/, '_'
+    end
+  end
 end
