@@ -109,7 +109,7 @@ class Webbastic::Site
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
     Webby.site.template_dir   = self.template_dir
-    Webby.site.output_dir     = self.output_dir
+    Webby.site.output_dir     = self.output_dir :absolute => true
     
     verify_path
     
