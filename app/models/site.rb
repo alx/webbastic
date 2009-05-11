@@ -188,7 +188,6 @@ class Webbastic::Site
   
   def relative_path
     if File.symlink? Merb.root
-      verify_capistrano_path
       # Symlink is used in Capistrano, go fetch webby content in shared dir
       File.join("..", "..", "shared", self.relative_path)
     else
