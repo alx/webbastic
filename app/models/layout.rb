@@ -41,7 +41,7 @@ class Webbastic::Layout
   # =====
   
   def relative_path(options = {})
-    File.join(self.site.layout_dir(options), self.name)
+    File.join(self.site.layout_dir(options), self.name.gsub(/^.*(\\|\/)/, ''))
   end
   
   def absolute_path

@@ -165,28 +165,29 @@ class Webbastic::Site
     end
   end
   
+  def verify_capistrano_path
+    # If not already done, move webby to shared directory
+    unless File.exists? shared_path
+      webby_current = File.join(Merb.root, "webby")
+      webby_shared  = File.join(Merb.root, "..", "..", "shared", "webby")
+      
+      FileUtils.mv   webby_current, webby_shared
+      FileUtils.ln_s webby_shared, webby_current
+    end
+  end
+  
   def absolute_path
     if File.symlink? Merb.root
+      verify_capistrano_path
       # Symlink is used in Capistrano, go fetch webby content in shared dir
-      shared_path = File.join(Merb.root, "..", "..", "shared", self.relative_path)
-      
-      # If not already done, move webby to shared directory
-      unless File.exists? shared_path
-        webby_current = File.join(Merb.root, "webby")
-        webby_shared  = File.join(Merb.root, "..", "..", "shared", "webby")
-        
-        FileUtils.mv   webby_current, webby_shared
-        FileUtils.ln_s webby_shared, webby_current
-      end
-      shared_path
-      
+      File.join(Merb.root, "..", "..", "shared", self.relative_path)
     else
       File.join(Merb.root, self.relative_path)
     end
   end
   
   def relative_path
-    File.join("webby", self.name)
+    File.join("webby", self.name.gsub(/^.*(\\|\/)/, ''))
   end
   
   # =====

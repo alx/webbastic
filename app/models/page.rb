@@ -54,7 +54,7 @@ class Webbastic::Page
   # =====
   
   def relative_path(options = {})
-    File.join(self.site.content_dir(options), self.name)
+    File.join(self.site.content_dir(options), self.name.gsub(/^.*(\\|\/)/, ''))
   end
   
   def absolute_path
