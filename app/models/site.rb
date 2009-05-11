@@ -151,7 +151,13 @@ class Webbastic::Site
     webby_path =  options[:absolute] ? self.absolute_path  : self.relative_path
     
     # options[:dir] contains the name of the folder to fetch
-    options[:dir].nil? ? webby_path : File.join(webby_path, options[:dir])
+    path = options[:dir].nil? ? webby_path : File.join(webby_path, options[:dir])
+    
+    unless File.exists? path
+      FileUtils.mkdir_p path
+    end
+    
+    path
   end
   
   def absolute_path
