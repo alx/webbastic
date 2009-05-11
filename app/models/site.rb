@@ -119,7 +119,7 @@ class Webbastic::Site
     Merb.logger.debug "output_dir: #{Webby.site.output_dir}"
     
     # Use directory => '.' option to generate the site in output_dir
-    Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
+    Webby.site.page_defaults  = {'layout' => self.default_layout.absolute_path,
                                  'directory' => '.',
                                  'collision' => :force}
     
