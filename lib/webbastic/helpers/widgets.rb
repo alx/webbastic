@@ -144,7 +144,6 @@ module Webbastic
           list_html(MediaRocket::Gallery.all) <<
           tag(:script, update_script, {:type => "text/javascript",
                                          :charset => "utf-8"})
-      		"PUT"
         end
         
         def edit_header(header)
