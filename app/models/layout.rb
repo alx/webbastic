@@ -135,15 +135,15 @@ class Webbastic::Layout
   # Misc
   #
   # =====
-   
+  
   def sanitize_filename(filename)
-    returning filename.strip do |name|
-      # NOTE: File.basename doesn't work right with Windows paths on Unix
-      # get only the filename, not the whole path
-      name.gsub! /^.*(\\|\/)/, ''
+    filename.strip!
+    
+    # NOTE: File.basename doesn't work right with Windows paths on Unix
+    # get only the filename, not the whole path
+    filename.gsub! /^.*(\\|\/)/, ''
 
-      # Finally, replace all non alphanumeric, underscore or periods with underscore
-      name.gsub! /[^\w\.\-]/, '_'
-    end
+    # Finally, replace all non alphanumeric, underscore or periods with underscore
+    filename.gsub! /[^\w\.\-]/, '_'
   end
 end
