@@ -157,7 +157,18 @@ class Webbastic::Site
   def absolute_path
     if File.symlink? Merb.root
       # Symlink is used in Capistrano, go fetch webby content in shared dir
-      File.join(Merb.root, "..", "..", "shared", self.relative_path)
+      shared_path = File.join(Merb.root, "..", "..", "shared", self.relative_path)
+      
+      # If not already done, move webby to shared directory
+      unless File.exists? shared_path
+        webby_current = File.join(Merb.root, "webby")
+        webby_shared  = File.join(Merb.root, "..", "..", "shared", "webby")
+        
+        File.move webby_current, webby_shared
+        FileUtils.ln_s webby_shared, webby_current
+      end
+      shared_path
+      
     else
       File.join(Merb.root, self.relative_path)
     end
