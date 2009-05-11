@@ -106,18 +106,24 @@ class Webbastic::Site
     self.layouts.each {|layout| layout.write_file}
     self.pages.each {|page| page.write_file}
     
+    verify_path
+    
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
     Webby.site.template_dir   = self.template_dir
     Webby.site.output_dir     = self.output_dir
     
-    verify_path
+    Merb.logger.debug "content_dir: #{Webby.site.content_dir}"
+    Merb.logger.debug "layout_dir: #{Webby.site.layout_dir}"
+    Merb.logger.debug "template_dir: #{Webby.site.template_dir}"
+    Merb.logger.debug "output_dir: #{Webby.site.output_dir}"
     
     # Use directory => '.' option to generate the site in output_dir
     Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
                                  'directory' => '.',
                                  'collision' => :force}
-                                 
+    
+    Merb.logger.debug "page_defaults: #{Webby.site.page_defaults}"                             
     # returns nil if success 
     # Webby::Builder.run
     Webby::Builder.run :rebuild => true
