@@ -120,7 +120,7 @@ class Webbastic::Site
                                  
     # returns nil if success 
     # Webby::Builder.run
-    Webby::Builder.run {:rebuild => true, :verbose => true}
+    Webby::Builder.run [:rebuild => true, :verbose => true]
   end
   
   # =====
