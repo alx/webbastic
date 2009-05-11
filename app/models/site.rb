@@ -109,7 +109,7 @@ class Webbastic::Site
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
     Webby.site.template_dir   = self.template_dir
-    Webby.site.output_dir     = self.output_dir :absolute => true
+    Webby.site.output_dir     = self.output_dir
     
     verify_path
     
@@ -120,7 +120,7 @@ class Webbastic::Site
                                  
     # returns nil if success 
     # Webby::Builder.run
-    Webby::Builder.run :rebuild => true, :verbose => true
+    Webby::Builder.run :rebuild => true
   end
   
   # =====
@@ -187,7 +187,13 @@ class Webbastic::Site
   end
   
   def relative_path
-    File.join("webby", sanitize_filename(self.name))
+    if File.symlink? Merb.root
+      verify_capistrano_path
+      # Symlink is used in Capistrano, go fetch webby content in shared dir
+      File.join("..", "..", "shared", self.relative_path)
+    else
+      File.join("webby", sanitize_filename(self.name))
+    end
   end
   
   # =====
