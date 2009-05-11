@@ -167,7 +167,7 @@ class Webbastic::Site
   
   def verify_capistrano_path
     # If not already done, move webby to shared directory
-    unless File.exists? shared_path
+    unless File.exists? File.join(Merb.root, "..", "..", "shared", self.relative_path)
       webby_current = File.join(Merb.root, "webby")
       webby_shared  = File.join(Merb.root, "..", "..", "shared", "webby")
       
