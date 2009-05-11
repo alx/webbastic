@@ -193,12 +193,7 @@ class Webbastic::Site
   end
   
   def relative_path
-    if File.symlink? Merb.root
-      # Symlink is used in Capistrano, go fetch webby content in shared dir
-      File.join("..", "..", "shared", "webby", sanitize_filename(self.name))
-    else
-      File.join("webby", sanitize_filename(self.name))
-    end
+    File.join("webby", sanitize_filename(self.name))
   end
   
   # =====
