@@ -108,10 +108,10 @@ class Webbastic::Site
     
     verify_path
     
-    Webby.site.content_dir    = self.content_dir :absolute => true
-    Webby.site.layout_dir     = self.layout_dir :absolute => true
-    Webby.site.template_dir   = self.template_dir :absolute => true
-    Webby.site.output_dir     = self.output_dir :absolute => true
+    Webby.site.content_dir    = self.content_dir
+    Webby.site.layout_dir     = self.layout_dir
+    Webby.site.template_dir   = self.template_dir
+    Webby.site.output_dir     = self.output_dir
     
     Merb.logger.debug "content_dir: #{Webby.site.content_dir}"
     Merb.logger.debug "layout_dir: #{Webby.site.layout_dir}"
@@ -119,7 +119,7 @@ class Webbastic::Site
     Merb.logger.debug "output_dir: #{Webby.site.output_dir}"
     
     # Use directory => '.' option to generate the site in output_dir
-    Webby.site.page_defaults  = {'layout' => self.default_layout.absolute_path,
+    Webby.site.page_defaults  = {'layout' => self.default_layout.relative_path,
                                  'directory' => '.',
                                  'collision' => :force}
     
