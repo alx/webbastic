@@ -103,8 +103,8 @@ class Webbastic::Site
   # Generate site content base on its structure
   #
   def generate
-    self.layouts.each {|layout| layout.write_file}
-    self.pages.each {|page| page.write_file}
+    #self.layouts.each {|layout| layout.write_file}
+    #self.pages.each {|page| page.write_file}
     
     verify_path
     
