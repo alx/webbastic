@@ -111,7 +111,7 @@ class Webbastic::Page
     self.reload
     self.headers.reload
     
-    layout_path = self.current_layout.relative_path unless self.current_layout.nil?
+    layout_path = self.current_layout.absolute_path unless self.current_layout.nil?
     
     # Default header values
     yaml_headers = {'title' => self.name, 
