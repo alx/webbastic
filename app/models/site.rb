@@ -120,7 +120,7 @@ class Webbastic::Site
                                  
     # returns nil if success 
     # Webby::Builder.run
-    Webby::Builder.run :rebuild => true
+    Webby::Builder.run {:rebuild => true, :verbose => true}
   end
   
   # =====
@@ -209,17 +209,6 @@ class Webbastic::Site
   end
   
   protected
-  
-    def sanitize_filename(filename)
-      filename.strip do |name|
-        # NOTE: File.basename doesn't work right with Windows paths on Unix
-        # get only the filename, not the whole path
-        name.gsub! /^.*(\\|\/)/, ''
-
-        # Finally, replace all non alphanumeric, underscore or periods with underscore
-        name.gsub! /[^\w\.\-]/, '_'
-      end
-    end
   
   # Remove the page headers, return the content of the page
   def read_content(content)
