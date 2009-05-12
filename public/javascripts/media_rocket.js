@@ -53,7 +53,7 @@ $(document).ready(function() {
 	//
 	if ( $("#media_gallery_select").length > 0 ) {
 			load_media_thumb_list('first');
-	});
+	};
 
 	//
 	// User click on a thumbnail to be displayed in editor
