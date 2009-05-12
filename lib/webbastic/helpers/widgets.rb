@@ -131,13 +131,30 @@ module Webbastic
           update_script = "
           $(document).ready(function() {
              $('input.checkbox_gallery').click(function() {
-                var widget_content = '';
-                 $('input.checkbox_gallery:checked').each(function(index, item){
-                   gallery_id = item.name.split('_').pop();
-                   widget_content += gallery_id + ',';
-                 });
-                 var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
-                 $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+               var widget_content = '';
+               $('input.checkbox_gallery:checked').each(function(index, item){
+                 gallery_id = item.name.split('_').pop();
+                 widget_content += gallery_id + ',';
+               });
+               var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
+               $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+             });
+             
+             $('a.select_all').click(function() {
+               var widget_content = '';
+               $('input.checkbox_gallery').attr('checked', true);
+               $('input.checkbox_gallery').each(function(index, item){
+                 gallery_id = item.name.split('_').pop();
+                 widget_content += gallery_id + ',';
+               });
+               var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
+               $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+             });
+             
+             $('a.deselect_all').click(function() {
+               $('input.checkbox_gallery').attr('checked', true);
+               var data = '_method=PUT&header[name]=displayed_galleries&header[content]=0';
+               $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
              });
            });
           "
@@ -145,7 +162,7 @@ module Webbastic
           tag(:h2, "Options") <<
           tag(:p, "Number of columns: " << edit_header(columns_header)) <<
           tag(:h2, "Select Galleries to display") <<
-          tag(:span, "Select all || Deselect all") <<
+          tag(:span, "<a href='#' class='select_all'>Select all</a> || <a href='#' class='deselect_all'>Deselect all</a>") <<
           list_html(MediaRocket::Gallery.all) <<
           tag(:script, update_script, {:type => "text/javascript",
                                          :charset => "utf-8"})
