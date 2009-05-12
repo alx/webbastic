@@ -103,10 +103,10 @@ class Webbastic::Site
   # Generate site content base on its structure
   #
   def generate
+    verify_path
+    
     self.layouts.each {|layout| layout.write_file}
     self.pages.each {|page| page.write_file}
-    
-    verify_path
     
     Webby.site.content_dir    = self.content_dir
     Webby.site.layout_dir     = self.layout_dir
