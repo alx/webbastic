@@ -174,7 +174,7 @@ module Webbastic
         def widget_content
           
           if checked_galleries = self.header_content("displayed_galleries")
-            @galleries = MediaRocket::Gallery.all(:id => checked_galleries.split(','))
+            @galleries = MediaRocket::Gallery.all(:id => checked_galleries.split(',').collect{|x| x.to_i})
           else
             @galleries = MediaRocket::Gallery.all
           end
