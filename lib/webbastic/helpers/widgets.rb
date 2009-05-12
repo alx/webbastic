@@ -136,10 +136,8 @@ module Webbastic
                    gallery_id = item.name.split('_').pop();
                    widget_content += gallery_id + ',';
                  });
-
-                 $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}',
-                         { header[]: ['name: displayed_galleries', 'content: ' + widget_content],
-                           _method: 'PUT'});
+                 var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
+                 $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
              });
            });
           "
@@ -233,7 +231,7 @@ module Webbastic
         
         # Build hmtl content for a list of media or gallery
         # as long as the object accepts .thumbnail method
-        def list_html(medias)
+        def list_html(galleries)
           
           if checked_galleries = self.header_content("displayed_galleries")
             checked_galleries = checked_galleries.split(',')
@@ -243,15 +241,15 @@ module Webbastic
           
           list = "<table><tr>"
           column = 0
-          medias.each do |media|
+          galleries.each do |gallery|
             
-            select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{media.id}'"
+            select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{gallery.id}'"
             if all_checked || checked_galleries.include?(gallery.id)
               select_gallery << "CHECKED"
             end
             select_gallery << "/><label for='checkbox_gallery'>Display</label>"
             
-            img = "<td><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</td>"
+            img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << "</td>"
             list << img
             
             column += 1
