@@ -129,12 +129,20 @@ module Webbastic
         def edit_partial
           columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
           update_script = "
-          function update_widget(widget_content){
-            $.post(#{Merb::Router.url(:webbastic_widget, :id => self.id)},
-                    { header: { name: 'displayed_galleries',
-                      content: widget_content},
-                      _method: 'PUT'});
-          }
+          $(document).ready(function() {
+             $('input.checkbox_gallery').click(function() {
+                var widget_content = '';
+                 $('input.checkbox_gallery:checked').each(function(index, item){
+                   gallery_id = $('item').name.split('_').pop();
+                   widget_content += gallery_id + ',';
+                 });
+
+                 $.post(#{Merb::Router.url(:webbastic_widget, :id => self.id)},
+                         { header: { name: 'displayed_galleries',
+                           content: widget_content},
+                           _method: 'PUT'});
+             });
+           });
           "
           
           tag(:h2, "Options") <<
@@ -167,7 +175,6 @@ module Webbastic
         end
         
         def widget_content
-          log "widget_content"
           @galleries = MediaRocket::Gallery.all
           columns = self.header_content("gallery_columns").to_i
           list = "<table>"
@@ -222,14 +229,22 @@ module Webbastic
         # Build hmtl content for a list of media or gallery
         # as long as the object accepts .thumbnail method
         def list_html(medias)
-          list = "<ul>"
+          list = "<table><tr>"
+          column = 0
           medias.each do |media|
-            select_gallery = "<input class='checkbox_gallery' type='checkbox' value='something' name='gallery_#{media.id}'/>"
+            
+            select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{media.id}'/>"
             select_gallery << "<label for='checkbox_gallery'>Display</label>"
-            img = "<li><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</li>"
+            
+            img = "<td><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</td>"
             list << img
+            
+            column += 1
+            if column % 4 == 0
+              list << "<tr></tr>"
+            end
           end
-          list << "</ul>"
+          list << "</tr></table>"
         end # def list_html
       end
       module MediaListWidget
