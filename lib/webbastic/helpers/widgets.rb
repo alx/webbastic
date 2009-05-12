@@ -138,8 +138,7 @@ module Webbastic
                  });
 
                  $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}',
-                         { header: { name: 'displayed_galleries',
-                           content: widget_content},
+                         { header: 'name:displayed_galleries,content:' + widget_content,
                            _method: 'PUT'});
              });
            });
