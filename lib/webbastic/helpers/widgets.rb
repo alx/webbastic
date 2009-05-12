@@ -152,7 +152,7 @@ module Webbastic
              });
              
              $('a.deselect_all').click(function() {
-               $('input.checkbox_gallery').attr('checked', true);
+               $('input.checkbox_gallery').attr('checked', false);
                var data = '_method=PUT&header[name]=displayed_galleries&header[content]=0';
                $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
              });
