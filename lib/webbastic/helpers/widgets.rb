@@ -175,7 +175,13 @@ module Webbastic
         end
         
         def widget_content
-          @galleries = MediaRocket::Gallery.all
+          
+          if checked_galleries = self.header_content("displayed_galleries")
+            @galleries = MediaRocket::Gallery.all(:id => checked_galleries.split(','))
+          else
+            @galleries = MediaRocket::Gallery.all
+          end
+          
           columns = self.header_content("gallery_columns").to_i
           list = "<table>"
           while @galleries.size > 0 do
@@ -229,12 +235,22 @@ module Webbastic
         # Build hmtl content for a list of media or gallery
         # as long as the object accepts .thumbnail method
         def list_html(medias)
+          
+          if checked_galleries = self.header_content("displayed_galleries")
+            checked_galleries = checked_galleries.split(',')
+          else
+            all_checked = true
+          end
+          
           list = "<table><tr>"
           column = 0
           medias.each do |media|
             
-            select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{media.id}'/>"
-            select_gallery << "<label for='checkbox_gallery'>Display</label>"
+            select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{media.id}'"
+            if all_checked || checked_galleries.include?(gallery.id)
+              select_gallery << "CHECKED"
+            end
+            select_gallery << "/><label for='checkbox_gallery'>Display</label>"
             
             img = "<td><img src='" << media.icon << "'><br>" << media.title << select_gallery << "</td>"
             list << img
