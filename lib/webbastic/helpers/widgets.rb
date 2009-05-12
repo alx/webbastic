@@ -234,7 +234,7 @@ module Webbastic
         def list_html(galleries)
           
           if checked_galleries = self.header_content("displayed_galleries")
-            checked_galleries = checked_galleries.split(',')
+            checked_galleries = checked_galleries.split(',').collect{|x| x.to_i}
           else
             all_checked = true
           end
