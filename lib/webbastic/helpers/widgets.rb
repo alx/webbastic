@@ -133,7 +133,7 @@ module Webbastic
              $('input.checkbox_gallery').click(function() {
                 var widget_content = '';
                  $('input.checkbox_gallery:checked').each(function(index, item){
-                   gallery_id = $('item').name.split('_').pop();
+                   gallery_id = item.name.split('_').pop();
                    widget_content += gallery_id + ',';
                  });
 
