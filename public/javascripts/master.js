@@ -27,5 +27,16 @@ $(document).ready(function() {
 	// ===== 
 	
 	$('#file_tree').fileTree({ root: '', script: 'content' });
+	
+	// =====
+	//
+	// Generate spinner
+	//
+	// =====
+	
+	$('a.generate').click( function() {
+		$('#generate-status').addClass('hidden');
+		$('#generate-spinner').removeClass('hidden');
+	});
  
 });

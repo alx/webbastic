@@ -40,7 +40,12 @@ module Webbastic
       def admin_status(site)
         tag(:div, 
             "Current site: <b>#{site.name}</b><br>
-            <span class='#{site.status}'><a href='#{url(:webbastic_site_generate, site.id)}'>generate</a></span>", 
+            <span id='generate-status'>
+              <a href='#{url(:webbastic_site_generate, site.id)}' id='generate'>generate</a>
+            </span>
+            <span id='generate-spinner' class='hidden'>
+              <img src='#{webbastic_image_path 'icons/spinner.gif'}'/>generating...
+            </span>",
             :id => "admin_menu_status")
       end
       
