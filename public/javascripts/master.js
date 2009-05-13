@@ -34,9 +34,9 @@ $(document).ready(function() {
 	//
 	// =====
 	
-	$('a.generate').click( function() {
-		$('#generate-status').addClass('hidden');
-		$('#generate-spinner').removeClass('hidden');
+	$('a#generate').click( function() {
+		$('span#generate-status').addClass('hidden');
+		$('span#generate-spinner').removeClass('hidden');
 	});
  
 });
