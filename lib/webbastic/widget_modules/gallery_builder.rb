@@ -1,3 +1,5 @@
+mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication/France_O/Autre/2009/S18/35598_quoideneuf_20090428-450k-250k.wmv
+
 module Webbastic
   module WidgetModules
     module GalleryBuilderWidget
@@ -18,32 +20,64 @@ module Webbastic
         columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
         update_script = "
         $(document).ready(function() {
-           $('input.checkbox_gallery').click(function() {
+          
+           function post_header_value(header_name, header_value) {
+             var data = '_method=PUT&header[name]=' + header_name + '&header[content]='+header_value;
+             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+           }
+           
+           function post_displayed_galleries() {
              var widget_content = '';
              $('input.checkbox_gallery:checked').each(function(index, item){
-               gallery_id = item.name.split('_').pop();
-               widget_content += gallery_id + ',';
+              gallery_id = item.name.split('_').pop();
+              widget_content += gallery_id + ',';
              });
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+             post_header_value('displayed_galleries', widget_content);
+           }
+           
+           $('input.checkbox_gallery').click(function() {
+             post_displayed_galleries();
            });
        
            $('a.select_all').click(function() {
-             var widget_content = '';
              $('input.checkbox_gallery').attr('checked', true);
-             $('input.checkbox_gallery').each(function(index, item){
-               gallery_id = item.name.split('_').pop();
-               widget_content += gallery_id + ',';
-             });
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+             post_displayed_galleries();
            });
        
            $('a.deselect_all').click(function() {
              $('input.checkbox_gallery').attr('checked', false);
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]=0';
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
+             post_header_value('displayed_galleries', 0);
            });
+           
+           
+           // User has selected mode-display for rel gallery
+           $('input.mode-display').click(function() {
+             var gallery_id = this.rel.split('-').pop();
+             var header_value = $('span.edit_header.linked_galleries').value;
+             header_value = header_value.gsub(//);
+             post_header_value('linked_galleries', header_value);
+           });
+           
+            $('input.mode-external').click(function() {
+              
+              // Fetch gallery_id from input.rel attribute
+              var gallery_id = this.rel.split('-').pop();
+              // Fetch current header[linked_galleries] value
+              var header_value = $('span.edit_header.linked_galleries').value;
+
+              // Replace gallery link in header by comma, if already present
+              // regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
+              var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
+              if(match[1].length > 0) header_value.replace(match[1], ',')
+              
+              jPrompt('URL Externe:', 'http://', 'Gallery Mode', function(r) {
+                if( r ) {
+                  // send the current header value with the new [id, link] hash
+                  // inside header[linked_galleries] value
+                  post_header_value('linked_galleries', header_value + ',' + gallery_id + r);
+                } 
+              });
+            });
          });
         "
     
@@ -83,6 +117,8 @@ module Webbastic
         else
           @galleries = MediaRocket::Gallery.all
         end
+        
+        linked_galleries = self.header_content("linked_galleries")
     
         columns = self.header_content("gallery_columns").to_i
         list = "<table>"
@@ -153,7 +189,10 @@ module Webbastic
           if all_checked || checked_galleries.include?(gallery.id)
             select_gallery << "CHECKED"
           end
-          select_gallery << "/><label for='checkbox_gallery'>Display</label>"
+          select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
+          
+          mode_gallery = "<input type='radio' class='mode-display' rel='gallery-#{gallery.id}'>Gallery</input>
+                          <input type='radio' class='mode-external' rel='gallery-#{gallery.id}'>External Link</input>"
       
           img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << "</td>"
           list << img
