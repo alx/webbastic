@@ -14,11 +14,15 @@ module Webbastic
       end
 
       def widget_content
+        backContent = ""
         # Widget has gallery_id header, just display this gallery
         if gallery_id = self.header_content(:gallery_id)
           log "generate widget_content for #{self.page.name} with gallery #{gallery_id}"
-          list_html MediaRocket::Gallery.first(:id => gallery_id).original_medias
+          gallery = MediaRocket::Gallery.first(:id => gallery_id)
+          backContent += "<div class='gallery_title'>" + (gallery.ref_title || gallery.name) + "</div>"
+          backContent += list_html gallery.original_medias
         end
+        backContent
       end # def widget_content
   
       # Build hmtl content for a list of media or gallery
@@ -28,9 +32,9 @@ module Webbastic
         log "list_html: #{medias.size}"
         medias.each do |media|
           log "media: #{media.title}"
-          list << "<li class='gallery_detail'><img src='" << media.url << "'><br>" << media.title << "</li>"
+          list << "<li><img src='" << media.url << "'><br>" << media.title << "</li>"
         end
-        "<ul>#{list}</ul>"
+        "<ul class='gallery_detail'>#{list}</ul>"
       end # def list_html
   
       def log(message)
