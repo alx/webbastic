@@ -31,13 +31,7 @@ if defined?(Merb::Plugins)
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
     def self.loaded
-    require "webbastic/widgets/code"
-    if Merb.const_defined? :MediaRocket
-      require "webbastic/widgets/gallery_builder"
-      require "webbastic/widgets/media_list"
-    end
-    require "webbastic/widgets/rss"
-    require "webbastic/widgets/static"
+      ::Webbastic::WidgetModules.setup
       ::Webbastic::Helpers.setup
     end
     
@@ -74,6 +68,7 @@ if defined?(Merb::Plugins)
   dependency "hpricot"
   
   # Slice dependencies
+  require "webbastic/widget_modules"
   require "webbastic/helpers"
   require "webbastic/router"
   require "webbastic/rack"
