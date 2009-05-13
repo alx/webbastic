@@ -35,7 +35,7 @@ class Webbastic::Widget
   end
   
   def load_module
-    self.extend(Webbastic::Helpers::Widgets.full_const_get self.module) if self.module
+    self.extend(Webbastic::Widgets.full_const_get self.module) if self.module
   end
       
   JS_ESCAPE_MAP = {
