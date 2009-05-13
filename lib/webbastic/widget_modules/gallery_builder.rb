@@ -91,7 +91,7 @@ module Webbastic
           columns.times do
             if gallery = @galleries.pop
               page = create_gallery_page(gallery)
-              list << "<td><span class='gallery_title'>" << gallery.ref_title << "</span>"
+              list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
               list << "<a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
               list << "</td>"
             end
