@@ -19,7 +19,8 @@ module Webbastic
         if gallery_id = self.header_content(:gallery_id)
           log "generate widget_content for #{self.page.name} with gallery #{gallery_id}"
           gallery = MediaRocket::Gallery.first(:id => gallery_id)
-          backContent += "<div class='gallery_title'>" + (gallery.ref_title[0..20] || gallery.name[0..20]) + "</div>"
+          galName = (gallery.ref_title || gallery.name)
+          backContent += "<div class='gallery_title'>" + galName[0..20] + "</div>"
           backContent += list_html gallery.original_medias
         end
         backContent
