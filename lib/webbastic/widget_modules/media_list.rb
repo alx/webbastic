@@ -28,7 +28,7 @@ module Webbastic
         log "list_html: #{medias.size}"
         medias.each do |media|
           log "media: #{media.title}"
-          list << "<li><img src='" << media.url << "'><br>" << media.title << "</li>"
+          list << "<li class='gallery_detail'><img src='" << media.url << "'><br>" << media.title << "</li>"
         end
         "<ul>#{list}</ul>"
       end # def list_html
