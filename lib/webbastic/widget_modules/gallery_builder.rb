@@ -22,7 +22,7 @@ module Webbastic
         tag(:h2, "Select Galleries to display") <<
         tag(:span, "<a href='#' class='select_all'>Select all</a> || <a href='#' class='deselect_all'>Deselect all</a>") <<
         list_html(MediaRocket::Gallery.all) <<
-        tag(:input, {:id => 'linked-galleries', :value => self.has_header?(:linked_galleries) , :type => 'hidden'}) <<
+        tag(:input, {:id => 'linked-galleries', :value => self.has_header?(:linked_galleries).content, :type => 'hidden'}) <<
         tag(:input, {:id => 'current-widget',   :value => self.id, :type => :hidden})
       end
   
