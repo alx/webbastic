@@ -118,7 +118,11 @@ $(document).ready(function() {
 				// send the current header value with the new [id, link] hash
 				// inside header[linked_galleries] value
 				post_header_value('linked_galleries', gallery_id + r + ',' + clean_header_value(gallery_id));
-			} 
+			} else {
+				// prompt canceled, recheck display mode
+				$('input.mode-external.gallery-'+gallery_id).attr("checked", true);
+				$('input.mode-display.gallery-'+gallery_id).attr("checked", true);
+			}
 		});
 	});
 
