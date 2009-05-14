@@ -17,10 +17,8 @@ module Webbastic
       def edit_partial
         columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
     
-        linked_galleries = ""
-        if header = self.has_header?(:linked_galleries)
-          linked_galleries = tag(:input, {:id => 'linked-galleries', :value => header.content, :type => 'hidden'})
-        end
+        linked_galleries_header = self.has_header?(:linked_galleries)
+        linked_galleries = tag(:input, {:id => 'linked-galleries', :value => header.content || "", :type => 'hidden'})
     
         tag(:h2, "Options") <<
         tag(:p, "Number of columns: " << edit_header(columns_header)) <<
