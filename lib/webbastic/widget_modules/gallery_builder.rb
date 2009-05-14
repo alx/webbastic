@@ -126,9 +126,19 @@ module Webbastic
           list << "<tr>"
           columns.times do
             if gallery = @galleries.pop
-              page = create_gallery_page(gallery)
+              
               list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
-              list << "<a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
+               
+              match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+              gallery_url = match[1]
+              
+              if gallery_url
+                list << "<a href='" << gallery_url << "'><img src='" << gallery.icon << "'></a><br>"
+              else
+                page = create_gallery_page(gallery)
+                list << "<a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
+              end
+              
               list << "</td>"
             end
           end
@@ -181,9 +191,17 @@ module Webbastic
           all_checked = true
         end
     
+        linked_galleries = self.header_content("linked_galleries")
+        
         list = "<table><tr>"
         column = 0
         galleries.each do |gallery|
+          
+          match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+          gallery_url = match[1]
+          
+          Merb.logger.debug "list_html gallery.id: #{gallery.id}"
+          Merb.logger.debug "list_html gallery_url: #{gallery_url}"
       
           select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{gallery.id}'"
           if all_checked || checked_galleries.include?(gallery.id)
@@ -191,8 +209,10 @@ module Webbastic
           end
           select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
           
-          mode_gallery = "<input type='radio' class='mode-display' rel='gallery-#{gallery.id}'>Gallery</input>
-                          <input type='radio' class='mode-external' rel='gallery-#{gallery.id}'>External Link</input>"
+          mode_gallery = "<form><input type='radio' class='mode-display' rel='gallery-#{gallery.id}'>Gallery</input>"
+          mode_gallery << "<input type='radio' class='mode-external' rel='gallery-#{gallery.id}' alt='#{gallery_url}'"
+          mode_gallery << "CHECKED" if gallery_url
+          mode_gallery << ">External Link</input></form>"
       
           img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << "</td>"
           list << img
