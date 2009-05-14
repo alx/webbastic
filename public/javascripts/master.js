@@ -75,11 +75,9 @@ $(document).ready(function() {
 	});
 
 
-	// User has selected mode-display for rel gallery
+	// User has selected mode-display for gallery
 	$('input.mode-display').click(function() {
-		var gallery_id = $(this).attr('class', function(className) {
-			return className.match(/gallery-(\d+)/)[1]
-		});
+		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
 		var header_value = $('span.edit_header.linked_galleries').value;
 
 		// Replace gallery link in header by comma, if already present
@@ -95,10 +93,8 @@ $(document).ready(function() {
 
 	$('input.mode-external').click(function() {
 
-		// Fetch gallery_id from input.rel attribute
-		var gallery_id = $(this).attr('class', function(className) {
-			return className.match(/gallery-(\d+)/)[1]
-		});
+		// Fetch gallery_id from input.class attribute
+			if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
 		// Fetch current header[linked_galleries] value
 		var header_value = $('span.edit_header.linked_galleries').value;
 
