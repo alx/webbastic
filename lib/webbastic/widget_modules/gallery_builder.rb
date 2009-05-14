@@ -219,10 +219,10 @@ module Webbastic
           end
           select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
           
-          mode_gallery = "<form><input type='radio' class='mode-display' title='gallery-#{gallery.id}'"
+          mode_gallery = "<form><input type='radio' class='mode-display gallery-#{gallery.id}'"
           mode_gallery << "CHECKED" unless gallery_url
           mode_gallery << ">Gallery</input><br/>"
-          mode_gallery << "<input type='radio' class='mode-external' title='gallery-#{gallery.id}' alt='#{gallery_url}'"
+          mode_gallery << "<input type='radio' class='mode-external gallery-#{gallery.id}' alt='#{gallery_url}'"
           mode_gallery << "CHECKED" if gallery_url
           mode_gallery << ">External Link</input></form>"
       

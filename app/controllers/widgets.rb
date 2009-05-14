@@ -55,7 +55,7 @@ class Webbastic::Widgets < Webbastic::Application
       @widget.add_header params[:header][:name], params[:header][:content]
     end
     
-    if @widget.update_attributes(params[:widget])
+    if params[:widget] && @widget.update_attributes(params[:widget])
        display @widget, :show
     else
       display @widget, :edit
