@@ -52,7 +52,16 @@ module Webbastic
            $('input.mode-display').click(function() {
              var gallery_id = this.rel.split('-').pop();
              var header_value = $('span.edit_header.linked_galleries').value;
-             post_header_value('linked_galleries', header_value);
+             
+             // Replace gallery link in header by comma, if already present
+             // regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
+             var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
+             
+             // Only make a new post if gallery can be deleted
+             if(match[1].length > 0) {
+               header_value.replace(match[1], ',')
+               post_header_value('linked_galleries', header_value);
+             }
            });
            
             $('input.mode-external').click(function() {
@@ -209,7 +218,9 @@ module Webbastic
           end
           select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
           
-          mode_gallery = "<form><input type='radio' class='mode-display' rel='gallery-#{gallery.id}'>Gallery</input>"
+          mode_gallery = "<form><input type='radio' class='mode-display' rel='gallery-#{gallery.id}'"
+          mode_gallery << "CHECKED" unless gallery_url
+          mode_gallery << ">Gallery</input>"
           mode_gallery << "<input type='radio' class='mode-external' rel='gallery-#{gallery.id}' alt='#{gallery_url}'"
           mode_gallery << "CHECKED" if gallery_url
           mode_gallery << ">External Link</input></form>"
