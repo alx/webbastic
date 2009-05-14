@@ -50,7 +50,7 @@ module Webbastic
            
            // User has selected mode-display for rel gallery
            $('input.mode-display').click(function() {
-             var gallery_id = this.rel.split('-').pop();
+             var gallery_id = this.title.split('-').pop();
              var header_value = $('span.edit_header.linked_galleries').value;
              
              // Replace gallery link in header by comma, if already present
@@ -67,7 +67,7 @@ module Webbastic
             $('input.mode-external').click(function() {
               
               // Fetch gallery_id from input.rel attribute
-              var gallery_id = this.rel.split('-').pop();
+              var gallery_id = this.title.split('-').pop();
               // Fetch current header[linked_galleries] value
               var header_value = $('span.edit_header.linked_galleries').value;
 
@@ -218,10 +218,10 @@ module Webbastic
           end
           select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
           
-          mode_gallery = "<form><input type='radio' class='mode-display' rel='gallery-#{gallery.id}'"
+          mode_gallery = "<form><input type='radio' class='mode-display' title='gallery-#{gallery.id}'"
           mode_gallery << "CHECKED" unless gallery_url
           mode_gallery << ">Gallery</input>"
-          mode_gallery << "<input type='radio' class='mode-external' rel='gallery-#{gallery.id}' alt='#{gallery_url}'"
+          mode_gallery << "<input type='radio' class='mode-external' title='gallery-#{gallery.id}' alt='#{gallery_url}'"
           mode_gallery << "CHECKED" if gallery_url
           mode_gallery << ">External Link</input></form>"
       
