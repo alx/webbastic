@@ -74,7 +74,7 @@ module Webbastic
               // Replace gallery link in header by comma, if already present
               // regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
               var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
-              if(natch != null && match[1].length > 0) header_value.replace(match[1], ',')
+              if(match != null && match[1].length > 0) header_value.replace(match[1], ',')
               
               jPrompt('URL Externe:', 'http://', 'Gallery Mode', function(r) {
                 if( r ) {
@@ -220,7 +220,7 @@ module Webbastic
           
           mode_gallery = "<form><input type='radio' class='mode-display' title='gallery-#{gallery.id}'"
           mode_gallery << "CHECKED" unless gallery_url
-          mode_gallery << ">Gallery</input>"
+          mode_gallery << ">Gallery</input><br/>"
           mode_gallery << "<input type='radio' class='mode-external' title='gallery-#{gallery.id}' alt='#{gallery_url}'"
           mode_gallery << "CHECKED" if gallery_url
           mode_gallery << ">External Link</input></form>"
