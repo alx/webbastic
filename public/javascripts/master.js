@@ -77,6 +77,10 @@ $(document).ready(function() {
 
 	// User has selected mode-display for gallery
 	$('input.mode-display').click(function() {
+		
+		// Uncheck first
+		$('input.mode-external.gallery-'+gallery_id).attr("checked", false);
+		
 		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
 		var header_value = $('span.edit_header.linked_galleries').value;
 
@@ -92,14 +96,14 @@ $(document).ready(function() {
 	});
 
 	$('input.mode-external').click(function() {
+		
+		// Uncheck first
+		$('input.mode-display.gallery-'+gallery_id).attr("checked", false);
 
 		// Fetch gallery_id from input.class attribute
 			if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
 		// Fetch current header[linked_galleries] value
 		var header_value = $('span.edit_header.linked_galleries').value;
-
-		// Uncheck on first pass
-		$('input.mode-display.gallery-'+gallery_id)
 
 		// Replace gallery link in header by comma, if already present
 		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
