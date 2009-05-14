@@ -17,12 +17,16 @@ module Webbastic
       def edit_partial
         columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
     
+        if header = self.has_header?(:linked_galleries)
+          linked_galleries = tag(:input, {:id => 'linked-galleries', :value => header.content, :type => 'hidden'})
+        end
+    
         tag(:h2, "Options") <<
         tag(:p, "Number of columns: " << edit_header(columns_header)) <<
         tag(:h2, "Select Galleries to display") <<
         tag(:span, "<a href='#' class='select_all'>Select all</a> || <a href='#' class='deselect_all'>Deselect all</a>") <<
         list_html(MediaRocket::Gallery.all) <<
-        tag(:input, {:id => 'linked-galleries', :value => self.has_header?(:linked_galleries).content, :type => 'hidden'}) <<
+        linked_galleries <<
         tag(:input, {:id => 'current-widget',   :value => self.id, :type => :hidden})
       end
   
@@ -64,7 +68,7 @@ module Webbastic
             if gallery = @galleries.pop
               
               list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
-              if linked_galleries && match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+              if linked_galleries && match = Regexp.new("," << gallery.id << "(.[^,]*)").match(linked_galleries)
                 gallery_url = match[1]
               end
               

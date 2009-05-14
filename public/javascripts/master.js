@@ -59,6 +59,21 @@ $(document).ready(function() {
 		});
 		post_header_value('displayed_galleries', widget_content);
 	}
+	
+	function get_header_value(gallery_id) {
+		// Fetch current header[linked_galleries] value
+		var header_value = $('input#linked-galleries')[0].value;
+		
+		// Replace gallery link in header by comma, if already present
+		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
+		var match = new RegExp(','+gallery_id+'.[^,]*','i').exec(header_value);
+		
+		if(match != null && match[1].length > 0){
+			return header_value.replace(match[1], ',')
+		} else {
+			return false;
+		}
+	}
 
 	$('input.checkbox_gallery').click(function() {
 		post_displayed_galleries();
@@ -78,43 +93,32 @@ $(document).ready(function() {
 	// User has selected mode-display for gallery
 	$('input.mode-display').click(function() {
 		
+		// Fetch gallery_id from input.class attribute
+		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
+		
 		// Uncheck first
 		$('input.mode-external.gallery-'+gallery_id).attr("checked", false);
 		
-		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
-		var header_value = $('input#linked-galleries')[0].value;
-
-		// Replace gallery link in header by comma, if already present
-		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
-		var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
-
 		// Only make a new post if gallery can be deleted
-		if(match != null & match[1].length > 0) {
-			header_value.replace(match[1], ',')
+		if(header_value = get_header_value(gallery_id)) {
 			post_header_value('linked_galleries', header_value);
 		}
 	});
 
 	$('input.mode-external').click(function() {
 		
-		// Uncheck first
-		$('input.mode-display.gallery-'+gallery_id).attr("checked", false);
-
 		// Fetch gallery_id from input.class attribute
 		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
-		// Fetch current header[linked_galleries] value
-		var header_value = $('input#linked-galleries')[0].value;
-
-		// Replace gallery link in header by comma, if already present
-		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
-		var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
-		if(match != null && match[1].length > 0) header_value.replace(match[1], ',')
-
+		
+		// Uncheck first
+		$('input.mode-display.gallery-'+gallery_id).attr("checked", false);
+		
+		
 		jPrompt('URL Externe:', 'http://', 'Gallery Mode', function(r) {
 			if( r ) {
 				// send the current header value with the new [id, link] hash
 				// inside header[linked_galleries] value
-				post_header_value('linked_galleries', header_value + ',' + gallery_id + r);
+				post_header_value('linked_galleries', get_header_value(gallery_id) + ',' + gallery_id + r);
 			} 
 		});
 	});
