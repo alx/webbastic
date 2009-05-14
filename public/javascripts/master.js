@@ -60,18 +60,19 @@ $(document).ready(function() {
 		post_header_value('displayed_galleries', widget_content);
 	}
 	
-	function get_header_value(gallery_id) {
+	// Return header_value parameter without current url
+	function clean_header_value(gallery_id) {
 		// Fetch current header[linked_galleries] value
 		var header_value = $('input#linked-galleries')[0].value;
 		
 		// Replace gallery link in header by comma, if already present
 		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
-		var match = new RegExp(','+gallery_id+'.[^,]*','i').exec(header_value);
+		var match = new RegExp('('+gallery_id+'http:.[^,]*)','i').exec(header_value);
 		
 		if(match != null && match[1].length > 0){
 			return header_value.replace(match[1], ',')
 		} else {
-			return false;
+			return "";
 		}
 	}
 
@@ -99,10 +100,8 @@ $(document).ready(function() {
 		// Uncheck first
 		$('input.mode-external.gallery-'+gallery_id).attr("checked", false);
 		
-		// Only make a new post if gallery can be deleted
-		if(header_value = get_header_value(gallery_id)) {
-			post_header_value('linked_galleries', header_value);
-		}
+		// send header value without current gallery
+		post_header_value('linked_galleries', clean_header_value(gallery_id));
 	});
 
 	$('input.mode-external').click(function() {
@@ -118,7 +117,7 @@ $(document).ready(function() {
 			if( r ) {
 				// send the current header value with the new [id, link] hash
 				// inside header[linked_galleries] value
-				post_header_value('linked_galleries', get_header_value(gallery_id) + ',' + gallery_id + r);
+				post_header_value('linked_galleries', gallery_id + r + ',' + clean_header_value(gallery_id));
 			} 
 		});
 	});

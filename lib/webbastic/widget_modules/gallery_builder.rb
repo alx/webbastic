@@ -74,7 +74,7 @@ module Webbastic
             if gallery = @galleries.pop
               
               list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
-              if linked_galleries && match = Regexp.new("," << gallery.id << "(.[^,]*)").match(linked_galleries)
+              if linked_galleries && match = Regexp.new("#{gallery.id}(http.[^,]*)").match(linked_galleries)
                 gallery_url = match[1]
               end
               
@@ -143,7 +143,7 @@ module Webbastic
         column = 0
         galleries.each do |gallery|
           
-          if linked_galleries && match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+          if linked_galleries && match = Regexp.new("#{gallery.id}(http.*)?,").match(linked_galleries)
             gallery_url = match[1]
           end
           
