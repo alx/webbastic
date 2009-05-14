@@ -52,7 +52,6 @@ module Webbastic
            $('input.mode-display').click(function() {
              var gallery_id = this.rel.split('-').pop();
              var header_value = $('span.edit_header.linked_galleries').value;
-             header_value = header_value.gsub(//);
              post_header_value('linked_galleries', header_value);
            });
            
@@ -215,7 +214,7 @@ module Webbastic
           mode_gallery << "CHECKED" if gallery_url
           mode_gallery << ">External Link</input></form>"
       
-          img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << "</td>"
+          img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << mode_gallery << "</td>"
           list << img
       
           column += 1
