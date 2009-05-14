@@ -82,7 +82,7 @@ $(document).ready(function() {
 		$('input.mode-external.gallery-'+gallery_id).attr("checked", false);
 		
 		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
-		var header_value = $('span.edit_header.linked_galleries').value;
+		var header_value = $('input.linked_galleries')[0].value;
 
 		// Replace gallery link in header by comma, if already present
 		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
@@ -101,9 +101,9 @@ $(document).ready(function() {
 		$('input.mode-display.gallery-'+gallery_id).attr("checked", false);
 
 		// Fetch gallery_id from input.class attribute
-			if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
+		if (match = $(this).attr('class').match(/gallery-(\d+)/)) var gallery_id = match[1]
 		// Fetch current header[linked_galleries] value
-		var header_value = $('span.edit_header.linked_galleries').value;
+		var header_value = $('input.linked_galleries')[0].value;
 
 		// Replace gallery link in header by comma, if already present
 		// regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]

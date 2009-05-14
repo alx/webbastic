@@ -19,6 +19,7 @@ module Webbastic
     
         tag(:h2, "Options") <<
         tag(:p, "Number of columns: " << edit_header(columns_header)) <<
+        tag(:input, {:value => self.has_header?(:linked_galleries) , :type => 'hidden', :class => "linked_galleries"}) <<
         tag(:h2, "Select Galleries to display") <<
         tag(:span, "<a href='#' class='select_all'>Select all</a> || <a href='#' class='deselect_all'>Deselect all</a>") <<
         list_html(MediaRocket::Gallery.all) <<
