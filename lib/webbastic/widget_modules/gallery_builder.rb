@@ -58,7 +58,7 @@ module Webbastic
              var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
              
              // Only make a new post if gallery can be deleted
-             if(match[1].length > 0) {
+             if(match != null & match[1].length > 0) {
                header_value.replace(match[1], ',')
                post_header_value('linked_galleries', header_value);
              }
@@ -74,7 +74,7 @@ module Webbastic
               // Replace gallery link in header by comma, if already present
               // regexp reading: 1http://abc.com,2http://bcd.com -> [,gallery_id|http...,]
               var match = new RegExp(','+gallery_id+'.*?,','i').exec(header_value);
-              if(match[1].length > 0) header_value.replace(match[1], ',')
+              if(natch != null && match[1].length > 0) header_value.replace(match[1], ',')
               
               jPrompt('URL Externe:', 'http://', 'Gallery Mode', function(r) {
                 if( r ) {
