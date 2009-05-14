@@ -120,7 +120,7 @@ $(document).ready(function() {
 				post_header_value('linked_galleries', gallery_id + r + ',' + clean_header_value(gallery_id));
 			} else {
 				// prompt canceled, recheck display mode
-				$('input.mode-external.gallery-'+gallery_id).attr("checked", true);
+				$('input.mode-external.gallery-'+gallery_id).attr("checked", false);
 				$('input.mode-display.gallery-'+gallery_id).attr("checked", true);
 			}
 		});
