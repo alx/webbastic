@@ -44,6 +44,12 @@ $(document).ready(function() {
 	// GalleryBuilder edit_partial
 	//
 	// =====
+	
+	function post_header_value(header_name, header_value) {
+		var data = '_method=PUT&header[name]=' + header_name + '&header[content]='+header_value;
+		var widget_id = $('input#current-widget').split('-').pop();
+		$.post('/cms/widgets/' + widget_id, data);
+	}
 
 	function post_displayed_galleries() {
 		var widget_content = '';
