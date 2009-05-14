@@ -126,9 +126,10 @@ module Webbastic
             if gallery = @galleries.pop
               
               list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
-               
-              match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
-              gallery_url = match[1]
+              if linked_galleries
+                match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+                gallery_url = match[1]
+              end
               
               if gallery_url
                 list << "<a href='" << gallery_url << "'><img src='" << gallery.icon << "'></a><br>"
@@ -195,8 +196,10 @@ module Webbastic
         column = 0
         galleries.each do |gallery|
           
-          match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
-          gallery_url = match[1]
+          if linked_galleries
+            match = Regexp.new("," << gallery.id << "(.*)?,").match(linked_galleries)
+            gallery_url = match[1]
+          end
           
           Merb.logger.debug "list_html gallery.id: #{gallery.id}"
           Merb.logger.debug "list_html gallery_url: #{gallery_url}"
