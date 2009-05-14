@@ -1,5 +1,3 @@
-mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication/France_O/Autre/2009/S18/35598_quoideneuf_20090428-450k-250k.wmv
-
 module Webbastic
   module WidgetModules
     module GalleryBuilderWidget
