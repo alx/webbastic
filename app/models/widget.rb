@@ -25,7 +25,7 @@ class Webbastic::Widget
   end
   
   def default_headers
-    if defined? self.widget_headers
+    if load_module && defined? self.widget_headers
       self.widget_headers.each do |name, content|
         self.headers.create :name => name,
                             :content => content
@@ -34,7 +34,7 @@ class Webbastic::Widget
   end
   
   def generate_content
-    if defined? self.widget_content
+    if load_module && defined? self.widget_content
       self.update_attributes :content => self.widget_content
     end
   end
