@@ -40,7 +40,7 @@ module Webbastic
       end
       
       def webbastic_js_line(file)
-        "<script src='#{webbastic_javascript_path file}' type='text/javascript' charset='utf-8'></script>"
+        "<script src='#{webbastic_javascript_path file}' type='text/javascript' charset='utf-8'></script>\n"
       end
       
       def webbastic_css
@@ -52,7 +52,7 @@ module Webbastic
       end
       
       def webbastic_css_line(file)
-        "<link rel='stylesheet' href='#{webbastic_stylesheet_path file}' type='text/css' media='screen, projection'>"
+        "<link rel='stylesheet' href='#{webbastic_stylesheet_path file}' type='text/css' media='screen, projection'>\n"
       end
     end
   end
