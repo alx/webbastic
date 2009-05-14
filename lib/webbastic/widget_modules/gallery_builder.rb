@@ -16,44 +16,24 @@ module Webbastic
   
       def edit_partial
         columns_header = self.has_header?(:gallery_columns) || self.add_header(:gallery_columns, 4)
-        update_script = "
-        $(document).ready(function() {
-           $('input.checkbox_gallery').click(function() {
-             var widget_content = '';
-             $('input.checkbox_gallery:checked').each(function(index, item){
-               gallery_id = item.name.split('_').pop();
-               widget_content += gallery_id + ',';
-             });
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
-           });
-       
-           $('a.select_all').click(function() {
-             var widget_content = '';
-             $('input.checkbox_gallery').attr('checked', true);
-             $('input.checkbox_gallery').each(function(index, item){
-               gallery_id = item.name.split('_').pop();
-               widget_content += gallery_id + ',';
-             });
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]='+widget_content;
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
-           });
-       
-           $('a.deselect_all').click(function() {
-             $('input.checkbox_gallery').attr('checked', false);
-             var data = '_method=PUT&header[name]=displayed_galleries&header[content]=0';
-             $.post('#{Merb::Router.url(:webbastic_widget, :id => self.id)}', data);
-           });
-         });
-        "
+    
+        if header = self.has_header?(:linked_galleries)
+          linked_galleries = tag(:input, {:id => 'linked-galleries', 
+                                          :value => self.has_header?(:linked_galleries).content, 
+                                          :type => 'hidden'})
+        else
+          linked_galleries = tag(:input, {:id => 'linked-galleries', 
+                                          :value => "", 
+                                          :type => 'hidden'})
+        end
     
         tag(:h2, "Options") <<
         tag(:p, "Number of columns: " << edit_header(columns_header)) <<
         tag(:h2, "Select Galleries to display") <<
         tag(:span, "<a href='#' class='select_all'>Select all</a> || <a href='#' class='deselect_all'>Deselect all</a>") <<
         list_html(MediaRocket::Gallery.all) <<
-        tag(:script, update_script, {:type => "text/javascript",
-                                       :charset => "utf-8"})
+        linked_galleries <<
+        tag(:input, {:id => 'current-widget',   :value => self.id, :type => :hidden})
       end
   
       def edit_header(header)
@@ -83,6 +63,8 @@ module Webbastic
         else
           @galleries = MediaRocket::Gallery.all
         end
+        
+        linked_galleries = self.header_content("linked_galleries")
     
         columns = self.header_content("gallery_columns").to_i
         list = "<table>"
@@ -90,9 +72,19 @@ module Webbastic
           list << "<tr>"
           columns.times do
             if gallery = @galleries.pop
-              page = create_gallery_page(gallery)
+              
               list << "<td class='gallery_line'><span class='gallery_title'>" << (gallery.ref_title || gallery.name) << "<br></span>"
-              list << "<a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
+              if linked_galleries && match = Regexp.new("#{gallery.id}(http.[^,]*)").match(linked_galleries)
+                gallery_url = match[1]
+              end
+              
+              if gallery_url
+                list << "<a href='" << gallery_url << "'><img src='" << gallery.icon << "'></a><br>"
+              else
+                page = create_gallery_page(gallery)
+                list << "<a href='" << page.link << "'><img src='" << gallery.icon << "'></a><br>"
+              end
+              
               list << "</td>"
             end
           end
@@ -145,17 +137,33 @@ module Webbastic
           all_checked = true
         end
     
+        linked_galleries = self.header_content("linked_galleries")
+        
         list = "<table><tr>"
         column = 0
         galleries.each do |gallery|
+          
+          if linked_galleries && match = Regexp.new("#{gallery.id}(http.*)?,").match(linked_galleries)
+            gallery_url = match[1]
+          end
+          
+          Merb.logger.debug "list_html gallery.id: #{gallery.id}"
+          Merb.logger.debug "list_html gallery_url: #{gallery_url}"
       
           select_gallery = "<input class='checkbox_gallery' type='checkbox' name='gallery_#{gallery.id}'"
           if all_checked || checked_galleries.include?(gallery.id)
             select_gallery << "CHECKED"
           end
-          select_gallery << "/><label for='checkbox_gallery'>Display</label>"
+          select_gallery << "/><br/><label for='checkbox_gallery'>Display</label><br/>"
+          
+          mode_gallery = "<form><input type='radio' class='mode-display gallery-#{gallery.id}'"
+          mode_gallery << "CHECKED" unless gallery_url
+          mode_gallery << ">Gallery</input><br/>"
+          mode_gallery << "<input type='radio' class='mode-external gallery-#{gallery.id}' alt='#{gallery_url}'"
+          mode_gallery << "CHECKED" if gallery_url
+          mode_gallery << ">External Link</input></form>"
       
-          img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << "</td>"
+          img = "<td><img src='" << gallery.icon << "'><br>" << gallery.title << select_gallery << mode_gallery << "</td>"
           list << img
       
           column += 1
