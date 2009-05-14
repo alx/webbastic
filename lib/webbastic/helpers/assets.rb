@@ -47,10 +47,9 @@ module Webbastic
       def webbastic_css
         ['master.css',
          'jquery.filetree.css',
-         'jquery.alerts.css'].each do |file|
+         'jquery.alerts.css'].inject("") do |css, file|
           css << webbastic_css_line(file)
         end
-        css
       end
       
       def webbastic_css_line(file)
