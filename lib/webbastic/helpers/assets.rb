@@ -48,7 +48,7 @@ module Webbastic
         ['master.css',
          'jquery.filetree.css',
          'jquery.alerts.css'].each do |file|
-          css << media_rocket_css_line(file)
+          css << webbastic_css_line(file)
         end
         css
       end
