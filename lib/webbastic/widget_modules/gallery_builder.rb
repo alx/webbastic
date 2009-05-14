@@ -50,7 +50,9 @@ module Webbastic
            
            // User has selected mode-display for rel gallery
            $('input.mode-display').click(function() {
-             var gallery_id = this.title.split('-').pop();
+             var gallery_id = this.attr('class', function(className) {
+               return className.match(/gallery-(\d+)/)[1]
+             });
              var header_value = $('span.edit_header.linked_galleries').value;
              
              // Replace gallery link in header by comma, if already present
@@ -67,7 +69,9 @@ module Webbastic
             $('input.mode-external').click(function() {
               
               // Fetch gallery_id from input.rel attribute
-              var gallery_id = this.title.split('-').pop();
+              var gallery_id = this.attr('class', function(className) {
+                 return className.match(/gallery-(\d+)/)[1]
+               });
               // Fetch current header[linked_galleries] value
               var header_value = $('span.edit_header.linked_galleries').value;
               
