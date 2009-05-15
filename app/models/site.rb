@@ -244,11 +244,6 @@ class Webbastic::Site
     sanitized = sanitized.gsub /[^\w\.\-]/, '_'
     
     # remove accents
-    sanitized = sanitized.gsub(/[^a-zA-Z0-9 ]/,"")
-    sanitized = sanitized.gsub(/[ ]+/," ")
-    sanitized = sanitized.gsub(/ /,"-")
-    sanitized = sanitized.downcase
-    
-    CGI.escape sanitized
+    DiacriticsFu::escape(sanitized)
   end
 end

@@ -66,6 +66,7 @@ if defined?(Merb::Plugins)
   dependency "do_sqlite3"
   dependency "webby", ">= 0.9.3"
   dependency "hpricot"
+  dependency "diacritics_fu"
   
   # Slice dependencies
   require "webbastic/widget_modules"
