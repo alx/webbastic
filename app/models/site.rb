@@ -241,7 +241,13 @@ class Webbastic::Site
     sanitized = filename.gsub /^.*(\\|\/)/, ''
 
     # Finally, replace all non alphanumeric, underscore or periods with underscore
-    sanitized = filename.gsub /[^\w\.\-]/, '_'
+    sanitized = sanitized.gsub /[^\w\.\-]/, '_'
+    
+    # remove accents
+    sanitized = sanitized.gsub(/[^a-zA-Z0-9 ]/,"")
+    sanitized = sanitized.gsub(/[ ]+/," ")
+    sanitized = sanitized.gsub(/ /,"-")
+    sanitized = sanitized.downcase
     
     CGI.escape sanitized
   end
