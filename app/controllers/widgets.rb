@@ -31,9 +31,10 @@ class Webbastic::Widgets < Webbastic::Application
 
   # POST /widgets
   def create
-    
-    if widget = Webbastic::Widget.create(:module => params[:widget])
-      
+     widget = Webbastic::Widget.new
+     widget.module = params[:widget]
+     
+    if widget.save
       # Add widget to page if parameter included
       if params[:page_id] && page = Webbastic::Page.first(:id  => params[:page_id])
         page.add_widget widget
