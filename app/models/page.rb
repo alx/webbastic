@@ -205,10 +205,7 @@ class Webbastic::Page
     end
     
     # create widget if non-existent
-    widget = Webbastic::Widget.create :name => "Static Widget",
-                                      :module => "StaticWidget"
-    self.add_widget widget
-    widget
+    self.widgets.create({:name => "Static Widget", :module => "StaticWidget"})
   end
   
   def add_widget(widget)
