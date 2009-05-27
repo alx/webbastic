@@ -25,7 +25,8 @@ class Webbastic::Site
     # TODO: elegant regexp for Merb.root folder
     self.name = options[:name] || sanitize_filename(Merb.root[/\/(.[^\/]*)$/,1]) 
     
-    index = File.join("webby", self.name, "content", "index")
+    path  = File.join("webby", self.name)
+    index = File.join(path, "content", "index")
     
     unless File.exists? index
       # Generate webby app with this site parameters
