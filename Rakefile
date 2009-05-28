@@ -9,7 +9,7 @@ AUTHOR = "Alexandre Girard"
 EMAIL = "alx.girard@gmail.com"
 HOMEPAGE = "http://alexgirard.com/"
 SUMMARY = "Merb Slice that provides a simple cms"
-GEM_VERSION = "1.0.0"
+GEM_VERSION = "1.1.0"
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = 'merb'
@@ -24,6 +24,9 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.add_dependency('merb-slices', '>= 1.0.8.1')
+  s.add_dependency('webby', ">= 0.9.4")
+  s.add_dependency('hpricot', ">= 0.8.1")
+  s.add_dependency('diacritics_fu', ">= 1.0.3")
   s.require_path = 'lib'
   s.files = %w(LICENSE README.textile Rakefile TODO) + Dir.glob("{lib,spec,app,public,stubs}/**/*")
 end

@@ -21,7 +21,7 @@ if defined?(Merb::Plugins)
     
     # Slice metadata
     self.description = "Webbastic is a Merb slice to manage multiple websites with webby"
-    self.version = "1.0.0"
+    self.version = "1.1.0"
     self.author = "Legodata"
     
     def self.init
