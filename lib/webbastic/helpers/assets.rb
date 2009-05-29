@@ -25,7 +25,7 @@ module Webbastic
         script = ['jquery/jquery.js',
          'jquery/jquery.ui.js',
          'jquery/jquery.livequery.js',
-         'jquery/jquery.wymeditor.js',
+         'wymeditor/jquery.wymeditor.js',
          'jquery/jquery.jeditable.js',
          'jquery/jquery.filetree.js',
          'jquery/jquery.alerts.js'].inject("") do |script, file|
