@@ -19,7 +19,7 @@ class Webbastic::Widget
   # Add :dirty header to only re-generate this page
   # after :update, :page_is_dirty
   
-  def initialize(args)
+  def initialize(args = {})
     super args
     load_module
   end
